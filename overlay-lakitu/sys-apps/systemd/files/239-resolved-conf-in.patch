@@ -1,0 +1,15 @@
+diff --git a/src/resolve/resolved.conf.in b/src/resolve/resolved.conf.in
+index 6898c7848b..fc0606129a 100644
+--- a/src/resolve/resolved.conf.in
++++ b/src/resolve/resolved.conf.in
+@@ -15,8 +15,8 @@
+ #DNS=
+ #FallbackDNS=@DNS_SERVERS@
+ #Domains=
+-#LLMNR=yes
+-#MulticastDNS=yes
++LLMNR=no
++MulticastDNS=no
+ #DNSSEC=@DEFAULT_DNSSEC_MODE@
+ #DNSOverTLS=@DEFAULT_DNS_OVER_TLS_MODE@
+ #Cache=yes

@@ -1,0 +1,69 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+CHROMEOS_KERNEL_SPLITCONFIG="chromiumos-mediatek"
+CHROMEOS_KERNEL_ARCH="arm64"
+
+# TODO(b/150746591): upstream compiler should be able to support
+# cortex-a76.cortex-a55, we may need to switch to it if we upgrade
+# the compiler later.
+# TODO(b/139386950): We can only use flags here that are supported by both arm
+# # and aarch64 ARC++ toolchain, i.e. we need to "downgrade" cortex-a57.cortex-a53
+# # to cortex-a57. Also, we may want different optimizations for arm vs aarch64
+BOARD_COMPILER_FLAGS="-march=armv8-a+crc -mtune=cortex-a57 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard"
+# TODO(gbiv): Porting -mtune may be interesting, but clang seems to currently
+# entirely ignore this flag for ARM (notably: not aarch64) builds.
+BOARD_RUSTFLAGS="-Ctarget-feature=+armv8-a,+crc"
+
+# Initial value just for style purposes.
+USE=""
+
+# Use hardware FPU instead of software
+USE="${USE} hardfp"
+# Support for neon-vfpv3
+USE="${USE} neon"
+
+# For the device tree installation
+USE="${USE} device_tree"
+
+# use kernel 5.4
+USE="${USE} kernel-5_4"
+
+# TODO(b/150746591): build error, need to be fixed
+# needed by drm-tests
+#USE="${USE} vulkan"
+
+# Enable VMs
+USE="${USE} kvm_host crosvm-gpu virtio_gpu"
+
+# Enables WebGL rendering
+USE="${USE} drm_atomic"
+
+# Set raster thread number=2
+USE="${USE} big_little"
+
+# Mali drivers require this
+USE="${USE} gpu_sandbox_start_early"
+
+# Turn on the video cards this board uses.
+VIDEO_CARDS="mediatek"
+
+# MT8192 minigbm
+USE="${USE} minigbm_platform_mt8192"
+
+# Use V4L2 codec
+USE="${USE} v4l2_codec"
+
+# ARC should use VideoDecoder interface
+USE="${USE} arc_uses_cros_video_decoder"
+
+# Enable GpuMemoryBuffers backed by dma-bufs.
+USE="${USE} native_gpu_memory_buffers"
+
+# Create kernel built-in workaround firmware for Mali-G57.
+# See Mali Valhall release note for detail.
+USE="${USE} builtin_fw_mali_g57"
+
+# Enable fscrypt v2 usage on 5.4+
+USE="${USE} direncription_allow_v2"

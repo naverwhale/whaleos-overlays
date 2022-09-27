@@ -1,0 +1,47 @@
+From a8d3bf987e7b2d4cf4da11c1eed918bee26c593a Mon Sep 17 00:00:00 2001
+From: Tomasz Jeznach <tjeznach@chromium.org>
+Date: Mon, 17 May 2021 11:52:57 -0700
+Subject: [PATCH 4/4] CHROMIUM: kvm: report KVM_IOAPIC_NUM_PINS.
+
+Report KVM_IOAPIC_NUM_PINS for emulated in-kernel IOAPIC.
+To be removed when referred issue is resolved.
+
+BUG=b:184871003
+TEST=build and run vmm with in-kernel IO-APIC.
+
+Change-Id: Ic76cb74a3b5c5145362cf072a4cabe8e8034595e
+---
+ arch/x86/kvm/x86.c       | 3 +++
+ include/uapi/linux/kvm.h | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0a5dd7568ebc..33b766fef563 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3825,6 +3825,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_STEAL_TIME:
+ 		r = sched_info_on();
+ 		break;
++	case KVM_CAP_IOAPIC_NUM_PINS:
++		r = KVM_IOAPIC_NUM_PINS;
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index ca41220b40b8..d64fa2a6a731 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1054,6 +1054,8 @@ struct kvm_ppc_resize_hpt {
+ #define KVM_CAP_X86_MSR_FILTER 189
+ #define KVM_CAP_ENFORCE_PV_FEATURE_CPUID 190
+ 
++#define KVM_CAP_IOAPIC_NUM_PINS 8191
++
+ #ifdef KVM_CAP_IRQ_ROUTING
+ 
+ struct kvm_irq_routing_irqchip {
+-- 
+2.31.0
+

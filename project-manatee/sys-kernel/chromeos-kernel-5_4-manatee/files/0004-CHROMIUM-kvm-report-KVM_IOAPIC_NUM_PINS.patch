@@ -1,0 +1,47 @@
+From dba587cfef40c2dbe5dc11ad490a044be01e1abf Mon Sep 17 00:00:00 2001
+From: Tomasz Jeznach <tjeznach@chromium.org>
+Date: Mon, 17 May 2021 11:25:26 -0700
+Subject: [PATCH 4/4] CHROMIUM: kvm: report KVM_IOAPIC_NUM_PINS.
+
+Report KVM_IOAPIC_NUM_PINS for emulated in-kernel IOAPIC.
+To be removed when referred issue is resolved.
+
+BUG=b:184871003
+TEST=build and run vmm with in-kernel IO-APIC.
+
+Change-Id: I3517dde222935382f874418815e5561d1caa7e63
+---
+ arch/x86/kvm/x86.c       | 3 +++
+ include/uapi/linux/kvm.h | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 5f4f34b5e6ed..43992b9679e4 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3401,6 +3401,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_HYPERV_ENLIGHTENED_VMCS:
+ 		r = kvm_x86_ops->nested_enable_evmcs != NULL;
+ 		break;
++	case KVM_CAP_IOAPIC_NUM_PINS:
++		r = KVM_IOAPIC_NUM_PINS;
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 1b6b8e05868d..4c2a7932196b 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1004,6 +1004,8 @@ struct kvm_ppc_resize_hpt {
+ #define KVM_CAP_ARM_IRQ_LINE_LAYOUT_2 174
+ #define KVM_CAP_HYPERV_DIRECT_TLBFLUSH 175
+ 
++#define KVM_CAP_IOAPIC_NUM_PINS 8191
++
+ #ifdef KVM_CAP_IRQ_ROUTING
+ 
+ struct kvm_irq_routing_irqchip {
+-- 
+2.31.0
+

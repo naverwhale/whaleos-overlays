@@ -1,0 +1,1 @@
+ACTION=="offline", SUBSYSTEM=="usb", ENV{ERROR}=="DEAD", RUN+="/lib/udev/xhci-restart.sh"

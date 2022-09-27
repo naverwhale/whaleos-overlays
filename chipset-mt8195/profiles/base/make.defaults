@@ -1,0 +1,55 @@
+# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+CHROMEOS_KERNEL_SPLITCONFIG="chromiumos-mediatek"
+CHROMEOS_KERNEL_ARCH="arm64"
+
+BOARD_COMPILER_FLAGS="-march=armv8-a+crc -mtune=cortex-a57 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard"
+# TODO(gbiv): Porting -mtune may be interesting, but clang seems to currently
+# entirely ignore this flag for ARM (notably: not aarch64) builds.
+BOARD_RUSTFLAGS="-Ctarget-feature=+armv8-a,+crc"
+
+# Initial value just for style purposes.
+USE=""
+
+# Use hardware FPU instead of software
+USE="${USE} hardfp"
+# Support for neon-vfpv3
+USE="${USE} neon"
+
+# For the device tree installation
+USE="${USE} device_tree"
+
+# use kernel 5.10
+USE="${USE} kernel-5_10"
+
+# Enables WebGL rendering
+USE="${USE} drm_atomic"
+
+# Set raster thread number=2
+USE="${USE} big_little"
+
+# Turn on the video cards this board uses.
+VIDEO_CARDS="mediatek"
+
+# MT8195 minigbm
+USE="${USE} minigbm_platform_mt8195"
+
+# Enable HW codecs using V4L2 API.
+USE="${USE} v4l2_codec"
+
+# ARC should use VideoDecoder interface
+USE="${USE} arc_uses_cros_video_decoder"
+
+# Enable fscrypt v2 usage on 5.4+
+USE="${USE} direncription_allow_v2"
+
+# Enable GpuMemoryBuffers backed by dma-bufs.
+USE="${USE} native_gpu_memory_buffers"
+
+# Mali drivers require this
+USE="${USE} gpu_sandbox_start_early"
+
+# Enable VMs
+USE="${USE} kvm_host crosvm-gpu virtio_gpu"

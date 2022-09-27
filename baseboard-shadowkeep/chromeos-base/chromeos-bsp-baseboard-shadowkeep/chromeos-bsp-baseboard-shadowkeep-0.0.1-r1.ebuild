@@ -1,0 +1,1 @@
+chromeos-bsp-baseboard-shadowkeep-0.0.1.ebuild

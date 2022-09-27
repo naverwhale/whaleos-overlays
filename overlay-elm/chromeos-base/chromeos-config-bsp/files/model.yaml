@@ -1,0 +1,47 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# This board only supports a single config, defined below, as it is a
+# migrated pre-unibuild device.
+device-config: &device_config
+  brand-code: ACAZ
+  firmware:
+    build-targets:
+      coreboot: elm
+      depthcharge: elm
+      libpayload: elm
+      ec: elm
+      ec_extras:
+      - anx7688
+    image-name: elm
+  hardware-properties:
+    form-factor: CHROMEBOOK
+    has-backlight: true
+    psu-type: battery
+  identity:
+    device-tree-compatible-match: google,elm
+    platform-name: Oak
+  name: elm
+  power:
+    dark-resume-devices: |-
+      /sys/bus/usb/devices/usb1
+      /sys/bus/usb/devices/usb2
+      /sys/class/backlight/backlight_lcd
+    dark-resume-sources: |-
+      /sys/class/rtc/rtc0/device
+      /sys/bus/sdio/drivers/mwifiex_sdio/mmc2:0001:1
+    disable-dark-resume: '1'
+    internal-backlight-no-als-battery-brightness: '36.36'
+    low-battery-shutdown-percent: '4.0'
+    power-supply-full-factor: '0.95'
+  ui:
+    side-volume-button:
+      region: keyboard
+      side: right
+
+# Required dunder for chromeos-config to support a single device.
+chromeos:
+  devices:
+    - skus:
+        - config: *device_config

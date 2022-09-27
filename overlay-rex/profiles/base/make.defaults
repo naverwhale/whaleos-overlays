@@ -1,0 +1,17 @@
+# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Initial value just for style purposes.
+USE=""
+INPUT_DEVICE=""
+
+USE="${USE} rex"
+#USE="${USE} cros_ec"
+
+# Enable unibuild
+USE="${USE} unibuild"
+USE="${USE} has_chromeos_config_bsp"
+
+# Disable AC ACPI driver
+USE="${USE} -acpi_ac"

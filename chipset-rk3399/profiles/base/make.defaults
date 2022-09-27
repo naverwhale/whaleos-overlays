@@ -1,0 +1,43 @@
+# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+CHROMEOS_KERNEL_SPLITCONFIG="chromiumos-rockchip64"
+CHROMEOS_KERNEL_ARCH="arm64"
+
+# TODO(smbarber): see if this should be a72
+# http://crbug.com/588836
+BOARD_COMPILER_FLAGS="-march=armv8-a+crc -mtune=cortex-a57.cortex-a53 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard"
+# TODO(gbiv): Porting -mtune may be interesting, but clang seems to currently
+# entirely ignore this flag for ARM (notably: not aarch64) builds.
+BOARD_RUSTFLAGS="-Ctarget-feature=+armv8-a,+crc"
+
+# Initial value just for style purposes.
+USE=""
+
+USE="${USE} big_little"
+USE="${USE} device_tree -dt_compression"
+USE="${USE} drm_atomic"
+USE="${USE} hardfp"
+USE="${USE} kernel-4_4"
+USE="${USE} neon"
+USE="${USE} rk3399"
+# Ensure we retain compatibility regardless of kernel version (4.4 vs. 5.x).
+USE="${USE} uprev-4-to-5"
+
+# The https://chromium-review.googlesource.com/q/Iaaac2021d7c8b68afce59856f0aaf0a156fdd43d
+# kernel patch interferes with crashpad. Continue using breakpad on boards
+# with that patch.
+USE="${USE} force_breakpad"
+
+# Enable HW codecs using V4L2 API.
+USE="${USE} v4l2_codec"
+
+# Disable CrOS video decoder because it's not yet ready for Rockchip.
+USE="${USE} disable_cros_video_decoder"
+
+# Enable GpuMemoryBuffers backed by dma-bufs.
+USE="${USE} native_gpu_memory_buffers"
+
+# Use legacy pre-Groot UI for initramfs and init script screens.
+USE="${USE} legacy_firmware_ui"

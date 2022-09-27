@@ -1,0 +1,47 @@
+From 65437c9f28e2c99af1b1ac3f528857627d94063a Mon Sep 17 00:00:00 2001
+From: Vaibhav Rustagi <vaibhavrustagi@google.com>
+Date: Thu, 10 Oct 2019 23:00:13 -0700
+Subject: [PATCH] Do not clone /proc/self/exe in case of lakitu.
+
+Fix for CVE-2019-5736 introduces a logic to clone the /proc/self/exe
+so that no malicious container can modify the host binary. Due to this
+bind mount was done in try_bindfd() which introduces three libmount
+events. In systemd <= 232, for every libmount event, iteration over
+all mounts present in /proc/self/mountinfo is done to check which
+mount got changed. In case of large number of mounts already present,
+systemd will require high cpu utilization for iteration over all the
+mounts. In case of a read-only rootfs, cloning of /proc/self/exe is
+not required and therefore, generation of libmount events can be
+avoided.
+
+Enable `_LIBCONTAINER_CLONED_BINARY` to skip cloning of
+/proc/self/exe.
+---
+ libcontainer/nsenter/cloned_binary.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/libcontainer/nsenter/cloned_binary.c b/libcontainer/nsenter/cloned_binary.c
+index ad10f140..48d9faa4 100644
+--- a/libcontainer/nsenter/cloned_binary.c
++++ b/libcontainer/nsenter/cloned_binary.c
+@@ -94,6 +94,17 @@ static int is_self_cloned(void)
+ 	struct stat statbuf = {};
+ 	struct statfs fsbuf = {};
+ 
++	/* lakitu uses a readonly rootfs and therefore,
++	 * a malicious container cannot overwrite the
++	 * runc binary. As per the discussion over
++	 * https://github.com/opencontainers/runc/pull/2136
++	 * the below env can be used to block the cloning
++	 * of runc binary. Cloning the runc binary includes
++	 * creation of bind mount which issues libmount
++	 * event and causes systemd to bombard dbus
++	 * message events.*/
++	putenv(CLONED_BINARY_ENV "=1");
++
+ 	fd = open("/proc/self/exe", O_RDONLY|O_CLOEXEC);
+ 	if (fd < 0)
+ 		return -ENOTRECOVERABLE;
+-- 
+2.23.0.700.g56cf767bdb-goog
+

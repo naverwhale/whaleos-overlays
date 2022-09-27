@@ -1,0 +1,95 @@
+#
+# Copyright 2018 The Chromium OS Authors. All rights reserved.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+audio_common: &audio_common
+  main:
+    $cras_root: "/etc/cras"
+    $ucm_root: "/usr/share/alsa/ucm"
+    $card: "kblda7219m98927"
+
+    cras-config-dir: "{{$cras}}"
+    ucm-suffix: "{{$ucm}}"
+
+    $cras-source: "{{cras-config-dir}}/audio/cras-config"
+    $cras-dest: "{{$cras_root}}/{{cras-config-dir}}"
+    $ucm-source: "{{cras-config-dir}}/audio/ucm-config{{$ucm-source-suffix}}"
+    $ucm-dest: "{{$ucm_root}}/{{$card}}.{{ucm-suffix}}"
+
+    files:
+      - source: "{{$cras-source}}/{{$card}}"
+        destination: "{{$cras-dest}}/{{$card}}"
+      - source: "{{$cras-source}}/dsp.ini"
+        destination: "{{$cras-dest}}/dsp.ini"
+      - source: "{{$ucm-source}}/HiFi.conf"
+        destination: "{{$ucm-dest}}/HiFi.conf"
+      - source: "{{$ucm-source}}/{{$card}}.conf"
+        destination: "{{$ucm-dest}}/{{$card}}.{{ucm-suffix}}.conf"
+
+common_config: &common_config
+  name: "{{$device-name}}"
+  identity:
+    platform-name: "Poppy"
+    smbios-name-match: "Rammus"
+    sku-id: "{{$sku-id}}"
+  firmware:
+    no-firmware: True
+  test-label: "{{$device-name}}"
+  audio:
+    $cras: "{{$device-name}}"
+    $ucm: "{{$device-name}}"
+    $ucm-source-suffix: ""
+    <<: *audio_common
+  power: &power_common
+    low-battery-shutdown-percent: "4.0"
+    suspend-to-idle: "1"
+    set-wifi-transmit-power-for-tablet-mode: "1"
+    $internal-backlight-no-als-ac-brightness: "62.5"
+    internal-backlight-no-als-ac-brightness: "{{$internal-backlight-no-als-ac-brightness}}"
+    $internal-backlight-no-als-battery-brightness: "56.27"
+    internal-backlight-no-als-battery-brightness: "{{$internal-backlight-no-als-battery-brightness}}"
+    $keyboard-backlight-no-als-brightness: "30.0"
+    keyboard-backlight-no-als-brightness: "{{$keyboard-backlight-no-als-brightness}}"
+  thermal:
+    dptf-dv: "{{$device-name}}/dptf.dv"
+    files:
+      - source: "{{dptf-dv}}"
+        destination: "/etc/dptf/{{dptf-dv}}"
+  hardware-properties:
+    form-factor: CHROMEBOOK
+
+chromeos:
+  devices:
+    - $device-name: "shyvana"
+      skus:
+        - $sku-id: 0x2a67
+          config: *common_config
+        - $sku-id: 0x2a63
+          config: *common_config
+        - $sku-id: 0x2ae3  # shyvana-m
+          $cras: "shyvana-m"
+          $ucm: "shyvana-m"
+          config:
+            <<: *common_config
+            power:
+              << : *power_common
+              $internal-backlight-no-als-battery-brightness: "62.5"
+              $internal-backlight-no-als-ac-brightness: "68.75"
+    - $device-name: "leona"
+      skus:
+        - $sku-id: 0x2863  # leona
+          config:
+            <<: *common_config
+            power:
+              << : *power_common
+              $internal-backlight-no-als-battery-brightness: "62.5"
+              $internal-backlight-no-als-ac-brightness: "68.75"
+        - $sku-id: 0x2861  # non-touch
+          config:
+            <<: *common_config
+            power:
+              << : *power_common
+              $internal-backlight-no-als-battery-brightness: "62.5"
+              $internal-backlight-no-als-ac-brightness: "68.75"

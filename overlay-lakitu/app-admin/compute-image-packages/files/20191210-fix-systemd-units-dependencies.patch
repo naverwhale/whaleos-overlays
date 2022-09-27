@@ -1,0 +1,71 @@
+From 526c8e39062b7f4ecd1949efa29663b2fddb36c8 Mon Sep 17 00:00:00 2001
+From: Dexter Rivera <dexter_180@live.com>
+Date: Tue, 23 Jun 2020 08:42:42 -0700
+Subject: [PATCH 1/1] patch
+
+---
+ .../src/lib/systemd/system/google-instance-setup.service      | 4 ++--
+ .../src/lib/systemd/system/google-network-daemon.service      | 3 ++-
+ .../src/lib/systemd/system/google-shutdown-scripts.service    | 3 ++-
+ .../src/lib/systemd/system/google-startup-scripts.service     | 3 ++-
+ 4 files changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/packages/google-compute-engine/src/lib/systemd/system/google-instance-setup.service b/packages/google-compute-engine/src/lib/systemd/system/google-instance-setup.service
+index ee987b2..488701b 100644
+--- a/packages/google-compute-engine/src/lib/systemd/system/google-instance-setup.service
++++ b/packages/google-compute-engine/src/lib/systemd/system/google-instance-setup.service
+@@ -1,7 +1,7 @@
+ [Unit]
+ Description=Google Compute Engine Instance Setup
+-After=network-online.target network.target rsyslog.service
+-Before=sshd.service
++After=network-online.target sshd.service
++Wants=network-online.target sshd.service
+ 
+ [Service]
+ Type=oneshot
+diff --git a/packages/google-compute-engine/src/lib/systemd/system/google-network-daemon.service b/packages/google-compute-engine/src/lib/systemd/system/google-network-daemon.service
+index 71745d4..b4dd4bc 100644
+--- a/packages/google-compute-engine/src/lib/systemd/system/google-network-daemon.service
++++ b/packages/google-compute-engine/src/lib/systemd/system/google-network-daemon.service
+@@ -1,7 +1,8 @@
+ [Unit]
+ Description=Google Compute Engine Network Daemon
+-After=network-online.target network.target
++After=network-online.target
+ After=google-instance-setup.service
++Wants=network-online.target
+ PartOf=network.service
+ 
+ [Service]
+diff --git a/packages/google-compute-engine/src/lib/systemd/system/google-shutdown-scripts.service b/packages/google-compute-engine/src/lib/systemd/system/google-shutdown-scripts.service
+index ae23d76..c498de3 100644
+--- a/packages/google-compute-engine/src/lib/systemd/system/google-shutdown-scripts.service
++++ b/packages/google-compute-engine/src/lib/systemd/system/google-shutdown-scripts.service
+@@ -1,7 +1,8 @@
+ [Unit]
+ Description=Google Compute Engine Shutdown Scripts
+-After=network-online.target network.target rsyslog.service
++After=network-online.target systemd-resolved.service
+ After=google-instance-setup.service google-network-daemon.service
++Wants=network-online.target
+ 
+ [Service]
+ ExecStart=/bin/true
+diff --git a/packages/google-compute-engine/src/lib/systemd/system/google-startup-scripts.service b/packages/google-compute-engine/src/lib/systemd/system/google-startup-scripts.service
+index c150693..23c8aee 100644
+--- a/packages/google-compute-engine/src/lib/systemd/system/google-startup-scripts.service
++++ b/packages/google-compute-engine/src/lib/systemd/system/google-startup-scripts.service
+@@ -1,7 +1,8 @@
+ [Unit]
+ Description=Google Compute Engine Startup Scripts
+-After=network-online.target network.target rsyslog.service
++After=network-online.target
+ After=google-instance-setup.service google-network-daemon.service
++Wants=network-online.target
+ Before=apt-daily.service
+ 
+ [Service]
+-- 
+2.27.0.111.gc72c7da667-goog
+

@@ -1,0 +1,54 @@
+# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+identity_common: &identity_common
+  platform-name: "Poppy"
+  smbios-name-match: "Nautilus"
+
+base_config: &base_config
+  brand-code: "{{$brand-code}}"
+  name: "{{$device-name}}"
+  firmware:
+    build-targets:
+      bmpblk: "nautilus"
+      coreboot: "nautilus"
+      ec: "nautilus"
+      depthcharge: "nautilus"
+      libpayload: "nautilus"
+    image-name: "{{$device-name}}"
+  identity:
+    <<: *identity_common
+    sku-id: "{{$sku-id}}"
+  wallpaper: "nautilus"
+  ui:
+    side-volume-button:
+      region: "keyboard"
+      side: "right"
+
+chromeos:
+  devices:
+    - $device-name: "nautilus"
+      products:
+        - $marketing-name: "nautilus"
+          $brand-code: "ZSKM"
+      skus:
+        - $sku-id: 0
+          config: *base_config
+    - $device-name: "nautiluslte"
+      products:
+        - $marketing-name: "nautiluslte"
+          $brand-code: "SMAL"
+      skus:
+        - $sku-id: 1
+          config: *base_config
+    # Older RO firmware may not expose a SKU ID in SMBIOS.  Explicitly
+    # declare a config which allows for this condition.
+    - $device-name: "nautilus"
+      products:
+        - $marketing-name: "nautilus"
+          $brand-code: "ZSKM"
+      skus:
+        - config:
+            <<: *base_config
+            identity: *identity_common

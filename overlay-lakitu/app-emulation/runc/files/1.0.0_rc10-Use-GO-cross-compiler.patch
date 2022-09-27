@@ -1,0 +1,25 @@
+From f8276ad68448719a7b889297bb507c134443302c Mon Sep 17 00:00:00 2001
+From: Robert Kolchmeyer <rkolchmeyer@google.com>
+Date: Thu, 6 Feb 2020 11:16:32 -0800
+Subject: [PATCH] Use GO cross compiler
+
+---
+ script/release.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/script/release.sh b/script/release.sh
+index a1ebc958..8d8b2275 100755
+--- a/script/release.sh
++++ b/script/release.sh
+@@ -95,7 +95,7 @@ done
+ version="${version:-$(<"$root/VERSION")}"
+ releasedir="${releasedir:-release/$version}"
+ hashcmd="${hashcmd:-sha256sum}"
+-goarch="$(go env GOARCH || echo "amd64")"
++goarch="$("${GO}" env GOARCH || echo "amd64")"
+ 
+ log "creating $project release in '$releasedir'"
+ log "  version: $version"
+-- 
+2.25.0.341.g760bfbb309-goog
+

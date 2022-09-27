@@ -1,0 +1,147 @@
+#
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+base-config: &base_config
+  name: "{{$device-name}}"
+  identity: &identity_common
+    platform-name: "Hatch"
+    smbios-name-match: "{{$fw-name}}"
+    sku-id: "{{$sku-id}}"
+  firmware:
+    build-targets:
+      bmpblk: "palkia"
+    no-firmware: True
+  test-label: "{{$device-name}}"
+  power: &power_common
+    charging-ports: |
+      CROS_USBPD_CHARGER0 LEFT
+      CROS_USBPD_CHARGER1 RIGHT
+    low-battery-shutdown-percent: "4.0"
+    suspend-to-idle: "1"
+    $has-keyboard-backlight: "1"
+    has-keyboard-backlight: "{{$has-keyboard-backlight}}"
+    $keyboard-backlight-no-als-brightness: "40.0"
+    keyboard-backlight-no-als-brightness: "{{$keyboard-backlight-no-als-brightness}}"
+    $has-ambient-light-sensor: "1"
+    has-ambient-light-sensor: "{{$has-ambient-light-sensor}}"
+    $internal-backlight-als-steps: |-
+      80.0 55.0 -1 400
+      100.0 80.0 100 -1
+    internal-backlight-als-steps: "{{$internal-backlight-als-steps}}"
+    $internal-backlight-no-als-battery-brightness: "63.0"
+    internal-backlight-no-als-battery-brightness: "{{$internal-backlight-no-als-battery-brightness}}"
+    disable-dark-resume: "0"
+    $keyboard-backlight-user-steps: |-
+      0.0
+      10.0
+      20.0
+      40.0
+      60.0
+      100.0
+    keyboard-backlight-user-steps: "{{$keyboard-backlight-user-steps}}"
+    $keyboard-backlight-als-steps: |-
+      40.0 -1 20
+      0.0 15 -1
+    keyboard-backlight-als-steps: "{{$keyboard-backlight-als-steps}}"
+    $als-smoothing-constant: "1"
+    als-smoothing-constant: "{{$als-smoothing-constant}}"
+    $set-wifi-transmit-power-for-tablet-mode: "0"
+    set-wifi-transmit-power-for-tablet-mode: "{{$set-wifi-transmit-power-for-tablet-mode}}"
+    $set-cellular-transmit-power-for-tablet-mode: "0"
+    set-cellular-transmit-power-for-tablet-mode: "{{$set-cellular-transmit-power-for-tablet-mode}}"
+    $set-cellular-transmit-power-for-proximity: "0"
+    set-cellular-transmit-power-for-proximity: "{{$set-cellular-transmit-power-for-proximity}}"
+    $set-cellular-transmit-power-dpr-gpio: "0"
+    set-cellular-transmit-power-dpr-gpio: "{{$set-cellular-transmit-power-dpr-gpio}}"
+    $allow-ambient-eq: "0"
+    allow-ambient-eq: "{{$allow-ambient-eq}}"
+    $wake-on-dp: "1"
+    wake-on-dp: "{{$wake-on-dp}}"
+  audio: &audio
+    main: &audio_main
+      # Variables to be overridden by chromeos/devices/... For example:
+      # To add a volume curve specific for Kohaku:
+      # 1. Add chromeos-base/chromeos-bsp-hatch/files/kohaku/audio/cras-config/card_settings
+      # 2. Add chromeos:
+      #          devices:
+      #            - $device-name: "kohaku"
+      #              $cras_card_config: "{{$device-name}}"
+      # To add two ucm config files for two specific Akemi skus:
+      # 1. Add .../files/akemi/audio/ucm-config/sof-sof_rt5682.akemi1/sof-sof_rt5682.akemi1.conf
+      #        .../files/akemi/audio/ucm-config/sof-sof_rt5682.akemi1/HiFi.conf
+      #        .../files/akemi/audio/ucm-config/sof-sof_rt5682.akemi2/sof-sof_rt5682.akemi2.conf
+      #        .../files/akemi/audio/ucm-config/sof-sof_rt5682.akemi2/HiFi.conf
+      # 2. Add chromeos:
+      #          devices:
+      #            - $device-name: "akemi"
+      #              $ucm_src_root: "{{$device-name}}"
+      #              skus:
+      #                - $sku-id: 1
+      #                  $ucm_config_suffix: "akemi1"
+      #                  config: *base_config
+      #                - $sku-id: 2
+      #                  $ucm_config_suffix: "akemi2"
+      #                  config: *base_config
+      $alsa_card: "sof-sof_rt5682"
+      $alsa_card_id: "sof-sof_rt5682"
+      $cras_card_config: "common"
+      $cras_dsp_config: "common"
+      $ucm_src_root: "common"
+      $ucm_config_suffix: "base"
+      $sub_cras_config: ""
+      # Variables used to generate file paths. Do not override.
+      $cras_root: "/etc/cras"
+      $sound_card_init_root: "/etc/sound_card_init"
+      $ucm_root: "/usr/share/alsa/ucm"
+      $ucm_name: "{{$alsa_card}}.{{$ucm_config_suffix}}"
+      $cras-source-config-dir: "cras-config{{$sub_cras_config}}"
+      $sound-card-init-config: "sound-card-init-config"
+      # Variables passed to adhd/init/cras.sh for starting CRAS. Do not override.
+      cras-config-dir: "{{$device-name}}{{$sub_cras_config}}"
+      ucm-suffix: "{{$ucm_config_suffix}}"
+      files: &audio_files
+        # ALSA module config
+        - source: "common/audio/alsa-module-config/alsa-hatch.conf"
+          destination: "/etc/modprobe.d/alsa-hatch.conf"
+        # ALSA UCM config
+        - source: "{{$ucm_src_root}}/audio/ucm-config/{{$ucm_name}}/{{$ucm_name}}.conf"
+          destination: "{{$ucm_root}}/{{$ucm_name}}/{{$ucm_name}}.conf"
+        - source: "{{$ucm_src_root}}/audio/ucm-config/{{$ucm_name}}/HiFi.conf"
+          destination: "{{$ucm_root}}/{{$ucm_name}}/HiFi.conf"
+        # CRAS card config (Volume Curve)
+        - source: "{{$cras_card_config}}/audio/{{$cras-source-config-dir}}/card_settings"
+          destination: "{{$cras_root}}/{{cras-config-dir}}/{{$alsa_card}}"
+        # EQ/DRC DSP config
+        - source: "{{$cras_dsp_config}}/audio/{{$cras-source-config-dir}}/dsp.ini"
+          destination: "{{$cras_root}}/{{cras-config-dir}}/dsp.ini"
+        # Board specific settings
+        - source: "{{$cras_dsp_config}}/audio/{{$cras-source-config-dir}}/board.ini"
+          destination: "{{$cras_root}}/{{cras-config-dir}}/board.ini"
+  hardware-properties:
+    form-factor: CHROMEBOOK
+
+chromeos:
+  devices:
+    - $device-name: "unprovisioned_palkia"
+      skus:
+        - $sku-id: 255
+          $fw-name: "Palkia"
+          config: *base_config
+    - $device-name: "palkia"
+      $fw-name: "Palkia"
+      $alsa_card: "sof-cml_rt1011_rt5682"
+      $cras_card_config: "palkia"
+      $cras_dsp_config: "palkia"
+      skus:
+        - $sku-id: 1
+          config:
+            <<: *base_config
+            power:
+              <<: *power_common
+              $has-ambient-light-sensor: "0"
+              $internal-backlight-no-als-battery-brightness: "56.25"
+              set-wifi-transmit-power-for-tablet-mode: "1"
+              $keyboard-backlight-no-als-brightness: "0.0"

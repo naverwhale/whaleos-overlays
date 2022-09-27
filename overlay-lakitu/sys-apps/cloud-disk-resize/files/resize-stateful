@@ -1,0 +1,27 @@
+#!/bin/bash
+# Copyright 2015 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+set -e
+CGPT=/usr/share/cloud/cgpt
+
+# Detect stateful partition
+lsblk -P -o NAME,FSTYPE,MOUNTPOINT 2>/dev/null | while read dev_info; do
+	eval $dev_info
+	if [[ "${MOUNTPOINT}" == "/mnt/stateful_partition" ]]; then
+		STATE_PART=/dev/${NAME}
+		old_size=$(blockdev --getsz "${STATE_PART}")
+		echo "Old size of ${STATE_PART} is ${old_size} in 512-byte sectors."
+
+		$CGPT resize ${STATE_PART}
+		new_size=$(blockdev --getsz "${STATE_PART}")
+		echo "New size of ${STATE_PART} is ${new_size} in 512-byte sectors."
+
+		if [[ "${old_size}" -ne "${new_size}" ]]; then
+			echo "Resizing file system..."
+			resize2fs ${STATE_PART}
+		fi
+		break
+	fi
+done

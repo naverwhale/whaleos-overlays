@@ -1,0 +1,74 @@
+# Copyright 2015 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+U_BOOT_CONFIG_USE="coreboot"
+U_BOOT_FDT_USE="samus"
+
+# Initial value just for style purposes.
+USE=""
+
+USE="${USE} containers"
+
+USE="${USE} als has_keyboard_backlight highdpi"
+USE="${USE} natural_scroll_default samus watchdog"
+USE="${USE} -acpi_ac"
+
+# Allow consumer kiosk.
+# NOTE: Deprecating feature. New board should NOT have it.
+USE="${USE} allow_consumer_kiosk"
+
+# Firmware
+USE="${USE} cros_ec"
+
+# Declare TPM model.
+USE="${USE} tpm_slb9655"
+
+# All firmwares to build from the EC code base
+EC_FIRMWARE="samus"
+EC_FIRMWARE_EXTRA="dingdong hoho minimuffin samus_pd zinger"
+
+# Use PD firmware sync
+USE="${USE} pd_sync"
+# The firmware in PD_FIRMWARE must belong to EC_FIRMWARE_EXTRA.
+PD_FIRMWARE="samus_pd"
+
+# Google USBPD peripheral firmwares
+LINUX_FIRMWARE="${LINUX_FIRMWARE} cros-pd"
+
+# Audio, WiFi and BT driver firmware
+LINUX_FIRMWARE="${LINUX_FIRMWARE} fw_sst2 ibt-hw iwlwifi-7260"
+
+# Use ext4 crypto
+USE="${USE} direncryption"
+
+# The device had ARC M in version 60 and will get ARC N in 61. This flag is
+# used to decide the default behavior for data migration, when no policy was set
+# by admin.
+USE="${USE} arc_transition_m_to_n"
+
+# Disable unibuild on this legacy board. This is only for existing (as of Jan 2019)
+# boards as all new boards must be unibuild enabled moving forward. Do not copy this
+# to new boards as it will be rejected. See
+# https://chromium.googlesource.com/chromiumos/platform2/+/HEAD/chromeos-config/README.md
+# for further details about chromeos-config, which is the required entry point for
+# unified builds.
+USE="${USE} -unibuild"
+
+# Enable background blur.
+USE="${USE} background_blur"
+
+# Enable VMs
+USE="${USE} kvm_host crosvm-gpu virtio_gpu"
+
+# Disable instant tethering due to a lack of hardware vendor support.
+USE="${USE} disable_instant_tethering"
+
+# Enable Downloadable Content (DLC) Test
+USE="${USE} dlc_test"
+
+# Disable on-device grammar check for boards with 2GB rootfs.
+USE="${USE} -ondevice_grammar"
+
+# Disable Floss Bluetooth for boards with 2GB rootfs.
+USE="${USE} -floss"

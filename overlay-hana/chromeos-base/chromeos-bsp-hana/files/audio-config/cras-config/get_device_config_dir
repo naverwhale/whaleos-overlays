@@ -1,0 +1,19 @@
+#!/bin/sh
+# Copyright 2015 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+CHASSIS="$(mosys platform chassis)"
+CHASSIS_ID="HANA"
+
+if [ "${CHASSIS}" = "MAPLE14" ]; then
+	CHASSIS_ID="MAPLE14"
+elif [ "${CHASSIS}" = "SYCAMORE" ]; then
+        CHASSIS_ID="SYCAMORE"
+elif [ "${CHASSIS}" = "SYCAMORE360" ]; then
+        CHASSIS_ID="SYCAMORE360"
+elif [ "${CHASSIS}" = "TELESU" ]; then
+        CHASSIS_ID="TELESU"
+fi
+
+echo "/etc/cras/${CHASSIS_ID}"

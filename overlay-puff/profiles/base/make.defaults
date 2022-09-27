@@ -1,0 +1,41 @@
+# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Initial value just for style purposes.
+USE=""
+
+USE="${USE} cros_ec"
+USE="${USE} puff"
+
+# Enable unibuild
+USE="${USE} unibuild has_chromeos_config_bsp"
+
+# Enable background blur.
+USE="${USE} background_blur"
+
+# Enable NVMe utility
+USE="${USE} nvme"
+
+USE="${USE} ac_only -internal_mic -internal_speaker"
+
+# Use recovery button to confirm physical presence
+USE="${USE} physical_presence_recovery"
+
+# Enable firmware menu ui (experimental)
+USE="${USE} menu_ui"
+
+# Enable Downloadable Content (DLC) Test
+USE="${USE} dlc_test"
+
+# Include the weida firmware updating tool
+INPUT_DEVICES="${INPUT_DEVICES} weida"
+
+# this indicates that this board has a -borealis overlay
+USE="${USE} has-borealis"
+
+# Enable detachable UI in recovery mode.
+USE="${USE} detachable"
+
+# Let the touchscreen wake the system when it's suspended.
+USE="${USE} touchscreen_wakeup"

@@ -1,0 +1,28 @@
+#!/bin/sh
+# Copyright 2015 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+if ! mountpoint -q /etc; then
+  ETC=/tmp/etc_overlay
+  mkdir ${ETC}
+  if mount -t tmpfs tmpfs ${ETC} -o mode=755,nosuid,noexec,nodev ; then
+    mkdir -p ${ETC}/etc ${ETC}/.work
+    # Because /etc is read-only at the time systemd boots,
+    # systemd saves machine-id in /run and then bind-mounts it
+    # into /etc. A few services depend on /etc/machine-id, so we want
+    # to make sure that there is no downtime on /etc/machine-id. Let's
+    # keep the /etc/machine-id bind mount to make sure there is no downtime.
+    # We also need to copy /etc/machine-id into the overlayfs upperdir before
+    # mounting it to ensure no downtime after mounting the overlayfs.
+    cp /run/machine-id "${ETC}/etc/machine-id"
+    mount -o lowerdir=/etc,upperdir=${ETC}/etc,workdir=${ETC}/.work \
+      -t overlay overlayfs /etc ||
+      logger -t "$UPSTART_JOB" \
+        "Cannot mount /etc overlay"
+    umount ${ETC}
+    rmdir ${ETC}
+  else
+    logger -t "$UPSTART_JOB" "Cannot mount tmpfs at ${ETC}"
+  fi
+fi

@@ -1,0 +1,1 @@
+KUBELET_OPTS="--pod-manifest-path=/etc/kubernetes/manifests"

@@ -1,0 +1,15 @@
+# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Initial value just for style purposes.
+USE=""
+
+# Inherit the USE flags from both the public and private veyron
+# overlays. Only add USE flags specific to speedy here.
+USE="${USE} veyron_speedy"
+
+USE="${USE} -veyron-brcmfmac-nvram"
+
+# The EC board name is speedy
+EC_FIRMWARE="speedy"

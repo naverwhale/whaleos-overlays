@@ -1,0 +1,1 @@
+chromeos-bsp-manatee-2.ebuild

@@ -1,0 +1,61 @@
+# Copyright 2015 The Chromium OS Authors. All rights reserved.
+# Distributed under the terms of the GNU General Public License v2
+
+BOARD_COMPILER_FLAGS="-mcpu=cortex-a12 -mtune=cortex-a12 -mfloat-abi=hard"
+# TODO(gbiv): Porting -mtune may be interesting, but clang seems to currently
+# entirely ignore this flag for ARM (notably: not aarch64) builds.
+BOARD_RUSTFLAGS="-Ctarget-cpu=cortex-a12 -Ctarget-feature=+armv7-a"
+
+USE=""
+
+# Turn on the video cards this board uses.
+VIDEO_CARDS="rockchip"
+
+TTY_CONSOLE="ttyS2"
+
+CHROMEOS_KERNEL_SPLITCONFIG="chromiumos-rockchip"
+
+USE="${USE} cros_ec device_tree -dt_compression gpu_sandbox_start_early"
+USE="${USE} hardfp kernel-4_19 mosys_eventlog neon -opengl opengles"
+USE="${USE} rk32 watchdog"
+
+# Declare TPM model.
+USE="${USE} tpm_slb9645"
+
+# Use ext4 crypto
+USE="${USE} direncryption"
+
+# Disable unibuild on this legacy board. This is only for existing (as of Jan 2019)
+# boards as all new boards must be unibuild enabled moving forward. Do not copy this
+# to new boards as it will be rejected. See
+# https://chromium.googlesource.com/chromiumos/platform2/+/HEAD/chromeos-config/README.md
+# for further details about chromeos-config, which is the required entry point for
+# unified builds.
+USE="${USE} -unibuild"
+
+LINUX_FIRMWARE="brcmfmac4354-sdio bcm4354-bt"
+
+# Disable CrOS video decoder because it's not yet ready for Rockchip.
+USE="${USE} disable_cros_video_decoder"
+
+# Enable HW codecs using V4L2 API.
+USE="${USE} v4l2_codec"
+
+# VPD is not available in sysfs.
+USE="${USE} vpd_file_cache"
+
+# Enable fs-verity support
+USE="${USE} fsverity"
+
+# Use legacy pre-Groot UI for initramfs and init script screens.
+USE="${USE} legacy_firmware_ui"
+
+# Disable WPA3-SAE, because mwifiex (Marvell WiFi) does not support it. See
+# also b/184395063.
+USE="${USE} -wpa3_sae"
+
+# Enable eMMC tools
+USE="${USE} mmc"
+
+# Disable on-device grammar check for boards with 2GB rootfs.
+USE="${USE} -ondevice_grammar"

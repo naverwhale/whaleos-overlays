@@ -1,0 +1,1 @@
+autotest-capability-chipset-bsw-1.0.8.ebuild

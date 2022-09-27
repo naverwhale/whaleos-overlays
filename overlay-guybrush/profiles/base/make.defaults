@@ -1,0 +1,67 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Initial value just for style purposes.
+USE=""
+LINUX_FIRMWARE=""
+
+# Google USBPD peripheral firmwares
+# LINUX_FIRMWARE="${LINUX_FIRMWARE} cros-pd"
+
+# Enable RealTek RTW8852A WiFi firmware.
+LINUX_FIRMWARE="${LINUX_FIRMWARE} rtw8852a"
+
+# Enable Realtek 8822AE USB BT firmware
+LINUX_FIRMWARE="${LINUX_FIRMWARE} rtl_bt-8852ae-usb"
+
+# Enable WCN6855
+LINUX_FIRMWARE="${LINUX_FIRMWARE} ath11k_wcn6855"
+
+# Enable WCN6856 USB BT firmware
+LINUX_FIRMWARE="${LINUX_FIRMWARE} qca-wcn685x-bt"
+
+USE="${USE} guybrush"
+
+# Allow Chrome to use Tablet mode
+USE="${USE} touchview"
+
+# Use ext4 crypto
+# USE="${USE} direncryption"
+
+USE="${USE} unibuild has_chromeos_config_bsp"
+
+USE="${USE} arc"
+
+# Ability to run guest VMs.
+USE="${USE} kvm_host crosvm-gpu virtio_gpu"
+
+# Add ec firmware.
+USE="${USE} cros_ec"
+
+# Add EC logging
+USE="${USE} eclog"
+
+# Enable NVMe utility
+USE="${USE} nvme"
+
+# modemfwd is used for updating modem firmware.
+USE="${USE} modemfwd"
+
+# TODO: Default enable for debug purpose, need to disable later
+# Uncomment these lines to activate the serial port.
+TTY_CONSOLE="ttyS0"
+USE="${USE} tty_console_ttyS0"
+USE="${USE} pcserial"
+
+# Enable Downloadable Content (DLC) Test
+USE="${USE} dlc_test"
+
+# Enable eMMC tools
+USE="${USE} mmc"
+
+# Avoid inhibiting the keyboard (which reports events from side buttons).
+USE="${USE} keyboard_includes_side_buttons"
+
+# Enable miniOS support
+USE="${USE} minios"

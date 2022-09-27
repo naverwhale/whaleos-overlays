@@ -1,0 +1,2 @@
+# CWP doesn't collect AFDO profiles for Manatee.
+sys-kernel/chromeos-kernel-5_4-manatee kernel_afdo

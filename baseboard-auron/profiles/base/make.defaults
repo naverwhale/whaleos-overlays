@@ -1,0 +1,24 @@
+# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Distributed under the terms of the GNU General Public License v2
+
+USE=""
+
+# Declare TPM model.
+USE="${USE} tpm_slb9655"
+
+# WiFi and BT driver firmware
+LINUX_FIRMWARE="iwlwifi-7260 ibt-hw"
+
+EC_FIRMWARE="auron"
+
+# Enable VMs
+USE="${USE} kvm_host crosvm-gpu virtio_gpu"
+
+# Enable Downloadable Content (DLC) Test
+USE="${USE} dlc_test"
+
+# Disable on-device grammar check for boards with 2GB rootfs.
+USE="${USE} -ondevice_grammar"
+
+# Disable Floss Bluetooth for boards with 2GB rootfs.
+USE="${USE} -floss"

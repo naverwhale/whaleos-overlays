@@ -1,0 +1,16 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Initial value just for style purposes.
+USE=""
+
+USE="${USE} is-kernelnext"
+USE="${USE} -has-kernelnext"
+USE="${USE} trogdor-kernelnext"
+
+USE="${USE} -kernel-5_4"
+USE="${USE} kernel-upstream"
+
+# Don't build coreboot firmware
+USE="$USE -bootimage -coreboot"

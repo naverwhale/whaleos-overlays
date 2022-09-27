@@ -1,0 +1,18 @@
+[Unit]
+Description=Fluentd container for Stackdriver Logging
+After=gcr-online.target docker.socket
+Wants=gcr-online.target docker.socket docker-events-collector.service
+
+[Service]
+EnvironmentFile=-/etc/stackdriver/env_vars
+ExecStartPre=/bin/mkdir -p /var/log/google-fluentd/
+ExecStart=/usr/bin/docker run --rm \
+    --name="${LOGGING_AGENT_NAME}" \
+    -v /etc/stackdriver/logging.config.d/:/etc/google-fluentd/config.d/ \
+    -v /var/log:/var/log \
+    -v /var/lib/docker/containers/:/var/lib/docker/containers/ \
+    "${LOGGING_AGENT_DOCKER_IMAGE}"
+
+Restart=on-failure
+RestartSec=10
+ExecStop=/usr/bin/docker stop "${LOGGING_AGENT_NAME}"

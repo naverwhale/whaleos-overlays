@@ -1,0 +1,177 @@
+From 397491b9b0284459b3b6ad635fb9843fee94edc3 Mon Sep 17 00:00:00 2001
+From: Tomasz Jeznach <tjeznach@chromium.org>
+Date: Mon, 17 May 2021 11:00:19 -0700
+Subject: [PATCH 3/4] CHROMIUM: kvm: IO-APIC support for 120 input lines.
+
+This is a temporary workaround. To be removed
+when referred issue is resolved.
+
+BUG=b:184871003
+TEST=build and run vmm with in-kernel IO-APIC.
+
+Change-Id: Idd761a32a272916f0777f76a65546b56830cc8d3
+---
+ arch/x86/include/uapi/asm/kvm.h |  2 +-
+ arch/x86/kvm/ioapic.c           | 42 ++++++++++++++++++---------------
+ arch/x86/kvm/ioapic.h           |  5 ++--
+ 3 files changed, 26 insertions(+), 23 deletions(-)
+
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index 503d3f42da16..261878850f27 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -80,7 +80,7 @@ struct kvm_pic_state {
+ 	__u8 elcr_mask;
+ };
+ 
+-#define KVM_IOAPIC_NUM_PINS  24
++#define KVM_IOAPIC_NUM_PINS  120
+ struct kvm_ioapic_state {
+ 	__u64 base_address;
+ 	__u32 ioregsel;
+diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
+index 24a6905d60ee..c6a682f40023 100644
+--- a/arch/x86/kvm/ioapic.c
++++ b/arch/x86/kvm/ioapic.c
+@@ -174,15 +174,14 @@ static int ioapic_set_irq(struct kvm_ioapic *ioapic, unsigned int irq,
+ 		int irq_level, bool line_status)
+ {
+ 	union kvm_ioapic_redirect_entry entry;
+-	u32 mask = 1 << irq;
+-	u32 old_irr;
++	unsigned char old_irr;
+ 	int edge, ret;
+ 
+ 	entry = ioapic->redirtbl[irq];
+ 	edge = (entry.fields.trig_mode == IOAPIC_EDGE_TRIG);
+ 
+ 	if (!irq_level) {
+-		ioapic->irr &= ~mask;
++		ioapic->irr[irq] = false;
+ 		ret = 1;
+ 		goto out;
+ 	}
+@@ -204,11 +203,11 @@ static int ioapic_set_irq(struct kvm_ioapic *ioapic, unsigned int irq,
+ 		goto out;
+ 	}
+ 
+-	old_irr = ioapic->irr;
+-	ioapic->irr |= mask;
++	old_irr = ioapic->irr[irq];
++	ioapic->irr[irq] = true;
+ 	if (edge) {
+-		ioapic->irr_delivered &= ~mask;
+-		if (old_irr == ioapic->irr) {
++		ioapic->irr_delivered[irq] = false;
++		if (old_irr == ioapic->irr[irq]) {
+ 			ret = 0;
+ 			goto out;
+ 		}
+@@ -322,7 +321,7 @@ static void ioapic_write_indirect(struct kvm_ioapic *ioapic, u32 val)
+ 		if (mask_before != mask_after)
+ 			kvm_fire_mask_notifiers(ioapic->kvm, KVM_IRQCHIP_IOAPIC, index, mask_after);
+ 		if (e->fields.trig_mode == IOAPIC_LEVEL_TRIG
+-		    && ioapic->irr & (1 << index))
++		    && ioapic->irr[index])
+ 			ioapic_service(ioapic, index, false);
+ 		kvm_make_scan_ioapic_request(ioapic->kvm);
+ 		break;
+@@ -350,7 +349,7 @@ static int ioapic_service(struct kvm_ioapic *ioapic, int irq, bool line_status)
+ 	irqe.msi_redir_hint = false;
+ 
+ 	if (irqe.trig_mode == IOAPIC_EDGE_TRIG)
+-		ioapic->irr_delivered |= 1 << irq;
++		ioapic->irr_delivered[irq] = true;
+ 
+ 	if (irq == RTC_GSI && line_status) {
+ 		/*
+@@ -411,7 +410,7 @@ static void kvm_ioapic_eoi_inject_work(struct work_struct *work)
+ 		if (ent->fields.trig_mode != IOAPIC_LEVEL_TRIG)
+ 			continue;
+ 
+-		if (ioapic->irr & (1 << i) && !ent->fields.remote_irr)
++		if (ioapic->irr[i] && !ent->fields.remote_irr)
+ 			ioapic_service(ioapic, i, false);
+ 	}
+ 	spin_unlock(&ioapic->lock);
+@@ -455,7 +454,7 @@ static void __kvm_ioapic_update_eoi(struct kvm_vcpu *vcpu,
+ 
+ 		ASSERT(ent->fields.trig_mode == IOAPIC_LEVEL_TRIG);
+ 		ent->fields.remote_irr = 0;
+-		if (!ent->fields.mask && (ioapic->irr & (1 << i))) {
++		if (!ent->fields.mask && ioapic->irr[i]) {
+ 			++ioapic->irq_eoi[i];
+ 			if (ioapic->irq_eoi[i] == IOAPIC_SUCCESSIVE_IRQ_MAX_COUNT) {
+ 				/*
+@@ -589,12 +588,13 @@ static void kvm_ioapic_reset(struct kvm_ioapic *ioapic)
+ 	int i;
+ 
+ 	cancel_delayed_work_sync(&ioapic->eoi_inject);
+-	for (i = 0; i < IOAPIC_NUM_PINS; i++)
++	for (i = 0; i < IOAPIC_NUM_PINS; i++) {
++		ioapic->irr[i] = 0;
++		ioapic->irr_delivered[i] = 0;
+ 		ioapic->redirtbl[i].fields.mask = 1;
++	}
+ 	ioapic->base_address = IOAPIC_DEFAULT_BASE_ADDRESS;
+ 	ioapic->ioregsel = 0;
+-	ioapic->irr = 0;
+-	ioapic->irr_delivered = 0;
+ 	ioapic->id = 0;
+ 	memset(ioapic->irq_eoi, 0x00, sizeof(ioapic->irq_eoi));
+ 	rtc_irq_eoi_tracking_reset(ioapic);
+@@ -651,19 +651,23 @@ void kvm_get_ioapic(struct kvm *kvm, struct kvm_ioapic_state *state)
+ 	struct kvm_ioapic *ioapic = kvm->arch.vioapic;
+ 
+ 	spin_lock(&ioapic->lock);
+-	memcpy(state, ioapic, sizeof(struct kvm_ioapic_state));
+-	state->irr &= ~ioapic->irr_delivered;
++//	memcpy(state, ioapic, sizeof(struct kvm_ioapic_state));
++//	state->irr &= ~ioapic->irr_delivered;
+ 	spin_unlock(&ioapic->lock);
++
++	printk(KERN_ERR "Get IOAPIC state not supported!\n");
+ }
+ 
+ void kvm_set_ioapic(struct kvm *kvm, struct kvm_ioapic_state *state)
+ {
+ 	struct kvm_ioapic *ioapic = kvm->arch.vioapic;
+ 
++	printk(KERN_ERR "Set IOAPIC state not supported!\n");
++
+ 	spin_lock(&ioapic->lock);
+-	memcpy(ioapic, state, sizeof(struct kvm_ioapic_state));
+-	ioapic->irr = 0;
+-	ioapic->irr_delivered = 0;
++//	memcpy(ioapic, state, sizeof(struct kvm_ioapic_state));
++//	ioapic->irr = 0;
++//	ioapic->irr_delivered = 0;
+ 	kvm_make_scan_ioapic_request(kvm);
+ 	kvm_ioapic_inject_all(ioapic, state->irr);
+ 	spin_unlock(&ioapic->lock);
+diff --git a/arch/x86/kvm/ioapic.h b/arch/x86/kvm/ioapic.h
+index ea1a4e0297da..fee093f0c191 100644
+--- a/arch/x86/kvm/ioapic.h
++++ b/arch/x86/kvm/ioapic.h
+@@ -79,8 +79,7 @@ struct kvm_ioapic {
+ 	u64 base_address;
+ 	u32 ioregsel;
+ 	u32 id;
+-	u32 irr;
+-	u32 pad;
++	unsigned char irr[IOAPIC_NUM_PINS];
+ 	union kvm_ioapic_redirect_entry redirtbl[IOAPIC_NUM_PINS];
+ 	unsigned long irq_states[IOAPIC_NUM_PINS];
+ 	struct kvm_io_device dev;
+@@ -90,7 +89,7 @@ struct kvm_ioapic {
+ 	struct rtc_status rtc_status;
+ 	struct delayed_work eoi_inject;
+ 	u32 irq_eoi[IOAPIC_NUM_PINS];
+-	u32 irr_delivered;
++	unsigned char irr_delivered[IOAPIC_NUM_PINS];
+ };
+ 
+ #ifdef DEBUG
+-- 
+2.31.0
+

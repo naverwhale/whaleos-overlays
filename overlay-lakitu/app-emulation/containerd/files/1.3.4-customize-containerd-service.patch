@@ -1,0 +1,32 @@
+From f6d05d79a753bbe1141876bf4e19e0c5014df5f6 Mon Sep 17 00:00:00 2001
+From: Vaibhav Rustagi <vaibhavrustagi@google.com>
+Date: Fri, 17 Apr 2020 12:10:40 -0700
+Subject: [PATCH] customize-containerd-service
+
+---
+ containerd.service | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/containerd.service b/containerd.service
+index cae30ec7..f345d4f2 100644
+--- a/containerd.service
++++ b/containerd.service
+@@ -5,12 +5,14 @@ After=network.target local-fs.target
+ 
+ [Service]
+ ExecStartPre=-/sbin/modprobe overlay
+-ExecStart=/usr/local/bin/containerd
++ExecStart=/usr/bin/containerd
+ 
+ Type=notify
+ Delegate=yes
+ KillMode=process
++OOMScoreAdjust=-999
+ Restart=always
++RestartSec=10
+ # Having non-zero Limit*s causes performance problems due to accounting overhead
+ # in the kernel. We recommend using cgroups to do container-local accounting.
+ LimitNPROC=infinity
+-- 
+2.26.1.301.g55bc3eb7cb9-goog
+

@@ -1,0 +1,63 @@
+From ea60e61f06632ca98c4f392a96335d50ce283e33 Mon Sep 17 00:00:00 2001
+From: Xuewei Zhang <xueweiz@google.com>
+Date: Wed, 22 May 2019 14:18:04 -0700
+Subject: [PATCH] Customize docker.service for COS
+
+---
+ .../contrib/init/systemd/docker.service       | 20 +++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/components/engine/contrib/init/systemd/docker.service b/components/engine/contrib/init/systemd/docker.service
+index 517463172b..4821142cac 100644
+--- a/components/engine/contrib/init/systemd/docker.service
++++ b/components/engine/contrib/init/systemd/docker.service
+@@ -1,17 +1,22 @@
+ [Unit]
+ Description=Docker Application Container Engine
+ Documentation=https://docs.docker.com
+-After=network-online.target docker.socket firewalld.service
+-Wants=network-online.target
++PartOf=containerd.service
++After=network-online.target docker.socket firewalld.service containerd.service
++Wants=network-online.target containerd.service
+ Requires=docker.socket
+ 
+ [Service]
+ Type=notify
++EnvironmentFile=-/etc/default/docker
+ # the default is not to use systemd for cgroups because the delegate issues still
+ # exists and systemd currently does not support the cgroup feature set required
+ # for containers run by docker
+-ExecStart=/usr/bin/dockerd -H fd://
++ExecStartPre=/bin/sh -c 'if [[ -f /var/lib/docker/daemon.json ]]; then cp -f /var/lib/docker/daemon.json /etc/docker/daemon.json; fi'
++ExecStart=/usr/bin/dockerd --registry-mirror=https://mirror.gcr.io --host=fd:// --containerd=/var/run/containerd/containerd.sock $DOCKER_OPTS
+ ExecReload=/bin/kill -s HUP $MAINPID
++ExecStopPost=/bin/echo "docker daemon exited"
++OOMScoreAdjust=-999
+ LimitNOFILE=1048576
+ # Having non-zero Limit*s causes performance problems due to accounting overhead
+ # in the kernel. We recommend using cgroups to do container-local accounting.
+@@ -19,16 +24,15 @@ LimitNPROC=infinity
+ LimitCORE=infinity
+ # Uncomment TasksMax if your systemd version supports it.
+ # Only systemd 226 and above support this version.
+-#TasksMax=infinity
++TasksMax=infinity
+ TimeoutStartSec=0
+ # set delegate yes so that systemd does not reset the cgroups of docker containers
+ Delegate=yes
+ # kill only the docker process, not all processes in the cgroup
+ KillMode=process
+-# restart the docker process if it exits prematurely
+-Restart=on-failure
+-StartLimitBurst=3
+-StartLimitInterval=60s
++# restart the docker process if it exits
++Restart=always
++RestartSec=10
+ 
+ [Install]
+ WantedBy=multi-user.target
+-- 
+2.21.0.1020.gf2820cf01a-goog
+

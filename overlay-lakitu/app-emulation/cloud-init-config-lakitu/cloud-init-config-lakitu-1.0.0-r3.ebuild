@@ -1,0 +1,1 @@
+cloud-init-config-lakitu-1.0.0.ebuild

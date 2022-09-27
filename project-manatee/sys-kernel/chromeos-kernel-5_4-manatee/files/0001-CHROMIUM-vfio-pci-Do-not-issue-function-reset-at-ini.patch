@@ -1,0 +1,69 @@
+From e103332e52b8f4a2682ca04eb794f9dbf7257679 Mon Sep 17 00:00:00 2001
+From: Tomasz Jeznach <tjeznach@chromium.org>
+Date: Mon, 17 May 2021 10:36:03 -0700
+Subject: [PATCH 1/4] CHROMIUM: vfio-pci: Do not issue function reset at
+ initialization.
+
+Option to disable functional reset call at device initialization.
+Required to keep device state if already initialized,
+eg. by system BIOS.
+
+BUG=b:144913467
+TEST=build and run eve-manatee and hatch/manaTEE version with
+  i915 pass-through to the guest OS.
+
+Change-Id: I91145d93c15ed04d7bba3685563f56471e6355f3
+Signed-off-by: Tomasz Jeznach <tjeznach@chromium.org>
+---
+ drivers/vfio/pci/vfio_pci.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+index 2372e161cd5e..343e259d244d 100644
+--- a/drivers/vfio/pci/vfio_pci.c
++++ b/drivers/vfio/pci/vfio_pci.c
+@@ -55,6 +55,11 @@ module_param(disable_idle_d3, bool, S_IRUGO | S_IWUSR);
+ MODULE_PARM_DESC(disable_idle_d3,
+ 		 "Disable using the PCI D3 low power state for idle, unused devices");
+ 
++static bool disable_function_reset;
++module_param(disable_function_reset, bool, 0644);
++MODULE_PARM_DESC(disable_function_reset,
++		 "Disable function reset request during device enablement.");
++
+ static inline bool vfio_vga_disabled(void)
+ {
+ #ifdef CONFIG_VFIO_PCI_VGA
+@@ -274,14 +279,22 @@ static int vfio_pci_enable(struct vfio_pci_device *vdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* If reset fails because of the device lock, fail this path entirely */
+-	ret = pci_try_reset_function(pdev);
+-	if (ret == -EAGAIN) {
+-		pci_disable_device(pdev);
+-		return ret;
++	if (disable_function_reset) {
++		/* Do not issue function reset to the device.
++		 * Use with care.
++		 */
++		vdev->reset_works = 0;
++	} else {
++		/* If reset fails because of the device lock,
++		 * fail this path entirely
++		 */
++		ret = pci_try_reset_function(pdev);
++		if (ret == -EAGAIN) {
++			pci_disable_device(pdev);
++			return ret;
++		}
++		vdev->reset_works = !ret;
+ 	}
+-
+-	vdev->reset_works = !ret;
+ 	pci_save_state(pdev);
+ 	vdev->pci_saved_state = pci_store_saved_state(pdev);
+ 	if (!vdev->pci_saved_state)
+-- 
+2.31.0
+

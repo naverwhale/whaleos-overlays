@@ -1,0 +1,26 @@
+# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Initial value just for style purposes.
+USE=""
+
+USE="${USE} senor"
+
+# Use ext4 crypto
+USE="${USE} direncryption"
+
+# Enable QMI support in ModemManager
+USE="${USE} qmi qrtr"
+
+# Enable Firmware Build
+USE="${USE} bootimage"
+
+# Enable the TPM simulator because we don't have a TPM on senor
+USE="${USE} tpm2_simulator tpm2_simulator_manufacturer vtpm_proxy"
+
+# No Cr50 (override baseboard-trogdor)
+USE="${USE} -cr50_onboard"
+
+# Enable chromeos-config.
+USE="${USE} unibuild has_chromeos_config_bsp"

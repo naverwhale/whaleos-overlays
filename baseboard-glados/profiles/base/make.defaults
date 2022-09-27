@@ -1,0 +1,31 @@
+# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Distributed under the terms of the GNU General Public License v2
+
+USE=""
+USE="${USE} dptf"
+# Required for alternate kernel LPC access
+USE="${USE} cros_ec_mec"
+
+# Google USBPD peripheral firmwares
+LINUX_FIRMWARE="cros-pd"
+
+# Add EC logging
+USE="${USE} eclog"
+
+# Declare TPM model.
+USE="${USE} tpm_slb9670"
+
+# WiFi and BT driver firmware
+LINUX_FIRMWARE="${LINUX_FIRMWARE} iwlwifi-7265D ibt-hw"
+
+# The devices from this family are affected by double-extend PCR bug
+USE="${USE} double_extend_pcr_issue"
+
+# Enable ML benchmarking for testing.
+USE="${USE} ml_benchmark_drivers"
+
+# Enable eMMC tools
+USE="${USE} mmc"
+
+# Disable document scanning due to insufficient rootfs.
+USE="${USE} -ondevice_document_scanner"

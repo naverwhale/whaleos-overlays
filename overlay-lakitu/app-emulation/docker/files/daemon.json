@@ -1,0 +1,5 @@
+{
+	"live-restore": true,
+	"storage-driver": "overlay2",
+	"mtu": 1460
+}

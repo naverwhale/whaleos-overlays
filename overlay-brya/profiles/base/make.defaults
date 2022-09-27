@@ -1,0 +1,41 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Initial value just for style purposes.
+USE=""
+INPUT_DEVICE=""
+
+USE="${USE} brya"
+USE="${USE} cros_ec"
+
+# Enable unibuild
+USE="${USE} unibuild"
+USE="${USE} has_chromeos_config_bsp"
+
+# Disable AC ACPI driver
+USE="${USE} -acpi_ac"
+
+# Include the elan firmware updating tool
+INPUT_DEVICES="${INPUT_DEVICES} elan_i2chid"
+
+# Include the G2touch firmware updating tool
+INPUT_DEVICES="${INPUT_DEVICES} g2touch"
+
+# Elan Standalone Trackpoint Firmware Updater
+INPUT_DEVICES="${INPUT_DEVICES} eps2pstiap"
+
+# Include the goodix firmware updating tool
+INPUT_DEVICES="${INPUT_DEVICES} goodix"
+
+# Enable biometrics support
+USE="${USE} biod"
+
+# modemfwd is used for updating modem firmware.
+USE="${USE} modemfwd"
+
+# Enable miniOS support
+USE="${USE} minios"
+
+# Enable MBO
+USE="${USE} mbo"

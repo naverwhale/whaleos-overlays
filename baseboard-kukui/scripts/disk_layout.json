@@ -1,0 +1,12 @@
+# Disk layout for baseboard-kukui. Adds space to rootfs filesystem without
+# resizing the partitions.
+{
+  "_comment": "See http://www.chromium.org/chromium-os/developer-guide/disk-layout-format",
+  "metadata":{
+    # TODO(b:109850061): need to check the rootdev_base on DUT.
+    "rootdev_base": "/sys/devices/soc/11230000.mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0"
+  },
+  "parent": "disk_layout_v2.json",
+  "layouts": {
+  }
+}

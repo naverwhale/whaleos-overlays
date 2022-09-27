@@ -1,0 +1,150 @@
+# Copyright 2020 The Chromium OS Authors. All rights reserved.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+audio_config: &audio_config
+  main:
+    cras-config-dir: "{{$device-name}}"
+    ucm-suffix: "{{$device-name}}"
+    files:
+      - source: "{{$cras-source}}/{{$card}}"
+        destination: "{{$cras-dest}}/{{$card}}"
+      - source: "{{$cras-source}}/dsp.ini"
+        destination: "{{$cras-dest}}/dsp.ini"
+      - source: "{{$ucm-source}}/HiFi.conf"
+        destination: "{{$ucm-dest}}/HiFi.conf"
+      - source: "{{$ucm-source}}/{{$card}}.conf"
+        destination: "{{$ucm-dest}}/{{$card}}.{{ucm-suffix}}.conf"
+
+common_config: &common_config
+  $cras_root: "/etc/cras"
+  $ucm_root: "/usr/share/alsa/ucm"
+  $ucm-source-suffix: ""
+  $cras-source: "{{cras-config-dir}}/audio/cras-config"
+  $cras-dest: "{{$cras_root}}/{{cras-config-dir}}"
+  $ucm-source: "{{cras-config-dir}}/audio/ucm-config{{$ucm-source-suffix}}"
+  $ucm-dest: "{{$ucm_root}}/{{$card}}.{{ucm-suffix}}"
+  name: "{{$device-name}}"
+  identity: &identity
+    platform-name: "Asurada"
+    device-tree-compatible-match: "{{$fw-name}}"
+  firmware: &firmware_common
+    build-targets: &firmware_build_targets_common
+      bmpblk: "asurada"
+      coreboot: "{{$fw-build-name}}"
+      ec: "{{$fw-build-name}}"
+      depthcharge: "asurada"
+      libpayload: "asurada"
+    no-firmware: true
+  firmware-signing:
+    key-id: "{{$key-id}}"
+    signature-id: "{{$device-name}}"
+  test-label: "{{$device-name}}"
+  power: &power_common
+    low-battery-shutdown-percent: "4.0"
+    disable-dark-resume: "0"
+    $has-keyboard-backlight: "0"
+    has-keyboard-backlight: "{{$has-keyboard-backlight}}"
+  hardware-properties:
+    form-factor: CHROMEBOOK
+
+base-zephyr-firmware: &common_config_with_zephyr
+  <<: *common_config
+  firmware:
+    <<: *firmware_common
+    build-targets:
+      <<: *firmware_build_targets_common
+      zephyr-ec: "projects/asurada/{{$fw-build-name}}"
+
+asurada-config: &asurada_config
+  <<: *common_config
+  $fw-name: "google,asurada"
+  $fw-build-name: "asurada"
+  $key-id: "DEFAULT"
+  $card: "mt8192_mt6359_rt1015_rt5682"
+  identity:
+    <<: *identity
+  audio: *audio_config
+
+hayato-config: &hayato_config
+  <<: *common_config_with_zephyr
+  $fw-name: "google,hayato"
+  $fw-build-name: "hayato"
+  $key-id: "ASURADAA"
+  $card: "mt8192_mt6359_rt1015p_rt5682"
+  identity:
+    <<: *identity
+  audio: *audio_config
+  wifi:
+    non-tablet-mode-power-table-rtw:
+      limit-2g: 108
+      limit-5g-1: 88
+      limit-5g-3: 92
+      limit-5g-4: 80
+    tablet-mode-power-table-rtw:
+      limit-2g: 112
+      limit-5g-1: 76
+      limit-5g-3: 80
+      limit-5g-4: 80
+  power:
+    <<: *power_common
+    set-wifi-transmit-power-for-tablet-mode: "1"
+
+identity-sku-config: &identity_sku_config
+  <<: *identity
+  sku-id: "{{$sku-id}}"
+
+spherion-config: &spherion_config
+  <<: *common_config
+  $fw-name: "google,spherion"
+  $fw-build-name: "spherion"
+  $key-id: "ASURADAB"
+  $card: "mt8192_mt6359_rt1015p_rt5682"
+  identity:
+    <<: *identity_sku_config
+  audio: *audio_config
+
+spherion-config-sar-mtk: &spherion_config_sar_mtk
+  <<: *spherion_config
+  wifi:
+    non-tablet-mode-power-table-mtk:
+      limit-2g: 58
+      limit-5g-1: 54
+      limit-5g-2: 54
+      limit-5g-3: 50
+      limit-5g-4: 54
+  power:
+    <<: *power_common
+    wifi-transmit-power-mode-for-static-device: "non-tablet"
+
+chromeos:
+  devices:
+    - $device-name: "asurada"
+      skus:
+        - config: *asurada_config
+    - $device-name: "hayato"
+      skus:
+        - config: *hayato_config
+    - $device-name: "spherion"
+      skus:
+        - $sku-id: 0
+          $has-keyboard-backlight: "1"
+          config: *spherion_config
+        - $sku-id: 1
+          $has-keyboard-backlight: "1"
+          config: *spherion_config_sar_mtk
+        - $sku-id: 2
+          config: *spherion_config
+        - $sku-id: 3
+          config: *spherion_config_sar_mtk
+        - $sku-id: 4
+          $has-keyboard-backlight: "1"
+          config: *spherion_config
+        - $sku-id: 5
+          $has-keyboard-backlight: "1"
+          config: *spherion_config_sar_mtk
+        - $sku-id: 6
+          config: *spherion_config
+        - $sku-id: 7
+          config: *spherion_config_sar_mtk

@@ -1,0 +1,18 @@
+# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+USE="veyron_fievel"
+
+# Behave like a chromebox.
+USE="${USE} ac_only legacy_keyboard -display_backlight -cros_ec -internal_mic -internal_speaker"
+
+# The device had ARC M in version 60 and will get ARC N in 61. This flag is
+# used to decide the default behavior for data migration, when no policy was set
+# by admin.
+USE="${USE} arc_transition_m_to_n"
+
+# Non Chromebook device, smart dim is disabled.
+USE="${USE} -smartdim"
+
+# Disable instant tethering due to a lack of hardware vendor support.
+USE="${USE} disable_instant_tethering"

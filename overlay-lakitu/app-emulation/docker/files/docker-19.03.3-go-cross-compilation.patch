@@ -1,0 +1,92 @@
+diff --git a/components/cli/scripts/build/.variables b/components/cli/scripts/build/.variables
+index b8ebe667cd..3289115240 100755
+--- a/components/cli/scripts/build/.variables
++++ b/components/cli/scripts/build/.variables
+@@ -20,10 +20,10 @@ export LDFLAGS="\
+     ${LDFLAGS:-} \
+ "
+ 
+-GOOS="${GOOS:-$(go env GOHOSTOS)}"
+-GOARCH="${GOARCH:-$(go env GOHOSTARCH)}"
++GOOS="${GOOS:-$(${GO} env GOHOSTOS)}"
++GOARCH="${GOARCH:-$(${GO} env GOHOSTARCH)}"
+ if [ "${GOARCH}" = "arm" ]; then
+-	GOARM="${GOARM:-$(go env GOHOSTARM)}"
++	GOARM="${GOARM:-$(${GO} env GOHOSTARM)}"
+ fi
+ 
+ TARGET="build/docker-$GOOS-$GOARCH"
+diff --git a/components/cli/scripts/build/dynbinary b/components/cli/scripts/build/dynbinary
+index 4feb7e71d8..d35cadc547 100755
+--- a/components/cli/scripts/build/dynbinary
++++ b/components/cli/scripts/build/dynbinary
+@@ -9,6 +9,6 @@ source ./scripts/build/.variables
+ 
+ echo "Building dynamically linked $TARGET"
+ export CGO_ENABLED=1
+-go build -o "${TARGET}" -tags pkcs11 --ldflags "${LDFLAGS}" -buildmode=pie "${SOURCE}"
++${GO} build -o "${TARGET}" -tags pkcs11 --ldflags "${LDFLAGS}" -buildmode=pie "${SOURCE}"
+ 
+ ln -sf "$(basename "${TARGET}")" build/docker
+diff --git a/components/engine/hack/make/.binary b/components/engine/hack/make/.binary
+index 53de6749e5..dede04dd37 100644
+--- a/components/engine/hack/make/.binary
++++ b/components/engine/hack/make/.binary
+@@ -3,7 +3,7 @@ set -e
+ 
+ # a helper to provide ".exe" when it's appropriate
+ binary_extension() {
+-	if [ "$(go env GOOS)" = 'windows' ]; then
++	if [ "$(${GO} env GOOS)" = 'windows' ]; then
+ 		echo -n '.exe'
+ 	fi
+ }
+@@ -40,9 +40,9 @@ hash_files() {
+ (
+ export GOGC=${DOCKER_BUILD_GOGC:-1000}
+ 
+-if [ "$(go env GOOS)/$(go env GOARCH)" != "$(go env GOHOSTOS)/$(go env GOHOSTARCH)" ]; then
++if [ "$(${GO} env GOOS)/$(${GO} env GOARCH)" != "$(${GO} env GOHOSTOS)/$(${GO} env GOHOSTARCH)" ]; then
+ 	# must be cross-compiling!
+-	case "$(go env GOOS)/$(go env GOARCH)" in
++	case "$(${GO} env GOOS)/$(${GO} env GOARCH)" in
+ 		windows/amd64)
+ 			export CC=x86_64-w64-mingw32-gcc
+ 			export CGO_ENABLED=1
+@@ -71,7 +71,7 @@ if [ "$(go env GOOS)/$(go env GOARCH)" != "$(go env GOHOSTOS)/$(go env GOHOSTARC
+ fi
+ 
+ # -buildmode=pie is not supported on Windows and Linux on mips.
+-case "$(go env GOOS)/$(go env GOARCH)" in
++case "$(${GO} env GOOS)/$(${GO} env GOARCH)" in
+ 	windows/*|linux/mips*)
+ 		;;
+ 	*)
+@@ -81,7 +81,7 @@ esac
+ 
+ echo "Building: $DEST/$BINARY_FULLNAME"
+ echo "GOOS=\"${GOOS}\" GOARCH=\"${GOARCH}\" GOARM=\"${GOARM}\""
+-go build \
++${GO} build \
+ 	-o "$DEST/$BINARY_FULLNAME" \
+ 	"${BUILDFLAGS[@]}" \
+ 	-ldflags "
+diff --git a/components/engine/hack/make/.go-autogen b/components/engine/hack/make/.go-autogen
+index ef5c6a40f2..9ba3b3ae02 100644
+--- a/components/engine/hack/make/.go-autogen
++++ b/components/engine/hack/make/.go-autogen
+@@ -43,12 +43,12 @@ const (
+ DVEOF
+ 
+ # Compile the Windows resources into the sources
+-if [ "$(go env GOOS)" = "windows" ]; then
++if [ "$(${GO} env GOOS)" = "windows" ]; then
+ 	mkdir -p autogen/winresources/tmp autogen/winresources/docker autogen/winresources/dockerd
+ 	cp hack/make/.resources-windows/resources.go autogen/winresources/docker/
+ 	cp hack/make/.resources-windows/resources.go autogen/winresources/dockerd/
+ 
+-	if [ "$(go env GOHOSTOS)" == "windows" ]; then
++	if [ "$(${GO} env GOHOSTOS)" == "windows" ]; then
+ 		WINDRES=windres
+ 		WINDMC=windmc
+ 	else
