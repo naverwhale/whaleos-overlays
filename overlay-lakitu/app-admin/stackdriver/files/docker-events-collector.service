@@ -1,9 +1,0 @@
-[Unit]
-Description=Collects Docker events and reports to journal.
-After=docker.socket
-Requires=docker.socket
-
-[Service]
-ExecStart=/usr/bin/docker events
-Restart=on-failure
-RestartSec=5

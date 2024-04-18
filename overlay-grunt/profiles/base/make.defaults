@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -13,9 +13,6 @@ USE="${USE} grunt"
 USE="${USE} cros_ec"
 
 USE="${USE} touchview"
-
-# Use ext4 crypto
-USE="${USE} direncryption"
 
 USE="${USE} unibuild has_chromeos_config_bsp"
 
@@ -51,3 +48,12 @@ USE="${USE} uprev-4-to-5"
 
 # Enable on-device grammar check
 USE="${USE} ondevice_grammar"
+
+# TODO(b/187516317): remove when the issue is resolved in FW.
+USE="${USE} broken_24hours_wake"
+
+# Enable Shimless RMA
+USE="${USE} rmad"
+
+# TODO(b/260945247): remove when this issue is resolved.
+USE="${USE} -federated_service"

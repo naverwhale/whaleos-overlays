@@ -1,5 +1,5 @@
 #
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -9,9 +9,11 @@ dev-config: &dev_config
   test-label: "{{$device-name}}"
   identity: &base_ident
     platform-name: "Fizz"
-    smbios-name-match: "Fizz"
+    frid: "Google_Fizz"
     sku-id: "{{$sku-id}}"
   firmware:
+    build-targets:
+      ec: "fizz"
     no-firmware: True
   ui:
     help-content-id: "{{$help-content-id}}"
@@ -22,7 +24,7 @@ wl-dev-config: &wl_dev_config
   <<: *dev_config
   identity:
     <<: *base_ident
-    whitelabel-tag: "{{$whitelabel-tag}}"
+    custom-label-tag: "{{$custom-label-tag}}"
 
 chromeos:
   devices:
@@ -45,9 +47,9 @@ chromeos:
           config: *dev_config
     - $device-name: "jax"
       products:
-        - $whitelabel-tag: "" # default
+        - $custom-label-tag: "" # default
           $help-content-id: "JAX"
-        - $whitelabel-tag: "newline"
+        - $custom-label-tag: "newline"
           $help-content-id: "JAX-NEWLINE"
       skus:
         - $sku-id: 8
@@ -60,17 +62,17 @@ chromeos:
                   destination: "/etc/dptf/{{dptf-dv}}"
     - $device-name: "wukong"
       products:
-        - $whitelabel-tag: "" # default
+        - $custom-label-tag: "" # default
           $help-content-id: "WUKONG"
-        - $whitelabel-tag: "ctl"
+        - $custom-label-tag: "ctl"
           $help-content-id: "WUKONG-CTL"
-        - $whitelabel-tag: "viewsonic"
+        - $custom-label-tag: "viewsonic"
           $help-content-id: "WUKONG-VIEWSONIC"
-        - $whitelabel-tag: "promethean"
+        - $custom-label-tag: "promethean"
           $help-content-id: "WUKONG-PROMETHEAN"
-        - $whitelabel-tag: "datmedia"
+        - $custom-label-tag: "datmedia"
           $help-content-id: "WUKONG-DATMEDIA"
-        - $whitelabel-tag: "smarttech"
+        - $custom-label-tag: "smarttech"
           $help-content-id: "WUKONG-SMARTTECH"
       skus:
         - $sku-id: 3

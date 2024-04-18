@@ -25,10 +25,14 @@
     </Encoders>
     <Decoders>
         <MediaCodec name="c2.vda.avc.decoder" type="video/avc" update="true">
-            <Limit name="measured-frame-rate-320x240" range="361-370" />
-            <Limit name="measured-frame-rate-720x480" range="314-316" />
-            <Limit name="measured-frame-rate-1280x720" range="209-210" />
-            <Limit name="measured-frame-rate-1920x1080" range="127-129" />
+            <!-- measured 90%:519-605 med:537 N=16 -->
+            <Limit name="measured-frame-rate-320x240" range="537-560" /> <!-- v90%=1.1 -->
+            <!-- measured 90%:495-589 med:517 N=16 -->
+            <Limit name="measured-frame-rate-720x480" range="516-540" /> <!-- v90%=1.1 -->
+            <!-- measured 90%:344-394 med:359 N=16 -->
+            <Limit name="measured-frame-rate-1280x720" range="359-368" /> <!-- v90%=1.1 -->
+            <!-- measured 90%:197-225 med:218 N=16 -->
+            <Limit name="measured-frame-rate-1920x1080" range="211-211" /> <!-- v90%=1.1 -->
         </MediaCodec>
         <MediaCodec name="c2.vda.vp8.decoder" type="video/x-vnd.on2.vp8" update="true">
             <Limit name="measured-frame-rate-320x180" range="399-417" />
@@ -37,11 +41,10 @@
             <Limit name="measured-frame-rate-1920x1080" range="94-95" />
         </MediaCodec>
         <MediaCodec name="c2.vda.vp9.decoder" type="video/x-vnd.on2.vp9" update="true">
-            <Limit name="measured-frame-rate-320x180" range="296-296" />
-            <Limit name="measured-frame-rate-640x360" range="265-266" />
-            <Limit name="measured-frame-rate-1280x720" range="155-155" />
-            <Limit name="measured-frame-rate-1920x1080" range="111-111" />
-            <Limit name="measured-frame-rate-3840x2160" range="32-32" />
+            <Limit name="measured-frame-rate-320x180" range="1062-1062" /> <!-- N=86 v98%=1.1 -->
+            <Limit name="measured-frame-rate-640x360" range="955-955" /> <!-- N=86 v98%=1.1 -->
+            <Limit name="measured-frame-rate-1280x720" range="525-525" /> <!-- N=86 v98%=1.1 -->
+            <Limit name="measured-frame-rate-1920x1080" range="293-293" /> <!-- N=86 v98%=1.2 -->
         </MediaCodec>
     </Decoders>
 </MediaCodecs>

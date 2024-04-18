@@ -1,4 +1,4 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -58,7 +58,9 @@ USE="${USE} builtin_driver_amdgpu"
 
 # Build kernel with serial driver
 USE="${USE} pcserial"
-USE="${USE} tty_console_ttyS0"
+
+# Enable serial console
+TTY_CONSOLE="ttyS0"
 
 # Use kernel 5.4 for newer drivers.
 USE="${USE} -kernel-4_19 kernel-5_4"

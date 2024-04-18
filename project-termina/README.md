@@ -49,9 +49,7 @@ following files:
 ## Running
 Please refer to crosvm documentation on how to run the kernel and rootfs.
 
-These images can also be started with `concierge` via `concierge_client`. This
-mirrors their usage in a production system. To use a custom image with
-concierge:
+To use a custom image with concierge:
 
 ```sh
 # Copy the rootfs and kernel to a working directory on the device, such as

@@ -1,1 +1,0 @@
-chromeos-firewall-init-lakitu-0.0.1.ebuild

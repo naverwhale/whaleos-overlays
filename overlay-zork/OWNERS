@@ -1,12 +1,2 @@
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
-
-djkurtz@google.com
-sammc@google.com
-epeers@google.com
-rrangel@google.com
-martinroth@google.com
-bhanumaiya@google.com
-isaaclee@google.com
-treapking@google.com
+# Set the owners for Zork.
+include chromiumos/owners:v1:/device/OWNERS.zork

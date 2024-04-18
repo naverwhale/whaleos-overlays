@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -12,11 +12,14 @@ or portage actions."
 LICENSE="BSD-Google"
 SLOT="0" # TODO (b/185804190): convert this to cros-workon
 KEYWORDS="-* amd64 x86"
-IUSE="coral-kernelnext"
+IUSE="coral-kernelnext modemfwd"
 S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
-RDEPEND="chromeos-base/chromeos-bsp-baseboard-coral"
+RDEPEND="
+	chromeos-base/chromeos-bsp-baseboard-coral
+	modemfwd? ( chromeos-base/modemfwd-helpers )
+"
 DEPEND="
 	${RDEPEND}
 	chromeos-base/chromeos-config

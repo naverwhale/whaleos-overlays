@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -15,10 +15,13 @@ USE="${USE} march_goldmont"
 
 LINUX_FIRMWARE="${LINUX_FIRMWARE} adsp_kbl i915_kbl"
 
-USE="${USE} kernel-4_4"
+USE="${USE} kernel-5_4"
 USE="${USE} dptf"
 USE="${USE} intel_lpe kbl_lpe"
 USE="${USE} drm_atomic"
+
+# Identify the vendor
+USE="${USE} intel_cpu"
 
 # Enable GpuMemoryBuffers backed by dma-bufs.
 USE="${USE} native_gpu_memory_buffers"
@@ -30,5 +33,8 @@ USE="${USE} android_aep"
 # Use legacy pre-Groot UI for initramfs and init script screens.
 USE="${USE} legacy_firmware_ui"
 
-# Enable Intel driver
-USE="${USE} -video_cards_iHD video_cards_i965"
+# Enable iHD media driver for KBL
+USE="${USE} -video_cards_i965 video_cards_iHD video_cards_iHD_g9"
+
+# Allows Chrome to start in the presence of multiple threads.
+USE="${USE} gpu_sandbox_start_early"

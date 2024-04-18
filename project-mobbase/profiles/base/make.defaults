@@ -20,5 +20,14 @@ USE="${USE} -dlc_test"
 # Exclude on-device speech which depends on dlc.
 USE="${USE} -ondevice_speech"
 
+# Disable on-device handwriting which depends on dlc.
+USE="${USE} -ondevice_handwriting"
+
+# Disable ime addon features.
+USE="${USE} -ime_addons"
+
 # kvm_host requires dlc
 USE="${USE} -kvm_host"
+
+# Add servo related firmware
+USE="${USE} fwupd gl3590"

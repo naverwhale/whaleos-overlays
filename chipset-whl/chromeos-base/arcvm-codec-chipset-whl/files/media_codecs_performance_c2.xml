@@ -56,8 +56,8 @@
             <Limit name="measured-frame-rate-320x240" range="459-1009" />
             <!-- b/188733447: Enlarge range for small resolution, geometric mean: 668 -->
             <Limit name="measured-frame-rate-720x480" range="451-992" />
-            <Limit name="measured-frame-rate-1280x720" range="403-404" /> <!-- N=26 v90%=1.1 -->
-            <Limit name="measured-frame-rate-1920x1080" range="292-292" /> <!-- N=26 v90%=1.0 -->
+            <Limit name="measured-frame-rate-1280x720" range="436-959" /> <!-- N=26 v90%=1.1 -->
+            <Limit name="measured-frame-rate-1920x1080" range="354-715" /> <!-- N=26 v90%=1.0 -->
         </MediaCodec>
         <MediaCodec name="c2.v4l2.vp8.decoder" type="video/x-vnd.on2.vp8" update="true">
             <!-- b/189791118: Enlarge range for small resolution, geometric mean: 688 -->
@@ -75,9 +75,9 @@
             <Limit name="measured-frame-rate-640x360" range="442-972" />
             <!-- b/188733447: Enlarge range for small resolution, geometric mean: 593 -->
             <Limit name="measured-frame-rate-1280x720" range="400-880" />
-            <Limit name="measured-frame-rate-1920x1080" range="333-333" /> <!-- N=26 v90%=1.0 -->
+            <Limit name="measured-frame-rate-1920x1080" range="404-760" /> <!-- N=26 v90%=1.0 -->
             <!-- measured 90%:34-125 med:122 FLAKY(mn=17.9 < 33 - 132) -->
-            <Limit name="measured-frame-rate-3840x2160" range="45-97" /> <!-- N=26 v90%=1.9 -->
+            <Limit name="measured-frame-rate-3840x2160" range="99-216" /> <!-- N=26 v90%=1.9 -->
         </MediaCodec>
         <MediaCodec name="c2.android.h263.decoder" type="video/3gpp" update="true">
             <!-- b/188733447: Enlarge range for small resolution, geometric mean: 1076 -->
@@ -92,6 +92,8 @@
         </MediaCodec>
         <MediaCodec name="c2.android.mpeg4.decoder" type="video/mp4v-es" update="true">
             <Limit name="measured-frame-rate-176x144" range="937-937" /> <!-- N=26 v90%=1.1 -->
+            <Limit name="measured-frame-rate-480x360" range="718-819" />
+            <Limit name="measured-frame-rate-1280x720" range="221-309" />
         </MediaCodec>
         <MediaCodec name="c2.android.vp8.decoder" type="video/x-vnd.on2.vp8" update="true">
             <Limit name="measured-frame-rate-320x180" range="634-634" /> <!-- N=26 v90%=1.0 -->

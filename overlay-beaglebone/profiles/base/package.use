@@ -1,4 +1,0 @@
-sys-apps/busybox pam -static
-sys-kernel/kernel-beaglebone-4_4 frozen_gcc -clang -lld -llvm_ias
-sys-kernel/kernel-beaglebone frozen_gcc -clang -lld
-dev-python/pyudev -pygobject

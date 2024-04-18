@@ -1,8 +1,8 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-EAPI=5
+EAPI="7"
 
 DESCRIPTION="SOF topology file for Hatch board"
 SRC_URI="gs://chromeos-localmirror/distfiles/${P}-hatch.tar.xz"

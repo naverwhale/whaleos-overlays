@@ -57,6 +57,27 @@
             <Feature name="adaptive-playback" />
             <Feature name="secure-playback" required="true" />
         </MediaCodec>
+        <MediaCodec name="c2.v4l2.hevc.decoder" type="video/hevc" >
+            <Limit name="size" min="64x64" max="4096x2304" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="blocks-per-second" min="16" max="2073600" />
+            <Limit name="bitrate" range="1-209715200" />
+            <Limit name="concurrent-instances" max="8" />
+            <Limit name="performance-point-3840x2160" range="30-30" />
+            <Feature name="adaptive-playback" />
+        </MediaCodec>
+        <MediaCodec name="c2.v4l2.hevc.decoder.secure" type="video/hevc" >
+            <Limit name="size" min="64x64" max="4096x2304" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="blocks-per-second" min="16" max="2073600" />
+            <Limit name="bitrate" range="1-209715200" />
+            <Limit name="concurrent-instances" max="8" />
+            <Limit name="performance-point-3840x2160" range="30-30" />
+            <Feature name="adaptive-playback" />
+            <Feature name="secure-playback" required="true" />
+        </MediaCodec>
     </Decoders>
     <Encoders>
         <MediaCodec name="c2.v4l2.avc.encoder" type="video/avc" >

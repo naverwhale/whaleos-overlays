@@ -1,7 +1,7 @@
-# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Copyright 2016 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI="7"
 
 inherit cros-audio-configs
 inherit appid
@@ -17,11 +17,17 @@ IUSE="eve-arcnext eve-arc-r eve-arm64 eve-campfire eve-kvm eve-lacros eve-swap e
 S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
-RDEPEND="chromeos-base/genius-app-data-eve"
+RDEPEND="
+	!<chromeos-base/gestures-conf-0.0.2
+	chromeos-base/genius-app-data-eve
+"
 
 DEPEND="${RDEPEND}"
 
 src_install() {
+	insinto "/etc/gesture"
+	doins "${FILESDIR}"/gesture/*
+
 	if use eve-userdebug; then
 		doappid "{20C53672-DEE7-4824-A131-D9547AB409ED}" "CHROMEBOOK"
 	elif use eve-kernelnext; then

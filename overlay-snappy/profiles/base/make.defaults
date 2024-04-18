@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -40,8 +40,5 @@ USE="${USE} uprev-4-to-5"
 # Enable chromeos-config.
 USE="${USE} unibuild has_chromeos_config_bsp"
 
-# Disable on-device grammar check for boards with 2GB rootfs.
-USE="${USE} -ondevice_grammar"
-
-# Disable Floss Bluetooth for boards with 2GB rootfs.
-USE="${USE} -floss"
+# Use zstd to minify ARC images. (go/arc-zstd)
+USE="${USE} arc_squashfs_zstd"

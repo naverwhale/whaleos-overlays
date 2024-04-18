@@ -11,3 +11,7 @@ sys-fs/btrfs-progs -convert
 
 # Required by LXD 4.0.x
 sys-fs/squashfs-tools lzma
+dev-util/xdelta lzma
+
+# Minimal chrony, just for hw ptp refclock
+net-misc/chrony caps cmdmon -debug -html -ipv6 -ntp -nts phc -pps -readline refclock -rtc -samba seccomp

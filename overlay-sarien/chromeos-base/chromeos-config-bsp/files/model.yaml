@@ -2,7 +2,7 @@ base_config: &base_config
   name: "{{$device-name}}"
   identity:
     platform-name: "Sarien"
-    smbios-name-match: "{{$fw-name}}"
+    frid: "Google_{{$fw-name}}"
     sku-id: "{{$sku-id}}"
   firmware:
     no-firmware: True
@@ -16,6 +16,7 @@ base_config: &base_config
     min-visible-backlight-level: "8400"
     max-dark-suspend-delay-timeout-ms: "1800000"
     disable-dark-resume: "0"
+    has-barreljack: "1"
   hardware-properties:
     form-factor: CHROMEBOOK
     is-lid-convertible: "{{$is-lid-convertible-val}}"
@@ -91,18 +92,30 @@ chromeos:
     - $device-name: "sarien"
       skus:
         - $sku-id: 1
-          config: *sarien-config
+          config:
+            <<: *sarien-config
+            modem:
+              firmware-variant: "sarien"
     # Same model as Sarien but with signed EC image
     - $device-name: "sarien_signed"
       skus:
         - $sku-id: 3
-          config: *sarien-signed-config
+          config:
+            <<: *sarien-signed-config
+            modem:
+              firmware-variant: "sarien"
     - $device-name: "arcada"
       skus:
         - $sku-id: 2
-          config: *arcada-config
+          config:
+            <<: *arcada-config
+            modem:
+              firmware-variant: "arcada"
     # Same model as Arcada but with signed EC image
     - $device-name: "arcada_signed"
       skus:
         - $sku-id: 4
-          config: *arcada-signed-config
+          config:
+            <<: *arcada-signed-config
+            modem:
+              firmware-variant: "arcada"

@@ -1,4 +1,4 @@
-# Copyright 2014 The Chromium OS Authors. All rights reserved.
+# Copyright 2014 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="7"
@@ -29,10 +29,10 @@ S=${WORKDIR}
 pkg_preinst() {
 	enewgroup moblab
 	enewuser moblab
-	usermod -a -G docker moblab
 }
 
 src_install() {
 	insinto /etc/init
 	doins "${FILESDIR}/cgroups.override"
+	doins "${FILESDIR}"/cras.override
 }

@@ -1,1 +1,0 @@
-chrony-3.1.ebuild

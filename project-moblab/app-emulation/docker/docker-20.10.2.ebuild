@@ -53,7 +53,7 @@ RESTRICT="installsources strip"
 
 S="${WORKDIR}/${P}/src/${EGO_PN}"
 
-# rootdir.patch is added specically for moblab, it changes two 
+# rootdir.patch is added specically for moblab, it changes two
 # directories that are hard coded into docker frm /etc/docker
 # to /var/run/docker as /etc/docker is a read only partition
 # on moblab.
@@ -194,7 +194,7 @@ pkg_setup() {
 src_compile() {
 	export DOCKER_GITCOMMIT="${GIT_COMMIT}"
 	export GOPATH="${WORKDIR}/${P}"
-
+	export GO111MODULE=off
 	# setup CFLAGS and LDFLAGS for separate build target
 	# see https://github.com/tianon/docker-overlay/pull/10
 	export CGO_CFLAGS="-I${ROOT}/usr/include"

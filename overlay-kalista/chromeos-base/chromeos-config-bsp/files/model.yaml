@@ -1,11 +1,15 @@
 #
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+imports:
+  - "include/kernel-info.yaml"
+
 audio_common: &audio_common
   main:
+    <<: *kernel-info
     $cras_root: "/etc/cras"
     $ucm_root: "/usr/share/alsa/ucm"
     $card: "kblda7219max"
@@ -29,7 +33,7 @@ audio_common: &audio_common
         destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
-      - source: "{{$ucm-source}}/HiFi.conf"
+      - source: "{{$ucm-source}}/HiFi{{$kernel-specific-suffix}}.conf"
         destination: "{{$ucm-dest}}/HiFi.conf"
       - source: "{{$ucm-source}}/{{$card}}.conf"
         destination: "{{$ucm-dest}}/{{$card}}.{{ucm-suffix}}.conf"
@@ -38,7 +42,7 @@ device_config: &device_config
   name: "{{$device-name}}"
   identity:
     platform-name: "Kalista"
-    smbios-name-match: "{{$fw-name}}"
+    frid: "Google_{{$fw-name}}"
     sku-id: "{{$sku-id}}"
   hardware-properties:
     form-factor: CHROMEBASE

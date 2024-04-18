@@ -1,10 +1,10 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI="7"
 
 DESCRIPTION="kbl tuning DSM DSP firmware and library models"
-SRC_URI="gs://chromeos-localmirror/distfiles/${PF}.tbz2"
+SRC_URI="gs://chromeos-localmirror/distfiles/${P}.tbz2"
 
 LICENSE="LICENCE.adsp_sst"		#FIXME: Need DSM license
 SLOT="0"

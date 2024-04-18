@@ -1,10 +1,10 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
 identity-common: &identity_common
   platform-name: Reef
-  smbios-name-match: "{{$smbios-name-match}}"
+  frid: "Google_{{$firmware-target}}"
 
 base-config: &base_config
   brand-code: "{{$brand-code}}"
@@ -18,7 +18,7 @@ base-config: &base_config
       # Only "reef" EC board is left on ToT.
       ec: reef
     image-name: "{{$device-name}}"
-  hardware-properties:
+  hardware-properties: &hardware_properties_common
     form-factor: CHROMEBOOK
     psu-type: battery
   identity:
@@ -30,18 +30,17 @@ base-config: &base_config
 zerg-base-config: &zerg_base_config
   <<: *base_config
   $firmware-target: "{{$zerg-group}}"
-  $smbios-name-match: "{{$zerg-group}}"
 
 nonzerg-base-config: &nonzerg_base_config
   <<: *base_config
   $firmware-target: "{{$device-name}}"
-  $smbios-name-match: "{{$device-name}}"
 
 reef-config: &reef_config
   <<: *zerg_base_config
   $zerg-group: reef
   nnpalm:
     touch-compatible: True
+    model: "alpha"
     radius-polynomial: "0.17889799, 4.22584412"
   power:
     charging-ports: |-
@@ -79,6 +78,9 @@ snappy-config: &snappy_config
       63.0
     keyboard-backlight-no-als-brightness: '10.0'
     low-battery-shutdown-percent: '6.0'
+  hardware-properties:
+    <<: *hardware_properties_common
+    has-side-volume-button: true
   ui:
     side-volume-button:
       region: keyboard

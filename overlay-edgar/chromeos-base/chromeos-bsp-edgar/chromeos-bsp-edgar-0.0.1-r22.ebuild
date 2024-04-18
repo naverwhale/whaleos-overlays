@@ -1,1 +1,0 @@
-chromeos-bsp-edgar-0.0.1.ebuild

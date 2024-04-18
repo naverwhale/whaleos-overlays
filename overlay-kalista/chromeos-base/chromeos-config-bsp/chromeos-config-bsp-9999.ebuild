@@ -1,4 +1,4 @@
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -15,10 +15,18 @@ DESCRIPTION="ChromeOS model configuration"
 HOMEPAGE="https://chromium.googlesource.com/chromiumos/platform2/+/HEAD/chromeos-config/README.md"
 
 LICENSE="BSD-Google"
-SLOT="0"
 KEYWORDS="~*"
 RDEPEND="!chromeos-base/chromeos-config-bsp-kalista"
+IUSE="kernel-4_4"
 
 src_install() {
-	install_model_files
+	insinto "${UNIBOARD_YAML_DIR}"
+	doins "${FILESDIR}/model.yaml"
+
+	insinto "${UNIBOARD_YAML_DIR}/include"
+	if use kernel-4_4; then
+		newins "${FILESDIR}/include/kernel-info_kernel_4_4.yaml" "kernel-info.yaml"
+	else
+		doins "${FILESDIR}/include/kernel-info.yaml"
+	fi
 }

@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -47,8 +47,8 @@ INPUT_DEVICES="${INPUT_DEVICES} g2touch"
 # Include the elan i2chid touchpad firmware updating tool
 INPUT_DEVICES="${INPUT_DEVICES} etphidiap"
 
-# Use ext4 crypto
-# USE="${USE} direncryption"
+# Elan Standalone Trackpoint Firmware Updater
+INPUT_DEVICES="${INPUT_DEVICES} eps2pstiap"
 
 USE="${USE} unibuild has_chromeos_config_bsp"
 
@@ -63,14 +63,11 @@ USE="${USE} cros_ec"
 # Add EC logging
 USE="${USE} eclog"
 
-# With amdgpu support.
-USE="${USE} builtin_fw_amdgpu"
+# Enable AMD Picasso and Raven GPU builtin firmware
+USE="${USE} builtin_fw_amdgpu_picasso builtin_fw_amdgpu_raven2"
 
 # Enable background blur.
 USE="${USE} background_blur"
-
-# Include the kernel in the base image.
-USE="${USE} include_vmlinuz"
 
 # Enable NVMe utility
 USE="${USE} nvme"
@@ -100,3 +97,9 @@ USE="${USE} fsverity"
 
 # Enable eMMC tools
 USE="${USE} mmc"
+
+# Build kernel with serial driver
+USE="${USE} pcserial"
+
+# Enable serial console
+TTY_CONSOLE="ttyS0"

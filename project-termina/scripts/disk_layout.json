@@ -1,40 +1,30 @@
 {
-  "parent": "legacy_disk_layout.json",
-
   "layouts": {
-    # These values were chosen by producing a tatl test image, mounting the
-    # resulting image, and increasing the used disk space on ROOT-A and STATE
-    # by roughly 20%. This significantly decreases disk usage by images, while
-    # also leaving some flexibility in case packages move between the rootfs
-    # and dev_image.
     "common": [
       {
-        # Kernel for Slot A, no file system.
-        "num": 2,
         "label": "KERN-A",
-        "type": "kernel",
-        "size": "32 MiB"
+        "num": 2,
+        "size": "32 MiB",
+        "type": "kernel"
       },
       {
-        # Kernel for Slot B, no file system.
-        "num": 4,
         "label": "KERN-B",
-        "type": "kernel",
-        "size": "32 MiB"
+        "num": 4,
+        "size": "32 MiB",
+        "type": "kernel"
       },
       {
-        # ROOT-A
+        "fs_format": "squashfs",
+        "fs_size": "195 MiB",
         "num": 3,
-        "size": "150 MiB",
-        "fs_size": "145 MiB",
-        "fs_format": "squashfs"
+        "size": "200 MiB"
       },
       {
-        # STATE
+        "fs_format": "squashfs",
         "num": 1,
-        "size": "100 MiB",
-        "fs_format": "squashfs"
+        "size": "100 MiB"
       }
     ]
-  }
+  },
+  "parent": "legacy_disk_layout.json"
 }

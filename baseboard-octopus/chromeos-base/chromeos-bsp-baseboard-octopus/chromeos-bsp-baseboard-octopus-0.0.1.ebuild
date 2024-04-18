@@ -1,7 +1,7 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI="7"
 
 inherit appid
 
@@ -11,13 +11,13 @@ or portage actions."
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* amd64 x86"
-IUSE=""
+IUSE="kernel-4_14"
 S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
 RDEPEND="
-	chromeos-base/sof-binary
-	chromeos-base/sof-topology
+	kernel-4_14?  ( chromeos-base/sof-binary chromeos-base/sof-topology )
+	!kernel-4_14? ( sys-firmware/sof-firmware )
 	chromeos-base/chromeos-disk-firmware-baseboard-octopus
 "
 DEPEND="${RDEPEND}"

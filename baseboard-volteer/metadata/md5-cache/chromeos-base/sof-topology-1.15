@@ -1,0 +1,8 @@
+DEFINED_PHASES=install
+DESCRIPTION=Topology file needed to run SOF.
+EAPI=7
+KEYWORDS=*
+LICENSE=SOF
+SLOT=0
+SRC_URI=gs://chromeos-localmirror/distfiles/sof-topology-volteer-1.15.tar.bz2
+_md5_=f6cf0f827ad8ae3cd4d7e01877153218

@@ -1,7 +1,0 @@
-# The following rule allows logging of the following message types
-# and tells the kernel to ignore everything else.
-#  - CONFIG_CHANGE
-#  - AVC (for AppArmor permission check messages)
-#  - USER_AVC (triggered when a user-space AVC message is generated)
--b 128
--a never,exclude -F msgtype!=CONFIG_CHANGE -F msgtype!=AVC -F msgtype!=USER_AVC -F msgtype!=SECCOMP

@@ -1,7 +1,7 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI="7"
 
 inherit appid
 inherit cros-unibuild
@@ -12,7 +12,7 @@ or portage actions."
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* amd64 x86"
-IUSE="nami-kvm nami-kernelnext"
+IUSE="nami-kvm nami-kernelnext nami-scudo kernel-5_4"
 S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
@@ -26,11 +26,12 @@ DEPEND="
 "
 
 src_install() {
-
 	if use nami-kvm; then
 		doappid "{DB6012BC-8758-4280-B40D-41F2792F46B9}" "CHROMEBOOK"
 	elif use nami-kernelnext; then
 		doappid "{F21A7EB6-CB05-11EB-B572-CF4C2D968CF6}" "CHROMEBOOK"
+	elif use nami-scudo; then
+		doappid "{3C457062-5FEF-4B77-B9CC-B3495440CA7B}" "CHROMEBOOK"
 	else
 		doappid "{495DCB07-E19A-4D7D-99B9-4710011A65B1}" "CHROMEBOOK"
 	fi

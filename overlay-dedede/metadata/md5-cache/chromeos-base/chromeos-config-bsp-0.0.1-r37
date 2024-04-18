@@ -1,0 +1,13 @@
+BDEPEND=chromeos-base/chromeos-config-host:= dev-vcs/git app-misc/jq
+DEFINED_PHASES=compile info install setup unpack
+DESCRIPTION=Chrome OS Model configuration package for dedede
+EAPI=7
+HOMEPAGE=https://www.chromium.org/chromium-os
+IUSE=cros_host cros_workon_tree_eddbf7ba53b97314c02df43f8f9818dcbd78503d_ff18803ebbde46a92164ff4bd0bcf35beb3b38c1_538bd3122da227a7e45b831351bc157e564bfe59_063eeb173765f1209482643f1bf63121c0b5c759_1b03f5a55c68c4d58fc83700b8d53d78f7c23b78_5e0b1824b9839850f1238444e12e1e38beca6b32
+KEYWORDS=* amd64 x86
+LICENSE=BSD-Google
+PROPERTIES=live
+RDEPEND=!chromeos-base/chromeos-config-bsp-dedede
+SLOT=0/0.0.1-r37
+_eclasses_=cros-constants	676fcfd1679a06bba553adf90e231454	cros-credentials	dd20060574e24cba5fa46d205f9aba0c	cros-unibuild	94ba1b876f001e1859d822211bb80291	cros-workon	247d4700539e27bc12026f785ec53757	flag-o-matic	ad475baa777c9978fa035216c8264a10	git-2	d6a1d7d3b4c4fff2fba86e3f53beeb0f	multilib	2477ebe553d3e4d2c606191fe6c33602	toolchain-funcs	528ab0a9e1ee02c57524ad3bede3c57e
+_md5_=594fd49e2081ca8b6e17a8f3a3e2314b

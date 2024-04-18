@@ -1,7 +1,7 @@
-# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Copyright 2016 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=7
 
 inherit udev
 
@@ -12,7 +12,7 @@ LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* arm64 arm"
 S="${WORKDIR}"
-IUSE="cheets kernel-4_4 kernel-4_19 mt8176"
+IUSE="cheets kernel-4_4 kernel-4_19 kernel-5_15 mt8176"
 
 # Add dependencies on other ebuilds from within this board overlay
 DEPEND="
@@ -25,10 +25,14 @@ src_install() {
 	local soc=$(usex mt8176 mt817{6,3})
 	local kernel=$(usex kernel-4_4 4_4 3_18)
 	kernel=$(usex kernel-4_19 4_19 "${kernel}")
+	kernel=$(usex kernel-5_15 5_15 "${kernel}")
 
 	# Install cpuset adjustments.
 	insinto "/etc/init"
-	newins "${FILESDIR}/platform-cpusets-${soc}-${kernel}.conf" platform-cpusets.conf
+
+	if [[ ${kernel} != "5_15" ]]; then
+		newins "${FILESDIR}/platform-cpusets-${soc}-${kernel}.conf" platform-cpusets.conf
+	fi
 
 	# Install platform specific triggers and udev rules for codecs.
 	doins "${FILESDIR}/udev-trigger-codec.conf"

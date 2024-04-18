@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -29,9 +29,6 @@ USE="${USE} cros_ec"
 # Add EC logging
 USE="${USE} eclog"
 
-# Use ext4 crypto
-USE="${USE} direncryption"
-
 # Enable DPTF
 USE="${USE} dptf"
 
@@ -47,11 +44,5 @@ USE="${USE} kvm_host crosvm-gpu virtio_gpu"
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
 # Enable eMMC tools
 USE="${USE} mmc"
-
-# Disable document scanning due to insufficient rootfs.
-USE="${USE} -ondevice_document_scanner"

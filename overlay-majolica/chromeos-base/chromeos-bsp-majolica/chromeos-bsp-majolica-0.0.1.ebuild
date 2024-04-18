@@ -1,7 +1,7 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="7"
 
 inherit appid cros-unibuild
 
@@ -23,4 +23,3 @@ DEPEND="
 src_install() {
 	doappid "{8B8CAB6C-CB65-4D1B-96E6-592E145DF103}" "REFERENCE"
 }
-

@@ -1,4 +1,4 @@
-# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Copyright 2016 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="7"
@@ -13,7 +13,6 @@ IUSE=""
 # These packages are for servo support:
 RDEPEND="
 	chromeos-base/chromeos-cr50-dev
-	chromeos-base/chromeos-ec
 	chromeos-base/ec-devutils
 	>=chromeos-base/ec-utils-0.0.2
 	chromeos-base/vboot_reference
@@ -57,6 +56,11 @@ RDEPEND="${RDEPEND}
 	sys-apps/usbutils
 	sys-process/psmisc
 	sys-process/time
+"
+
+# These packages are for android hosting support.
+RDEPEND="${RDEPEND}
+	chromeos-base/chromeos-adb-env
 "
 
 DEPEND=""

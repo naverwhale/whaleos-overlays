@@ -1,11 +1,23 @@
 {
   "_comment": "changwan.hong: It's copied from octopus' disk_layout.json",
   "metadata":{
-    "rootdev_base": "/sys/devices/pci0000:00/0000:00:1c.0/mmc_host/mmc0/mmc0:0001/block/mmcblk0"
+    "rootdev_base": "/sys/devices/pci0000:00/0000:00:1*.0/mmc_host/mmc0/mmc0:0001/block/mmcblk0"
   },
   "parent": "legacy_disk_layout.json",
   "layouts":{
     "common":[
+      {
+        # MiniOS A partition.
+	# Set label name to use adjust-partition option
+        "num": 9,
+        "label": "MINIOS-A"
+      },
+      {
+        # MiniOS B partition.
+	# Set label name to use adjust-partition option
+        "num": 10,
+        "label": "MINIOS-B"
+      },
       {
         "num": 2,
         "size": "64 MiB"
@@ -24,7 +36,7 @@
       },
       {
         "num": 1,
-        "size": "4096 MiB"
+        "size": "8192 MiB"
       }
     ],
     "usb":[
@@ -73,7 +85,7 @@
       },
       {
         "num": 1,
-        "size": "4096 MiB"
+        "size": "8192 MiB"
       }
     ],
     # Huge rootfs, suitable for VM only images, should not be used
@@ -102,7 +114,7 @@
       },
       {
         "num": 1,
-        "size": "4096 MiB"
+        "size": "8192 MiB"
       }
     ]
   }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -13,4 +13,6 @@
 
 modify_kernel_command_line() {
   echo "spectre_v2_user=off" >> "$1"
+  # see b/164396969
+  echo "rtc-cmos.use_acpi_alarm=1" >> "$1"
 }

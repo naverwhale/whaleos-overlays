@@ -1,8 +1,0 @@
-# We don't want to build the main Chrome OS U-Boot. Beaglebone always uses its
-# own private version.
-sys-boot/u-boot::chromiumos
-
-# We don't run autotests on beaglebones.
-chromeos-base/autotest-all::chromiumos
-
-<dev-lang/python-3.6

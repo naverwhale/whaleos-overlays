@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -28,9 +28,6 @@ USE="${USE} touchview"
 # Building EC
 USE="${USE} cros_ec"
 
-# All firmware to build from the EC code base.
-EC_FIRMWARE="atlas"
-
 # iwlwifi firmware and ibt_9260 firmware for ThunderPeak2/1216 chip.
 LINUX_FIRMWARE="${LINUX_FIRMWARE} iwlwifi-9260 ibt_9260"
 
@@ -40,6 +37,8 @@ USE="${USE} dlc_test"
 # all of the Atlas SKUs support AVX so let's use it
 BOARD_COMPILER_FLAGS="-march=skylake"
 BOARD_RUSTFLAGS="-Ctarget-cpu=skylake"
+# chipset-kbl specifies march_goldmont, which needs to be dropped
+USE="${USE} march_skylake -march_goldmont"
 
 # Enable chromeos-config.
 USE="${USE} unibuild has_chromeos_config_bsp"
@@ -58,3 +57,8 @@ USE="${USE} has-kernelnext"
 
 # Enable on-device grammar check
 USE="${USE} ondevice_grammar"
+
+# Switch Atlas to kernel 5.10
+# Following should be moved to chipset level chipset-kbl after all followers uprev
+USE="${USE} uprev-4-to-5"
+USE="${USE} -kernel-4_4 kernel-5_10"

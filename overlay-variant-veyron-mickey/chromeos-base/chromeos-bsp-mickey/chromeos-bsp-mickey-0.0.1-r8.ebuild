@@ -1,1 +1,0 @@
-chromeos-bsp-mickey-0.0.1.ebuild

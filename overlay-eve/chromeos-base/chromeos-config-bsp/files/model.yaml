@@ -1,4 +1,4 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -16,10 +16,13 @@ device-config: &device_config
   hardware-properties:
     form-factor: CHROMEBOOK
     psu-type: battery
+    has-side-volume-button: true
   identity: &identity_common
     platform-name: Poppy
-    smbios-name-match: Eve
+    frid: "Google_Eve"
   name: eve
+  keyboard:
+    backlight: True
   power:
     als-smoothing-constant: '0.2'
     battery-stabilized-after-startup-ms: '25000'

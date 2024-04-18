@@ -1,0 +1,1 @@
+autotest-capability-guado-1.0.0.ebuild

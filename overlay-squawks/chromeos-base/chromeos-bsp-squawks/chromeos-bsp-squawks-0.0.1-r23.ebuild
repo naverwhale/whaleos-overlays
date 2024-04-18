@@ -1,1 +1,0 @@
-chromeos-bsp-squawks-0.0.1.ebuild

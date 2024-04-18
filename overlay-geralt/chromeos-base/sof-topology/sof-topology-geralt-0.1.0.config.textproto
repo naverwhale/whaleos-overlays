@@ -1,0 +1,16 @@
+repo: "https://github.com/thesofproject/sof.git"
+branch: "main"
+commit: "ba05d6b507efbe1ba5215a46b6fc58ef81167b46"
+tarball: "sof-topology-geralt"
+version: "0.1.0"
+topology: {
+  docker: {
+    use: true
+    identifier: "gsoftools:latest"
+  }
+}
+artifact: {
+  name: "sof-mt8188.tplg"
+  built_path: "tools/build_tools/topology/sof-mt8188.tplg"
+  sha256: "8c163b8b6949d89581dbeea412b21ba081d7b0d70ed89984c52e599a3ce46872"
+}

@@ -1,3 +1,0 @@
-# Mask chromiumos-kernel-5_10 from chromiumos-overlay
-sys-kernel/chromeos-kernel-5_10::chromiumos
-

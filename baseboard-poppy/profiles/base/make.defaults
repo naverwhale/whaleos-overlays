@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -19,9 +19,6 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} ipu3_fw"
 
 USE="${USE} -tpm tpm2"
 
-# Use ext4 crypto
-USE="${USE} direncryption"
-
 # Add EC logging
 USE="${USE} eclog"
 
@@ -33,9 +30,6 @@ USE="${USE} kvm_host crosvm-gpu virtio_gpu"
 
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
-
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
 
 # Enable eMMC tools
 USE="${USE} mmc"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -16,4 +16,10 @@ modify_kernel_command_line() {
 
 	# See b/189856884 - enable PSR
 	echo "amdgpu.dcfeaturemask=0x8" >> "$1"
+
+	# See b/218950907
+	echo "rtc-cmos.use_acpi_alarm=1" >> "$1"
+
+	# See b/219534576
+	echo "amd-pmc.enable_stb=1" >> "$1"
 }

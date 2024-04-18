@@ -1,35 +1,15 @@
 #
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+imports:
+  - "include/audio.yaml"
 
-audio-common: &audio_common
-  $cras-root: "/etc/cras"
-  $ucm-root: "/usr/share/alsa/ucm"
-  $card: "bxtda7219max"
-  # Both source/target path for cras files.
-  # Generally set to device name or 'common'
-  $cras: "{{$device-name}}"
-  $ucm: "1mic" # Default
-  $ucm-device: "common"
-  $ucm-target-suffix: ""
-  $ucm-suffix-path: "/{{$ucm}}"
-  cras-config-dir: "{{$cras}}"
-  ucm-suffix: "{{$ucm}}{{$ucm-target-suffix}}"
-  $cras-source: "{{cras-config-dir}}/audio/cras-config"
-  $cras-dest: "{{$cras-root}}/{{cras-config-dir}}"
-  $ucm-source: "{{$ucm-device}}/audio/ucm-config{{$ucm-suffix-path}}"
-  $ucm-dest: "{{$ucm-root}}/{{$card}}.{{ucm-suffix}}"
-  files:
-    - source: "{{$cras-source}}/{{$card}}"
-      destination: "{{$cras-dest}}/{{$card}}"
-    - source: "{{$cras-source}}/dsp.ini"
-      destination: "{{$cras-dest}}/dsp.ini"
-    - source: "{{$ucm-source}}/HiFi"
-      destination: "{{$ucm-dest}}/HiFi"
-    - source: "{{$ucm-source}}/{{$card}}.conf"
-      destination: "{{$ucm-dest}}/{{$card}}.{{ucm-suffix}}.conf"
+rmad-common: &rmad_common
+  enabled: True
+  has-cbi: False
+  use-legacy-custom-label: True
 
 device-config: &device_config
   $dptf-device: "{{$device-name}}"
@@ -60,35 +40,44 @@ device-config: &device_config
     help-content-id: "{{$help-content-id}}"
   identity: &base_ident
     platform-name: "Coral"
-    smbios-name-match: "Coral"
+    frid: "Google_Coral"
     sku-id: "{{$sku-id}}"
-  hardware-properties:
-    form-factor: CHROMEBOOK
+  hardware-properties: &hardware_properties
+    $form-factor: CHROMEBOOK
+    form-factor: "{{$form-factor}}"
+  rmad: *rmad_common
 
 convertible-base-config: &convertible_base_config
+  <<: *device_config
   hardware-properties:
-    form-factor: CHROMEBOOK
+    <<: *hardware_properties
+    form-factor: CONVERTIBLE
     is-lid-convertible: True
     has-lid-accelerometer: True
     has-base-accelerometer: True
     has-base-gyroscope: True
 
 convertible-config: &convertible_config
-  <<: [ *device_config, *convertible_base_config ]
+  <<: *convertible_base_config
 
 wl-device-config: &wl_device_config
   <<: *device_config
   identity:
     <<: *base_ident
-    whitelabel-tag: "{{$whitelabel-tag}}"
+    custom-label-tag: "{{$custom-label-tag}}"
 
 wl-convertible-config: &wl_convertible_config
   <<: [ *wl_device_config, *convertible_base_config ]
+  hardware-properties:
+    <<: *hardware_properties
+    form-factor: CONVERTIBLE
+    is-lid-convertible: True
+    has-lid-accelerometer: True
+    has-base-accelerometer: True
+    has-base-gyroscope: True
 
 astronaut-config: &astronaut_config
   <<: *device_config
-  modem:
-    firmware-variant: "{{$device-name}}"
 
 chromeos:
   devices:
@@ -100,16 +89,22 @@ chromeos:
         - $sku-id: 1
           config: *astronaut_config
         - $sku-id: 61
-          config: *astronaut_config
+          config:
+            <<: *astronaut_config
+            modem:
+              firmware-variant: "{{$device-name}}"
         - $sku-id: 62
-          config: *astronaut_config
+          config:
+            <<: *astronaut_config
+            modem:
+              firmware-variant: "{{$device-name}}"
     - $device-name: "babymega"
       $ucm-device: "babymega"
       $ucm-target-suffix: "Babymega"
       $help-content-id: "BABYMEGA"
       products:
-        - $whitelabel-tag: ""
-        - $whitelabel-tag: "kitefin"
+        - $custom-label-tag: ""
+        - $custom-label-tag: "kitefin"
       skus:
         - $sku-id: 52
           config: *wl_device_config
@@ -121,8 +116,8 @@ chromeos:
       $ucm: "2mic"
       $help-content-id: "BABYTIGER"
       products:
-        - $whitelabel-tag: ""
-        - $whitelabel-tag: "longfin"
+        - $custom-label-tag: ""
+        - $custom-label-tag: "longfin"
       skus:
         - $sku-id: 30
           config: *wl_device_config
@@ -131,22 +126,22 @@ chromeos:
     - $device-name: "blacktip"
       $dptf-device: "astronaut"
       products:
-        - $whitelabel-tag: "" # default
+        - $custom-label-tag: "" # default
           $help-content-id: "BLACKTIP"
-        - $whitelabel-tag: "ctl"
+        - $custom-label-tag: "ctl"
           $help-content-id: "BLACKTIP-CTL"
-        - $whitelabel-tag: "gsa"
+        - $custom-label-tag: "gsa"
           $help-content-id: "BLACKTIP-GSA"
-        - $whitelabel-tag: "positivo"
+        - $custom-label-tag: "positivo"
           $help-content-id: "BLACKTIP-POSITIVO"
-        - $whitelabel-tag: "lanix"
+        - $custom-label-tag: "lanix"
           $help-content-id: "BLACKTIP-LANIX"
-        - $whitelabel-tag: "sns"
+        - $custom-label-tag: "sns"
           $help-content-id: "BLACKTIP-SNS"
-        - $whitelabel-tag: "multilaser"
+        - $custom-label-tag: "multilaser"
           $help-content-id: "BLACKTIP-MULTILASER"
         # Workaround to make it compatible with "ctl"
-        - $whitelabel-tag: "to-be-determined-bt-loem1"
+        - $custom-label-tag: "to-be-determined-bt-loem1"
           $help-content-id: "BLACKTIP-CTL"
       skus:
         - $sku-id: 36
@@ -156,24 +151,24 @@ chromeos:
       $touchpad-wakeup: "0"
       $dptf-device: "astronaut"
       products:
-        - $whitelabel-tag: "" # default
+        - $custom-label-tag: "" # default
           $help-content-id: "BLACKTIP360"
-        - $whitelabel-tag: "ctl"
+        - $custom-label-tag: "ctl"
           $help-content-id: "BLACKTIP360-CTL"
-        - $whitelabel-tag: "gsa"
+        - $custom-label-tag: "gsa"
           $help-content-id: "BLACKTIP360-GSA"
-        - $whitelabel-tag: "xma"
+        - $custom-label-tag: "xma"
           $help-content-id: "BLACKTIP360-XMA"
-        - $whitelabel-tag: "positivo"
+        - $custom-label-tag: "positivo"
           $help-content-id: "BLACKTIP360-POSITIVO"
-        - $whitelabel-tag: "lanix"
+        - $custom-label-tag: "lanix"
           $help-content-id: "BLACKTIP360-LANIX"
-        - $whitelabel-tag: "sns"
+        - $custom-label-tag: "sns"
           $help-content-id: "BLACKTIP360-SNS"
-        - $whitelabel-tag: "multilaser"
+        - $custom-label-tag: "multilaser"
           $help-content-id: "BLACKTIP360-MULTILASER"
         # Workaround to make it compatible with "ctl"
-        - $whitelabel-tag: "to-be-determined-bt-loem1"
+        - $custom-label-tag: "to-be-determined-bt-loem1"
           $help-content-id: "BLACKTIP360-CTL"
       skus:
         - $sku-id: 37
@@ -183,11 +178,11 @@ chromeos:
     - $device-name: "blacktiplte"
       $dptf-device: "astronaut"
       products:
-        - $whitelabel-tag: "default" # default
+        - $custom-label-tag: "default" # default
           $help-content-id: "BLACKTIPLTE-DEFAULT"
-        - $whitelabel-tag: "ctl"
+        - $custom-label-tag: "ctl"
           $help-content-id: "BLACKTIPLTE-CTL"
-        - $whitelabel-tag: "gsa"
+        - $custom-label-tag: "gsa"
           $help-content-id: "BLACKTIPLTE-GSA"
       skus:
         - $sku-id: 65
@@ -295,8 +290,8 @@ chromeos:
     - $device-name: "rabbid"
       $help-content-id: "RABBID"
       products:
-        - $whitelabel-tag: ""
-        - $whitelabel-tag: "sailfin"
+        - $custom-label-tag: ""
+        - $custom-label-tag: "sailfin"
       skus:
         - $sku-id: 28
           $cras: "rabbid_rugged"
@@ -343,21 +338,21 @@ chromeos:
     - $device-name: "whitetip"
       $test-label: "robo"
       products:
-        - $whitelabel-tag: "" # default
+        - $custom-label-tag: "" # default
           $help-content-id: "WHITETIP"
-        - $whitelabel-tag: "ctl"
+        - $custom-label-tag: "ctl"
           $help-content-id: "WHITETIP-CTL"
-        - $whitelabel-tag: "prowise"
+        - $custom-label-tag: "prowise"
           $help-content-id: "WHITETIP-PROWISE"
-        - $whitelabel-tag: "ytl"
+        - $custom-label-tag: "ytl"
           $help-content-id: "WHITETIP-YTL"
-        - $whitelabel-tag: "sector5"
+        - $custom-label-tag: "sector5"
           $help-content-id: "WHITETIP-SECTOR5"
-        - $whitelabel-tag: "pcmerge"
+        - $custom-label-tag: "pcmerge"
           $help-content-id: "WHITETIP-PCMERGE"
-        - $whitelabel-tag: "xma"
+        - $custom-label-tag: "xma"
           $help-content-id: "WHITETIP-XMA"
-        - $whitelabel-tag: "multilaser"
+        - $custom-label-tag: "multilaser"
           $help-content-id: "WHITETIP-MULTILASER"
       skus:
         - $sku-id: 78

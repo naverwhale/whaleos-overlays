@@ -1,2 +1,0 @@
-# Mesa conflicts with mali-drivers and minigbm.
-media-libs/mesa

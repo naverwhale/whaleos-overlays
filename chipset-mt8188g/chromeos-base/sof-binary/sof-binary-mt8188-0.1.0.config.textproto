@@ -1,0 +1,22 @@
+repo: "https://github.com/thesofproject/sof.git"
+branch: "main"
+commit: "ba05d6b507efbe1ba5215a46b6fc58ef81167b46"
+tarball: "sof-binary-mt8188"
+version: "0.1.0"
+firmware: {
+  docker: {
+    use: true
+    identifier: "gsoftools:latest"
+  }
+  build_arg: "mt8188"
+}
+artifact: {
+  name: "sof-mt8188.ri"
+  built_path: "build_mt8188_xcc/sof-mt8188.ri"
+  sha256: "ad27da4f208e9508ff7b88b05f43463ad7779c266de7ea2e940135a302f631c3"
+}
+artifact: {
+  name: "sof-mt8188.ldc"
+  built_path: "build_mt8188_xcc/sof-mt8188.ldc"
+  sha256: "7d1be0bbf65c7e24f224651f7fcdde3020400b9124cf3fc2df4189c7d08bfc94"
+}

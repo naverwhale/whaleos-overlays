@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -31,4 +31,8 @@ modify_kernel_command_line() {
   # Ensure internal devices are also in their own DMA domain,
   # isolated from other devices, just like external devices.
   echo "intel_iommu=on" >> "$1"
+
+  # Disable PSR2 by default.
+  # (0=disabled, 1=enable up to PSR1, 2=enable up to PSR2)
+  echo "i915.enable_psr=1" >> "$1"
 }

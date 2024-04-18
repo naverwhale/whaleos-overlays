@@ -1,4 +1,4 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -17,7 +17,12 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} iwlwifi-QuZ"
 
 # Build kernel with serial driver
 USE="${USE} pcserial"
-USE="${USE} tty_console_ttyS0"
+
+# Enable serial console
+TTY_CONSOLE="ttyS0"
+
+# Enable tpm
+USE="${USE} -tpm tpm2 cr50_onboard"
 
 # Add EC logging
 USE="${USE} eclog"
@@ -27,9 +32,6 @@ USE="${USE} -acpi_ac"
 
 # Enable VMs
 #USE="${USE} kvm_host crosvm-gpu virtio_gpu"
-
-# Enable serial console
-TTY_CONSOLE="ttyS0"
 
 # Enable NVMe utility
 USE="${USE} nvme"
@@ -45,13 +47,6 @@ USE="${USE} pciguard"
 
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
-
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
-
-# Enable Intel GNA NNAPI HAL.
-USE="${USE} vendor-nnhal"
 
 # Enable eMMC tools
 USE="${USE} mmc"

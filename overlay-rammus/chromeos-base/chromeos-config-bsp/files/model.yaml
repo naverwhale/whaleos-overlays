@@ -1,38 +1,16 @@
 #
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-
-audio_common: &audio_common
-  main:
-    $cras_root: "/etc/cras"
-    $ucm_root: "/usr/share/alsa/ucm"
-    $card: "kblda7219m98927"
-
-    cras-config-dir: "{{$cras}}"
-    ucm-suffix: "{{$ucm}}"
-
-    $cras-source: "{{cras-config-dir}}/audio/cras-config"
-    $cras-dest: "{{$cras_root}}/{{cras-config-dir}}"
-    $ucm-source: "{{cras-config-dir}}/audio/ucm-config{{$ucm-source-suffix}}"
-    $ucm-dest: "{{$ucm_root}}/{{$card}}.{{ucm-suffix}}"
-
-    files:
-      - source: "{{$cras-source}}/{{$card}}"
-        destination: "{{$cras-dest}}/{{$card}}"
-      - source: "{{$cras-source}}/dsp.ini"
-        destination: "{{$cras-dest}}/dsp.ini"
-      - source: "{{$ucm-source}}/HiFi.conf"
-        destination: "{{$ucm-dest}}/HiFi.conf"
-      - source: "{{$ucm-source}}/{{$card}}.conf"
-        destination: "{{$ucm-dest}}/{{$card}}.{{ucm-suffix}}.conf"
+imports:
+  - "include/audio.yaml"
 
 common_config: &common_config
   name: "{{$device-name}}"
   identity:
     platform-name: "Poppy"
-    smbios-name-match: "Rammus"
+    frid: "Google_Rammus"
     sku-id: "{{$sku-id}}"
   firmware:
     no-firmware: True
@@ -42,6 +20,8 @@ common_config: &common_config
     $ucm: "{{$device-name}}"
     $ucm-source-suffix: ""
     <<: *audio_common
+  keyboard:
+    backlight: True
   power: &power_common
     low-battery-shutdown-percent: "4.0"
     suspend-to-idle: "1"
@@ -59,6 +39,7 @@ common_config: &common_config
         destination: "/etc/dptf/{{dptf-dv}}"
   hardware-properties:
     form-factor: CHROMEBOOK
+    psu-type: battery
 
 chromeos:
   devices:

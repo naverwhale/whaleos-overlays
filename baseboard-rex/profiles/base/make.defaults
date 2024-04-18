@@ -1,10 +1,10 @@
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
 # Initial value just for style purposes.
-USE=""
 LINUX_FIRMWARE=""
+USE=""
 
 # Add EC logging
 USE="${USE} eclog"
@@ -30,3 +30,15 @@ USE="${USE} pciguard"
 
 # Enable eMMC tools
 USE="${USE} mmc"
+
+# WiFi 6E requires SAE H2E
+USE="${USE} sae_h2e"
+
+# Enable miniOS support
+USE="${USE} minios"
+
+# Enable LVM stateful partition
+USE="${USE} lvm_stateful_partition"
+
+# Enable LVM application containers.
+USE="${USE} lvm_application_containers"

@@ -1,4 +1,4 @@
-# Copyright (c) 2014 The Chromium OS Authors. All rights reserved.
+# Copyright 2014 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # To reduce the size of the image
@@ -8,3 +8,6 @@ chromeos-base/chromeos-chrome -accessibility
 sys-process/criu selinux
 app-emulation/docker -aufs -btrfs -device-mapper hardened
 app-emulation/containerd -btrfs
+
+# Remove genesys plugin(b/262261828)
+sys-apps/fwupd -gusb

@@ -1,1 +1,0 @@
-oslogin-20200507.00.ebuild

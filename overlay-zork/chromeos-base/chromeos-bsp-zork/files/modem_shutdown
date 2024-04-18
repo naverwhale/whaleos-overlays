@@ -1,11 +1,13 @@
 #!/bin/bash
 
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-readonly GPIO=345
-readonly GPIO_PATH="/sys/class/gpio/gpio${GPIO}/"
+GPIO_ID=89
+GPIO_OFFSET=$(cat /sys/devices/platform/AMD0030:00/gpio/gpiochip[0-9]*/base)
+GPIO=$((GPIO_OFFSET + GPIO_ID))
+GPIO_PATH="/sys/class/gpio/gpio${GPIO}/"
 
 log() {
   logger "[modem]" "$@"
@@ -21,12 +23,9 @@ is_modem_alive() {
 
 has_modem || exit 0
 
-log "stop modemmanager"
-stop modemmanager
-
 if [[ ! -d ${GPIO_PATH} ]]; then
   log "export GPIO ${GPIO}"
-  echo ${GPIO} > /sys/class/gpio/export
+  echo "${GPIO}" > /sys/class/gpio/export
   echo out > "${GPIO_PATH}/direction"
 fi
 

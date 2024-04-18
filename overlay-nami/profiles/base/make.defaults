@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -15,12 +15,7 @@ USE="${USE} has_keyboard_backlight"
 
 USE="${USE} cros_ec"
 
-# Use ext4 crypto
-USE="${USE} direncryption"
-
 USE="${USE} -tpm tpm2 cr50_onboard"
-
-EC_FIRMWARE="nami"
 
 # Uncomment these lines to activate the serial port.
 #TTY_CONSOLE="ttyS0"
@@ -44,17 +39,15 @@ USE="${USE} ime_addons"
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
 
-# Enable on-device handwriting recognition
-USE="${USE} ondevice_handwriting"
-
 # Enable on-device text suggestions
 USE="${USE} ondevice_text_suggestions"
-
-# Bring in Runtime AVL Compliance Check (RACC) packages
-USE="${USE} racc"
 
 # Enable on-device grammar check
 USE="${USE} ondevice_grammar"
 
 # chromeos-base/chromeos-config-bsp is located in this overlay.
 USE="${USE} has_chromeos_config_bsp"
+
+# Move public overlay to kernel 5.4
+USE="${USE} uprev-4-to-5"
+USE="${USE} -kernel-4_4 kernel-5_4"

@@ -1,4 +1,4 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -53,10 +53,12 @@ audio_config: &audio_config
 
 base-config: &base_config
   name: "{{$device-name}}"
-  identity:
+  identity: &identity_common
     platform-name: "Trogdor"
-    device-tree-compatible-match: "{{$fw-name}}"
+    frid: "{{$fw-name}}"
     sku-id: "{{$sku-id}}"
+  ui:
+    help-content-id: "{{$help-content-id}}"
   firmware: &firmware_common
     build-targets: &firmware_build_targets_common
       bmpblk: "trogdor"
@@ -87,20 +89,21 @@ base-config: &base_config
     wake-on-dp: "1"
   audio: *audio_config
   scheduler-tune:
-    boost-urgent: 20
-    cpuset-nonurgent: 0-5
-    input-boost: 75
+    boost-urgent: 70
+    boost-top-app: 70
+    boost-arcvm: 0.82
 
 zephyr-firmware-common: &zephyr_firmware_common
   <<: *firmware_common
   build-targets:
     <<: *firmware_build_targets_common
-    zephyr-ec: "projects/trogdor/{{$ec-build-name}}"
+    zephyr-ec: "{{$ec-build-name}}"
 
 convertible-config: &convertible_config
   <<: *base_config
   hardware-properties:
     form-factor: CHROMEBOOK
+    psu-type: battery
     is-lid-convertible: True
     has-lid-accelerometer: True
     has-base-accelerometer: True
@@ -113,6 +116,7 @@ clamshell-config: &clamshell_config
   <<: *base_config
   hardware-properties:
     form-factor: CHROMEBOOK
+    psu-type: battery
     is-lid-convertible: False
     has-lid-accelerometer: False
     has-base-accelerometer: False
@@ -122,26 +126,43 @@ clamshell-config: &clamshell_config
     $has-touchscreen: False
     has-touchscreen: "{{$has-touchscreen}}"
 
+pazquel-config: &pazquel_config
+  <<: *clamshell_config
+  identity:
+    <<: *identity_common
+    custom-label-tag: "{{$custom-label-tag}}"
+
+pazquel360-config: &pazquel360_config
+  <<: *convertible_config
+  identity:
+    <<: *identity_common
+    custom-label-tag: "{{$custom-label-tag}}"
+
 p-sensor-20mm-lazor-config: &p_sensor_20mm_lazor_config
   $set-cellular-transmit-power-for-proximity: "1"
   proximity-sensor:
-    lte:
-      channel: "1"
-      hardwaregain: "8"
-      sampling-frequency: "33.333333"
-      thresh-rising: "88"
-      thresh-falling: "88"
-      thresh-falling-period: "2"
-      thresh-rising-period: "2"
-      thresh-falling-hysteresis: "0"
-      thresh-rising-hysteresis: "0"
+    semtech-config:
+      - file:
+          build-path: "lazor/proximity-sensor/lazor/semtech_config_cellular.json"
+          system-path: "/usr/share/chromeos-assets/proximity-sensor/lazor/semtech_config_cellular.json"
+        location: "cellular"
+
+p-sensor-pazquel-config: &p_sensor_pazquel_config
+  $set-cellular-transmit-power-for-proximity: "1"
+  proximity-sensor:
+    semtech-config:
+      - file:
+          build-path: "pazquel/proximity-sensor/pazquel/semtech_config_cellular.json"
+          system-path: "/usr/share/chromeos-assets/proximity-sensor/pazquel/semtech_config_cellular.json"
+        location: "cellular"
 
 chromeos:
   devices:
     - $device-name: "trogdor"
-      $fw-name: "google,trogdor"
+      $fw-name: "Google_Trogdor"
       $coreboot-build-name: "trogdor"
       $ec-build-name: "trogdor"
+      $help-content-id: "TROGDOR"
       $card: "sc7180-rt5682-max98357a-1mic"
       $ufc-interface: "usb"
       $ufc-autofocus: True
@@ -150,77 +171,138 @@ chromeos:
         - $sku-id: 0 # LTE+Wifi
           config:
             <<: [ *convertible_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
         - $sku-id: 1 # Wifi-only
           config:
             <<: [ *convertible_config, *camera_config_ufc ]
     - $device-name: "kingoftown"
-      $fw-name: "google,kingoftown"
+      $fw-name: "Google_Kingoftown"
       $coreboot-build-name: "kingoftown"
       $ec-build-name: "kingoftown"
-      $card: "sc7180-adau7002-max98357a"
+      $help-content-id: "KINGOFTOWN"
+      $card: "sc7180-rt5682s-max98357a-1mic"
       $ufc-interface: "usb"
       $ufc-autofocus: True
       $ufc-1080p: False
       skus:
-        - $sku-id: 0 # Lte+Wifi
+        - $sku-id: 0 # LTE+Wifi+non-Touch+PS8640
+          $has-touchscreen: False
+          config:
+            <<: [ *clamshell_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+        - $sku-id: 2 # LTE+Wifi+Touch+PS8640
           $has-touchscreen: True
           config:
             <<: [ *clamshell_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+        - $sku-id: 4 # LTE+Wifi+non-Touch+Ti-sn65
+          $has-touchscreen: False
+          config:
+            <<: [ *clamshell_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
     - $device-name: "lazor"
-      $fw-name: "google,lazor"
+      $fw-name: "Google_Lazor"
       $coreboot-build-name: "lazor"
       $ec-build-name: "lazor"
+      $help-content-id: "LAZOR"
       $internal-backlight-no-als-battery-brightness: "43"
       $card: "sc7180-rt5682-max98357a-1mic"
       $ufc-interface: "usb"
       $ufc-autofocus: True
       $ufc-1080p: False
-      firmware:
-        <<: *zephyr_firmware_common
       skus:
         - $sku-id: 0 # LTE+Wifi
           $set-cellular-transmit-power-for-tablet-mode: "1"
           $use-modemmanager-for-dynamic-sar: "1"
           $use-multi-power-level-dynamic-sar: "1"
           $set-cellular-transmit-power-level-mapping: |
-            HIGH 0
-            MEDIUM 1
-            LOW 2
+            HIGH 1
+            MEDIUM 2
+            LOW 3
           $has-keyboard-backlight: "1"
           config:
             <<: [ *convertible_config, *p_sensor_20mm_lazor_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+            firmware: *zephyr_firmware_common
+            keyboard:
+              backlight: True
         - $sku-id: 1 # Wifi-only
           config:
             <<: [ *convertible_config, *camera_config_ufc ]
+            firmware: *zephyr_firmware_common
         - $sku-id: 2 # Wifi-only
           config:
             <<: [ *convertible_config, *camera_config_ufc ]
+            firmware: *zephyr_firmware_common
+            keyboard:
+              backlight: True
           $has-keyboard-backlight: "1"
+        - $sku-id: 10 # LTE+Wifi+No esim
+          $set-cellular-transmit-power-for-tablet-mode: "1"
+          $use-modemmanager-for-dynamic-sar: "1"
+          $use-multi-power-level-dynamic-sar: "1"
+          $set-cellular-transmit-power-level-mapping: |
+            HIGH 1
+            MEDIUM 2
+            LOW 3
+          $has-keyboard-backlight: "1"
+          config:
+            <<: [ *convertible_config, *p_sensor_20mm_lazor_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+            firmware: *zephyr_firmware_common
     - $device-name: "limozeen"
-      $fw-name: "google,lazor"
+      $fw-name: "Google_Lazor"
       $coreboot-build-name: "lazor"
       $ec-build-name: "lazor"
+      $help-content-id: "LIMOZEEN"
       $card: "sc7180-rt5682-max98357a-1mic"
       $ufc-interface: "usb"
       $ufc-autofocus: True
       $ufc-1080p: False
-      firmware:
-        <<: *zephyr_firmware_common
       skus:
-        - $sku-id: 4 # LTE+Wifi
+        - $sku-id: 4 # LTE+Wifi+Touchscreen
           $has-touchscreen: True
           config:
             <<: [ *clamshell_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+            firmware: *zephyr_firmware_common
         - $sku-id: 5 # TODO(philipchen) Deprecate sku5 when no one uses it.
           config:
             <<: [ *clamshell_config, *camera_config_ufc ]
-        - $sku-id: 6 # LTE+Wifi
+            modem:
+              firmware-variant: "{{$device-name}}"
+            firmware: *zephyr_firmware_common
+        - $sku-id: 6 # LTE+Wifi+No Touchscreen
           config:
             <<: [ *clamshell_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+            firmware: *zephyr_firmware_common
+        - $sku-id: 15 # LTE+Wifi+Touchscreen+No esim
+          $has-touchscreen: True
+          config:
+            <<: [ *clamshell_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+            firmware: *zephyr_firmware_common
+        - $sku-id: 18 # LTE+Wifi+No Touchscreen+No esim
+          config:
+            <<: [ *clamshell_config, *camera_config_ufc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+            firmware: *zephyr_firmware_common
     - $device-name: "marzipan"
-      $fw-name: "google,marzipan"
+      $fw-name: "Google_Marzipan"
       $coreboot-build-name: "marzipan"
       $ec-build-name: "marzipan"
+      $help-content-id: "MARZIPAN"
       $card: "sc7180-adau7002-max98357a"
       $ufc-interface: "usb"
       $ufc-autofocus: True
@@ -231,9 +313,10 @@ chromeos:
           config:
             <<: [ *convertible_config, *camera_config_ufc ]
     - $device-name: "pompom"
-      $fw-name: "google,pompom"
+      $fw-name: "Google_Pompom"
       $coreboot-build-name: "pompom"
       $ec-build-name: "pompom"
+      $help-content-id: "POMPOM"
       $ufc-interface: "usb"
       $ufc-autofocus: True
       $ufc-1080p: False
@@ -245,24 +328,106 @@ chromeos:
         - $sku-id: 0 # LTE+Wifi
           config:
             <<: [ *convertible_config, *camera_config_ufc_wfc ]
+            modem:
+              firmware-variant: "{{$device-name}}"
         - $sku-id: 1 # Wifi-only
           config:
             <<: [ *convertible_config, *camera_config_ufc_wfc ]
     - $device-name: "pazquel"
-      $fw-name: "google,pazquel"
+      $fw-name: "Google_Pazquel"
       $coreboot-build-name: "pazquel"
       $ec-build-name: "pazquel"
       $card: "sc7180-rt5682-max98357a-1mic"
       $ufc-interface: "usb"
       $ufc-autofocus: True
       $ufc-1080p: False
+      products:
+        - $custom-label-tag: ""
+          $help-content-id: "PAZQUEL"
+        - $custom-label-tag: "orbic"
+          $help-content-id: "PAZQUEL-ORBIC"
+        - $custom-label-tag: "tsm"
+          $help-content-id: "PAZQUEL-TSM"
+        - $custom-label-tag: "liva"
+          $help-content-id: "PAZQUEL-LIVA"
       skus:
         - $sku-id: 0
+          $use-modemmanager-for-dynamic-sar: "1"
+          $set-cellular-transmit-power-level-mapping: |
+            HIGH 1
+            LOW 2
           config:
-            <<: [ *clamshell_config, *camera_config_ufc ]
+            <<: [ *pazquel_config, *camera_config_ufc, *p_sensor_pazquel_config ]
+            modem:
+              firmware-variant: "{{$device-name}}"
         - $sku-id: 1
           config:
-            <<: [ *clamshell_config, *camera_config_ufc ]
+            <<: [ *pazquel_config, *camera_config_ufc ]
         - $sku-id: 2
+          $use-modemmanager-for-dynamic-sar: "1"
+          $set-cellular-transmit-power-level-mapping: |
+            HIGH 1
+            LOW 2
           config:
-            <<: [ *clamshell_config, *camera_config_ufc ]
+            <<: [ *pazquel_config, *camera_config_ufc, *p_sensor_pazquel_config ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+        - $sku-id: 4
+          $use-modemmanager-for-dynamic-sar: "1"
+          $set-cellular-transmit-power-level-mapping: |
+            HIGH 1
+            LOW 2
+          config:
+            <<: [ *pazquel_config, *camera_config_ufc, *p_sensor_pazquel_config ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+        - $sku-id: 5
+          config:
+            <<: [ *pazquel_config, *camera_config_ufc ]
+        - $sku-id: 6
+          $use-modemmanager-for-dynamic-sar: "1"
+          $set-cellular-transmit-power-level-mapping: |
+            HIGH 1
+            LOW 2
+          config:
+            <<: [ *pazquel_config, *camera_config_ufc, *p_sensor_pazquel_config ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+    - $device-name: "pazquel360"
+      $fw-name: "Google_Pazquel"
+      $coreboot-build-name: "pazquel"
+      $ec-build-name: "pazquel"
+      $card: "sc7180-rt5682s-max98357a-1mic"
+      $ufc-interface: "usb"
+      $ufc-autofocus: True
+      $ufc-1080p: False
+      products:
+        - $custom-label-tag: ""
+          $help-content-id: "PAZQUEL360"
+        - $custom-label-tag: "prowise"
+          $help-content-id: "PAZQUEL360-PROWISE"
+        - $custom-label-tag: "mcj"
+          $help-content-id: "PAZQUEL360-MCJ"
+
+      skus:
+        - $sku-id: 20 # LTE+eSIM
+          $use-modemmanager-for-dynamic-sar: "1"
+          $set-cellular-transmit-power-level-mapping: |
+            HIGH 1
+            LOW 2
+          config:
+            <<: [ *pazquel360_config, *camera_config_ufc, *p_sensor_pazquel_config ]
+            modem:
+              firmware-variant: "{{$device-name}}"
+        - $sku-id: 21 # WiFi
+          config:
+            <<: [ *pazquel360_config, *camera_config_ufc ]
+        - $sku-id: 22 # LTE
+          $use-modemmanager-for-dynamic-sar: "1"
+          $set-cellular-transmit-power-level-mapping: |
+            HIGH 1
+            LOW 2
+          config:
+            <<: [ *pazquel360_config, *camera_config_ufc, *p_sensor_pazquel_config ]
+            modem:
+              firmware-variant: "{{$device-name}}"

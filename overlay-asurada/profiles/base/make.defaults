@@ -1,4 +1,4 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -10,7 +10,6 @@ USE="${USE} asurada"
 # TODO(b/151053630): Need to enable the AP firmware build later
 #USE="${USE} bootimage"
 USE="${USE} cros_ec"
-EC_FIRMWARE="asurada"
 
 # Enable unibuild
 USE="${USE} unibuild has_chromeos_config_bsp"
@@ -26,3 +25,9 @@ TTY_CONSOLE="ttyS0"
 
 # Enable required fs features for Android R
 USE="${USE} fsverity"
+
+# Enable inference accuracy ml benchmarking
+USE="${USE} inference_accuracy_eval"
+
+# this indicates that this board has a -kernelnext overlay
+USE="${USE} has-kernelnext"

@@ -1,4 +1,4 @@
-# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Copyright 2016 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -16,7 +16,7 @@ or portage actions."
 
 LICENSE="BSD-Google"
 KEYWORDS="-* ~arm64 ~arm"
-IUSE="hana-arc64 hana-kernelnext kernel-3_18"
+IUSE="hana-arc64 hana-kernelnext kernel-5_15"
 
 # Add dependencies on other ebuilds from within this board overlay
 DEPEND=""
@@ -36,24 +36,10 @@ src_install() {
 
 	# Install audio config files.
 	local audio_config_dir="${FILESDIR}/audio-config"
-	install_audio_configs hana "${audio_config_dir}"
-
-	# Install platform specific config files for power_manager.
-	insinto "/usr/share/power_manager/board_specific"
-	doins "${FILESDIR}"/powerd_prefs/*
-	# The 4.19 kernel uses a new non linear backlight scale.
-	# To match the battery default backlight level we change the
-	# target % using file internal_backlight_no_als_battery_brightness.
-	# Note the intention is to have the same resulting real world brightness.
-	# b/149870759
-	# Also the default brightness for level 1/16 is too dim, and on some skus the
-	# backlight is not even on at that level.
-	# So that is also made brighter with min_visible_backlight_level.
-	# This should be moved to the main value after kernelnext is merged back.
-	# TODO(b/182509318): do this kernel version-independently instead
-	if ! use kernel-3_18; then
-		doins "${FILESDIR}"/powerd_prefs_kernelnext/*
+	if use kernel-5_15; then
+		audio_config_dir="${FILESDIR}/5_15-audio-config"
 	fi
+	install_audio_configs hana "${audio_config_dir}"
 
 	# Install rules to enable WoWLAN on startup.
 	udev_dorules "${FILESDIR}/99-mwifiex-wowlan.rules"

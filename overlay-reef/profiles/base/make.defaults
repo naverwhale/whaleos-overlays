@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -16,9 +16,6 @@ USE="${USE} keyboard_includes_side_buttons"
 # system is converted to tablet mode while it's suspended.
 USE="${USE} -touchpad_wakeup"
 
-# All firmwares to build from the EC code base
-EC_FIRMWARE="reef"
-
 # Include the wacom firmware updating tool
 INPUT_DEVICES="${INPUT_DEVICES} wacom"
 
@@ -34,8 +31,8 @@ USE="${USE} disable_instant_tethering"
 # Enable chromeos-config.
 USE="${USE} unibuild has_chromeos_config_bsp"
 
-# Disable on-device grammar check for boards with 2GB rootfs.
-USE="${USE} -ondevice_grammar"
+# To prevent cryptohome incompatibility problem while transitioning to 5.10
+USE="${USE} uprev-4-to-5"
 
-# Disable Floss Bluetooth for boards with 2GB rootfs.
-USE="${USE} -floss"
+# Use zstd to minify ARC images. (go/arc-zstd)
+USE="${USE} arc_squashfs_zstd"

@@ -1,5 +1,5 @@
 #
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -27,6 +27,8 @@ krane_audio_config: &krane_audio_config
     files:
       - source: "{{$cras-source}}/{{$card}}"
         destination: "{{$cras-dest}}/{{$card}}"
+      - source: "{{$cras-source}}/board.ini"
+        destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
       - source: "{{$ucm-source}}/HiFi.conf"
@@ -53,6 +55,8 @@ kakadu_audio_config: &kakadu_audio_config
     files:
       - source: "{{$cras-source}}/{{$card1}}"
         destination: "{{$cras-dest}}/{{$card1}}"
+      - source: "{{$cras-source}}/board.ini"
+        destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
       - source: "{{$ucm-source}}/HiFi_rt1015.conf"
@@ -83,6 +87,8 @@ katsu_audio_config: &katsu_audio_config
     files:
       - source: "{{$cras-source}}/{{$card1}}"
         destination: "{{$cras-dest}}/{{$card1}}"
+      - source: "{{$cras-source}}/board.ini"
+        destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
       - source: "{{$ucm-source}}/HiFi_rt1015p.conf"
@@ -112,13 +118,13 @@ common_config: &common_config
   name: "{{$device-name}}"
   identity: &identity
     platform-name: "Kukui"
-    device-tree-compatible-match: "{{$fw-name}}"
+    frid: "{{$fw-name}}"
   firmware:
     build-targets:
       bmpblk: "kukui"
       coreboot: "{{$fw-build-name}}"
       ec: "{{$fw-build-name}}"
-      ec_extras: [ "kukui_scp" ]
+      ec-extras: [ "kukui_scp" ]
       depthcharge: "kukui"
       libpayload: "kukui"
     no-firmware: true
@@ -140,14 +146,16 @@ common_config: &common_config
     config-file:
       system-path: "/etc/camera/camera_config_{{$device-name}}.json"
       build-path: "camera_config_{{$device-name}}.json"
-  hardware-properties:
+  hardware-properties: &hardware_properties_common
     form-factor: CHROMEBOOK
+    psu-type: battery
   scheduler-tune:
     boost-urgent: 40
+    boost-arcvm: 0.4
 
 kukui-config: &kukui_config
   <<: *common_config
-  $fw-name: "google,kukui"
+  $fw-name: "Google_Kukui"
   $fw-build-name: "kukui"
   $key-id: "DEFAULT"
   identity:
@@ -161,7 +169,7 @@ kukui-config: &kukui_config
 
 krane-config: &krane_config
   <<: *common_config
-  $fw-name: "google,krane"
+  $fw-name: "Google_Krane"
   $fw-build-name: "krane"
   $key-id: "KRANE"
   demo-mode:
@@ -189,10 +197,13 @@ krane-config: &krane_config
       region: screen
       side: right
   audio: *krane_audio_config
+  hardware-properties:
+    <<: *hardware_properties_common
+    has-side-volume-button: true
 
 kodama-config: &kodama_config
   <<: *common_config
-  $fw-name: "google,kodama"
+  $fw-name: "Google_Kodama"
   $fw-build-name: "kodama"
   $key-id: "KRANE"
   audio: *audio_config
@@ -206,10 +217,13 @@ kodama-config: &kodama_config
     # left unpopulated as they are physically labelled with '+' and
     # '-', and it would be confusing if the behavior adjusted based on
     # screen orientation.
+  hardware-properties:
+    <<: *hardware_properties_common
+    has-side-volume-button: true
 
 kakadu-config: &kakadu_config
   <<: *common_config
-  $fw-name: "google,kakadu"
+  $fw-name: "Google_Kakadu"
   $fw-build-name: "kakadu"
   $key-id: "KUKUIB"
   audio: *kakadu_audio_config
@@ -222,10 +236,13 @@ kakadu-config: &kakadu_config
     side-volume-button:
       region: screen
       side: top
+  hardware-properties:
+    <<: *hardware_properties_common
+    has-side-volume-button: true
 
 katsu-config: &katsu_config
   <<: *common_config
-  $fw-name: "google,katsu"
+  $fw-name: "Google_Katsu"
   $fw-build-name: "katsu"
   $key-id: "KUKUIA"
   audio: *katsu_audio_config
@@ -238,6 +255,9 @@ katsu-config: &katsu_config
     side-volume-button:
       region: screen
       side: top
+  hardware-properties:
+    <<: *hardware_properties_common
+    has-side-volume-button: true
 
 chromeos:
   devices:

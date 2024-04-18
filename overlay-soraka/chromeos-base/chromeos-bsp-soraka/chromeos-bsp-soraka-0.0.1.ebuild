@@ -1,7 +1,7 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI="7"
 
 inherit appid cros-audio-configs udev
 
@@ -47,4 +47,8 @@ src_install() {
 	udev_dorules "${FILESDIR}/99-hammerd.rules"
 	insinto /etc/init
 	doins "${FILESDIR}/hammerd.override"
+
+	# Install cpufreq config rules
+	insinto "/etc"
+	doins "${FILESDIR}/cpufreq/cpufreq.conf"
 }

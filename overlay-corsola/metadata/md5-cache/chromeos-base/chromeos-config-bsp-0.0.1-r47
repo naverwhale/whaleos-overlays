@@ -1,0 +1,13 @@
+BDEPEND=chromeos-base/chromeos-config-host:= dev-vcs/git app-misc/jq
+DEFINED_PHASES=compile info install setup unpack
+DESCRIPTION=Chrome OS Model configuration package for corsola
+EAPI=7
+HOMEPAGE=https://www.chromium.org/chromium-os
+IUSE=cros_host cros_workon_tree_4c7d887f6455bb5bb8ef0b0e5b9dc3f958c597ef_ca453e2e5ecaf0910e119ca61381e55d3610a740_45edd30c1f972a8db114acc537cca5a864f900b8_4624be3360500b03ac5fe91dda05532cfe21bf18_da5bd0f361068688b8dde18c0f3f60b7b93f3f78_39a8a4911d95c90b3667d582469b2b4420e23bfc_03c659c9808a7ebae49f93c57c7b18cd4534e90f_175980e67eaf713579745eaf1b852ce1aae5edbe
+KEYWORDS=*
+LICENSE=BSD-Google
+PROPERTIES=live
+RDEPEND=!chromeos-base/chromeos-config-bsp-corsola
+SLOT=0/0.0.1-r47
+_eclasses_=cros-constants	676fcfd1679a06bba553adf90e231454	cros-credentials	dd20060574e24cba5fa46d205f9aba0c	cros-unibuild	94ba1b876f001e1859d822211bb80291	cros-workon	247d4700539e27bc12026f785ec53757	flag-o-matic	ad475baa777c9978fa035216c8264a10	git-2	d6a1d7d3b4c4fff2fba86e3f53beeb0f	multilib	2477ebe553d3e4d2c606191fe6c33602	toolchain-funcs	528ab0a9e1ee02c57524ad3bede3c57e
+_md5_=2c4a6087ee7bce0edc7d1a367fd982a9

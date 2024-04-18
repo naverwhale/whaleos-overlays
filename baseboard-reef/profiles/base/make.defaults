@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -25,9 +25,6 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} ath10k_qca6174a-5 qca6174a-5-bt"
 # Enable DPTF
 USE="${USE} dptf"
 
-# Use ext4 crypto
-USE="${USE} direncryption"
-
 # Enable iwlwifi remove/rescan PCI reliability workaround.
 USE="${USE} iwlwifi_rescan"
 
@@ -46,14 +43,8 @@ USE="${USE} kvm_host crosvm-gpu virtio_gpu"
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
 # Enable eMMC tools
 USE="${USE} mmc"
-
-# Disable document scanning due to insufficient rootfs.
-USE="${USE} -ondevice_document_scanner"
 
 # Enable chromeos-config.
 USE="${USE} unibuild has_chromeos_config_bsp_baseboard"

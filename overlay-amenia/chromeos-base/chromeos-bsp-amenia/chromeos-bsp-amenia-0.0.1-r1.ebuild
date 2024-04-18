@@ -1,1 +1,0 @@
-chromeos-bsp-amenia-0.0.1.ebuild

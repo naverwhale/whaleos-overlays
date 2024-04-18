@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -20,19 +20,28 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} i915_kbl"
 # Specify default kernel
 USE="${USE} kernel-4_19"
 
+# Identify the vendor
+USE="${USE} intel_cpu"
+
 # Enable DPTF
 USE="${USE} dptf"
 
 # Enable Intel media-driver
-USE="${USE} -video_cards_i965 video_cards_iHD"
+USE="${USE} -video_cards_i965 video_cards_iHD video_cards_iHD_g9"
 
 # Enable android_aep
 USE="${USE} android_aep"
 
 USE="${USE} drm_atomic"
 
+# Allows Chrome to start in the presence of multiple threads.
+USE="${USE} gpu_sandbox_start_early"
+
 # Enable GpuMemoryBuffers backed by dma-bufs.
 USE="${USE} native_gpu_memory_buffers"
 
 # Use legacy pre-Groot UI for initramfs and init script screens.
 USE="${USE} legacy_firmware_ui"
+
+# Enable Vulkan
+USE="${USE} vulkan"

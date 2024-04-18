@@ -1,4 +1,4 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -21,8 +21,19 @@ device-config: &device_config
     psu-type: battery
   identity:
     platform-name: Poppy
-    smbios-name-match: Atlas
+    frid: "Google_Atlas"
+  camera:
+    count: 1
+    devices:
+      - interface: "mipi"
+        facing: "front"
+        orientation: 0
+        flags:
+          support-autofocus: True
+          support-1080p: True
   name: atlas
+  keyboard:
+    backlight: True
   power:
     als-smoothing-constant: '0.3'
     battery-stabilized-after-startup-ms: '25000'
@@ -43,6 +54,7 @@ device-config: &device_config
       40.0 -1 30
       0.0 10 -1
     low-battery-shutdown-percent: '3.0'
+    adaptive-charging-hold-delta-percent: '3.0'
     suspend-to-idle: '1'
     wake-on-dp: '1'
 

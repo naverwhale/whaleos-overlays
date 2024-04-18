@@ -11,26 +11,38 @@
 - hw_dec_vp9_1080_60
 - hw_dec_vp9_2160_30
 - hw_dec_vp9_2160_60
+- hw_dec_vp9_4320_30
+- hw_dec_vp9_4320_60
 - hw_dec_vp9-2_1080_30
 - hw_dec_vp9-2_1080_60
 - hw_dec_vp9-2_2160_30
 - hw_dec_vp9-2_2160_60
+- hw_dec_vp9-2_4320_30
+- hw_dec_vp9-2_4320_60
 - hw_dec_av1_1080_30
 - hw_dec_av1_1080_60
 - hw_dec_av1_2160_30
 - hw_dec_av1_2160_60
+- hw_dec_av1_4320_30
+- hw_dec_av1_4320_60
 - hw_dec_av1_1080_30_10bpp
 - hw_dec_av1_1080_60_10bpp
 - hw_dec_av1_2160_30_10bpp
 - hw_dec_av1_2160_60_10bpp
+- hw_dec_av1_4320_30_10bpp
+- hw_dec_av1_4320_60_10bpp
 - hw_dec_hevc_1080_30
 - hw_dec_hevc_1080_60
 - hw_dec_hevc_2160_30
 - hw_dec_hevc_2160_60
+- hw_dec_hevc_4320_30
+- hw_dec_hevc_4320_60
 - hw_dec_hevc_1080_30_10bpp
 - hw_dec_hevc_1080_60_10bpp
 - hw_dec_hevc_2160_30_10bpp
 - hw_dec_hevc_2160_60_10bpp
+- hw_dec_hevc_4320_30_10bpp
+- hw_dec_hevc_4320_60_10bpp
 - hw_dec_jpeg
 
 # HW protected decoding
@@ -47,9 +59,11 @@
 # HW encoding
 - hw_enc_h264_1080_30
 - hw_enc_h264_2160_30
+- hw_enc_h264_vbr
 - hw_enc_vp9_1080_30
 - hw_enc_vp9_2160_30
 - hw_enc_vp9_odd_dimension
+- hw_enc_vp9_vbr
 - hw_enc_jpeg
 
 # camera

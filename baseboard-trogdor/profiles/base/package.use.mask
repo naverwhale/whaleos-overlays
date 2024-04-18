@@ -1,2 +1,0 @@
-# Disable due to b/200057093
-sys-apps/fwupd synaptics

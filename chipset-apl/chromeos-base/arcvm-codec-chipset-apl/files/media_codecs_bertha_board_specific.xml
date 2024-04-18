@@ -17,7 +17,7 @@
 <Included>
     <Decoders>
         <!-- Sets H264 decode limit to UHD(3840x2160)@24fps (b/138617566) -->
-        <MediaCodec name="OMX.google.h264.decoder" type="video/avc" update="true">
+        <MediaCodec name="c2.android.avc.decoder" type="video/avc" update="true">
             <Limit name="blocks-per-second" range="1-777600" />
         </MediaCodec>
     </Decoders>

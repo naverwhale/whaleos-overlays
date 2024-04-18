@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -23,8 +23,6 @@ USE="${USE} shelf-hotseat"
 
 USE="${USE} webui-tab-strip"
 
-EC_FIRMWARE="kukui"
-
 # Include the goodix firmware updating tool
 INPUT_DEVICES="goodix"
 
@@ -42,9 +40,6 @@ USE="${USE} has-kernelnext"
 
 # Enable Portrait Mode camera feature.
 USE="${USE} camera_feature_portrait_mode"
-
-# Enable on-device handwriting recognition
-USE="${USE} ondevice_handwriting"
 
 # Enable ime add-ons
 USE="${USE} ime_addons"

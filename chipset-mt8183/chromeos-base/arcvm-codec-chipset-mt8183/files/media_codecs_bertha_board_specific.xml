@@ -17,7 +17,7 @@
 <Included>
     <Decoders>
         <!-- Overwrites the decode limit to 1080p (2048x1088) 30fps (b/141645547). -->
-        <MediaCodec name="OMX.google.h264.decoder" type="video/avc" update="true">
+        <MediaCodec name="c2.android.avc.decoder" type="video/avc" update="true">
             <Limit name="size" min="2x2" max="2048x1088" />
             <Limit name="block-count" range="1-8704" />
             <Limit name="blocks-per-second" range="1-261120" />

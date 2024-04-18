@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -17,10 +17,11 @@ dependencies or portage actions."
 
 LICENSE="BSD-Google"
 KEYWORDS="-* ~amd64 ~x86"
-IUSE="octopus-arc-r octopus-kernelnext"
+IUSE="octopus-arc-r octopus-arc-t octopus-kernelnext"
 
 # Add dependencies on other ebuilds from within this board overlay
 RDEPEND="
+	!<chromeos-base/gestures-conf-0.0.2
 	chromeos-base/chromeos-bsp-baseboard-octopus:=
 "
 DEPEND="
@@ -29,8 +30,13 @@ DEPEND="
 "
 
 src_install() {
+	insinto "/etc/gesture"
+	doins "${FILESDIR}"/gesture/*
+
 	if use octopus-arc-r; then
 		doappid "{312CD618-BD44-49ED-9E2B-AB4C5C99BF54}" "CHROMEBOOK"
+	elif use octopus-arc-t; then
+		doappid "{862DC12E-B70B-419D-92D3-56101E4253C3}" "CHROMEBOOK"
 	elif use octopus-kernelnext; then
 		doappid "{37D471DD-3774-4DA2-AF6D-6BA7F5A3B255}" "CHROMEBOOK"
 	else

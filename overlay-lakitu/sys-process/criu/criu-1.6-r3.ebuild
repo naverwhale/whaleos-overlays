@@ -1,1 +1,0 @@
-criu-1.6.ebuild

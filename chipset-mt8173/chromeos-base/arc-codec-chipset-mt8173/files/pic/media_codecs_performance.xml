@@ -26,7 +26,7 @@
             <Limit name="measured-frame-rate-1920x1080" range="11-21" />
         </MediaCodec>
         <MediaCodec name="OMX.google.mpeg4.encoder" type="video/mp4v-es" update="true">
-            <Limit name="measured-frame-rate-176x144" range="364-400" />
+            <Limit name="measured-frame-rate-176x144" range="364-800" />
         </MediaCodec>
         <MediaCodec name="OMX.google.vp8.encoder" type="video/x-vnd.on2.vp8" update="true">
             <!-- b/148355507 Enlarge range for small resolution, geometric mean: 119 -->

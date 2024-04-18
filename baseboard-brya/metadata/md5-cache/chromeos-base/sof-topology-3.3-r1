@@ -1,0 +1,8 @@
+DEFINED_PHASES=install
+DESCRIPTION=SOF topology files for Brya
+EAPI=7
+KEYWORDS=*
+LICENSE=SOF
+SLOT=0
+SRC_URI=gs://chromeos-localmirror/distfiles/sof-topology-brya-3.3.tar.bz2
+_md5_=2c3f0d22db3d8d6c718eaab6fe6e6dd2

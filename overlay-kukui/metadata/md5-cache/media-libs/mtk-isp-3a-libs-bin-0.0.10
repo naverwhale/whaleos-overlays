@@ -1,0 +1,9 @@
+DEFINED_PHASES=install unpack
+DESCRIPTION=MediaTek 3A library binaries required by the MediaTek camera HAL
+EAPI=7
+KEYWORDS=-* arm arm64
+LICENSE=LICENCE.mediatek
+SLOT=0
+SRC_URI=arm? ( gs://chromeos-localmirror/distfiles/mtk-isp-3a-libs-bin-0.0.10.tar.xz ) arm64? ( gs://chromeos-localmirror/distfiles/mtk-isp-3a-libs-bin-arm64-0.0.10.tar.xz )
+_eclasses_=flag-o-matic	ad475baa777c9978fa035216c8264a10	multilib	2477ebe553d3e4d2c606191fe6c33602	multiprocessing	c3cf317581e5bd068a4b851f03dd8cba	toolchain-funcs	528ab0a9e1ee02c57524ad3bede3c57e	unpacker	aa6a4e924009232d8b78b31e932c30b5
+_md5_=408af2f32cc53dfe8b78a955e3614967

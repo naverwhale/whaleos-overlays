@@ -1,7 +1,7 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="7"
 
 inherit appid cros-unibuild udev
 
@@ -12,10 +12,11 @@ LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* amd64 x86"
 S="${WORKDIR}"
-IUSE="volteer-borealis volteer-kernelnext volteer-manatee zephyr_ec"
+IUSE="volteer-borealis volteer-kernelnext volteer-manatee volteer-scudo zephyr_ec"
 
 # Add dependencies on other ebuilds from within this board overlay
 RDEPEND="
+	!<chromeos-base/gestures-conf-0.0.2
 	chromeos-base/chromeos-bsp-baseboard-volteer
 	chromeos-base/sof-binary
 	chromeos-base/sof-topology
@@ -29,6 +30,9 @@ DEPEND="
 "
 
 src_install() {
+	insinto "/etc/gesture"
+	doins "${FILESDIR}"/gesture/*
+
 	if use zephyr_ec; then
 		doappid "{19D32B09-8ECB-4020-AAB1-BA88AB8CE028}" "CHROMEBOOK"
 	elif use volteer-borealis; then
@@ -37,16 +41,11 @@ src_install() {
 		doappid "{716105F8-A2C3-11EA-A044-33E3EAAD1A23}" "CHROMEBOOK"
 	elif use volteer-manatee; then
 		doappid "{D5C68FC4-8B32-11EB-B809-CF1CBAA251C8}" "CHROMEBOOK"
+	elif use volteer-scudo; then
+		doappid "{192A2FEE-42D7-41B8-BC40-FC8C521985DA}" "CHROMEBOOK"
 	else
 		doappid "{77BE25D7-AFB8-4E3C-A7D2-1FACE1B186E3}" "CHROMEBOOK"
 	fi
-
-	# Install platform-specific internal keyboard keymap.
-	# It should probbaly go into /lib/udev/hwdb.d but
-	# unfortunately udevadm on 64 bit boxes does not check
-	# that directory (it wants to look in /lib64/udev).
-	insinto "${EPREFIX}/etc/udev/hwdb.d"
-	doins "${FILESDIR}/81-halvor-keyboard.hwdb"
 
 	unibuild_install_files audio-files
 

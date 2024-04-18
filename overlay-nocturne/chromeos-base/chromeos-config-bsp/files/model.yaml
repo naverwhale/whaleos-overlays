@@ -1,4 +1,4 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -21,15 +21,34 @@ device-config: &device_config
       depthcharge: nocturne
       libpayload: nocturne
       ec: nocturne
-      ec_extras:
+      ec-extras:
       - nocturne_fp
     image-name: nocturne
   hardware-properties:
-    form-factor: CHROMEBOOK
+    form-factor: DETACHABLE
     psu-type: battery
+    has-side-volume-button: true
+  detachable-base:
+    $dbase-usb-path: "1-7"
+    usb-path: "{{$dbase-usb-path}}"
   identity:
     platform-name: Poppy
-    smbios-name-match: Nocturne
+    frid: "Google_Nocturne"
+  camera:
+    count: 2
+    devices:
+      - interface: "mipi"
+        facing: "front"
+        orientation: 0
+        flags:
+          support-autofocus: True
+          support-1080p: True
+      - interface: "mipi"
+        facing: "back"
+        orientation: 0
+        flags:
+          support-autofocus: True
+          support-1080p: True
   name: nocturne
   power:
     als-smoothing-constant: '0.3'

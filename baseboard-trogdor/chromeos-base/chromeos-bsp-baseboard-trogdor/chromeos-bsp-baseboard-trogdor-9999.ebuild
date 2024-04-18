@@ -1,9 +1,9 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit cros-workon udev
+inherit cros-workon udev arc-build-constants
 
 # This ebuild only cares about its own FILESDIR and ebuild file, so it tracks
 # the canonical empty project.
@@ -16,11 +16,11 @@ or portage actions."
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* ~arm64 ~arm"
-IUSE="cheets"
+IUSE="arcvm cheets"
 
 RDEPEND="
+	chromeos-base/ec-utils
 	net-misc/rmtfs
-	net-misc/qc-netmgr
 "
 DEPEND="${RDEPEND}"
 
@@ -33,10 +33,16 @@ src_install() {
 
 	# Install cpuset adjustments.
 	if use cheets; then
-		insinto "/opt/google/containers/android/vendor/etc/init/"
+		arc-build-constants-configure
+
+		insinto "${ARC_PREFIX:?}/vendor/etc/init"
 		doins "${FILESDIR}/init.cpusets.rc"
 		# See b/161399876:
-		doins "${FILESDIR}/arc-sf-config.rc"
+		if use arcvm; then
+			doins "${FILESDIR}/arcvm/arc-sf-config.rc"
+		else
+			doins "${FILESDIR}/arcpp/arc-sf-config.rc"
+		fi
 	fi
 
 	# udev rules for codecs
@@ -44,8 +50,17 @@ src_install() {
 	doins "${FILESDIR}/udev-trigger-codec.conf"
 	udev_dorules "${FILESDIR}/50-media.rules"
 
+	# Loosen iommu strictness for USB and SD/MMC
+	udev_dorules "${FILESDIR}/98-qcom-nonstrict-iommu.rules"
+
+	# Shorten the hibernation delay
+	udev_dorules "${FILESDIR}/99-ec-hibdelay.rules"
+
 	# udev rules to enable USB wakeup
 	udev_dorules "${FILESDIR}/99-usb-wakeup.rules"
+
+	# udev rule to enable wakeup for smp2p devices
+	udev_dorules "${FILESDIR}/99-qcom-smp2p-wakeup.rules"
 
 	# udev rules for HP USB-C/A Universal Dock G2 Adicora-D
 	udev_dorules "${FILESDIR}/99-hp-usb-c-dock.rules"

@@ -1,0 +1,9 @@
+DEFINED_PHASES=install
+DEPEND=chromeos-base/autotest-capability-baseboard-jecht
+DESCRIPTION=Install autotest capabilities for guado
+EAPI=7
+KEYWORDS=*
+LICENSE=BSD-Google
+RDEPEND=chromeos-base/autotest-capability-baseboard-jecht
+SLOT=0
+_md5_=25c519e37611356220deee2aeefd004a

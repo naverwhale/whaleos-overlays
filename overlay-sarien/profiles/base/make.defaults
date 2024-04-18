@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -12,9 +12,6 @@ USE="${USE} unibuild has_chromeos_config_bsp"
 
 # Bring in the diagnostics package
 USE="${USE} diagnostics"
-
-# Bring in Runtime AVL Compliance Check (RACC) packages
-USE="${USE} racc"
 
 # Enable fwupd
 USE="${USE} fwupd"
@@ -64,9 +61,6 @@ USE="${USE} ime_addons"
 
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
-
-# Enable on-device handwriting recognition
-USE="${USE} ondevice_handwriting"
 
 # Enable on-device text suggestions
 USE="${USE} ondevice_text_suggestions"

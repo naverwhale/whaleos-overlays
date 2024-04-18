@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -12,24 +12,25 @@
 # See crrev.com/i/216896 as an example.
 
 modify_kernel_command_line() {
-  # Might be helpful to preserve ramoops in extreme circumstances
-  echo "ramoops.ecc=1" >> "$1"
-
   # Avoid a cosmetic TPM error (Work around for b/113527055)
   sed -i -e '/tpm_tis.force/d' "$1"
-  echo "tpm_tis.force=0" >> "$1"
+  {
+    echo "tpm_tis.force=0"
 
-  # Check for S0ix failures and show warnings on failures
-  echo "intel_pmc_core.warn_on_s0ix_failures=1" >> "$1"
+    # Might be helpful to preserve ramoops in extreme circumstances
+    echo "ramoops.ecc=1"
 
-  # Enable Guc and Huc loading. When enable_guc is set to 3,
-  # it supports guc/huc loading and guc submission.
-  echo "i915.enable_guc=3" >> "$1"
+    # Check for S0ix failures and show warnings on failures
+    echo "intel_pmc_core.warn_on_s0ix_failures=1"
 
-  # Enable power-saving display c states. Setting the value of 4
-  # enables up to DC6 with DC3C0.
-  echo "i915.enable_dc=4" >> "$1"
+    # Disable xDomain protocol on the thunderbolt driver
+    echo "xdomain=0"
 
-  # Disable xDomain protocol on the thunderbolt driver
-  echo "xdomain=0" >> "$1"
+    # Disable PSR2 by default.
+    echo "i915.enable_psr=1"
+
+    # The 5G driver requires a lot of swiotlb buffers (b/284465894)
+    # So increase the swiotlb slots from default 32768 (64MB) to 65536 (128MB)
+    echo "swiotlb=65536"
+  } >> "$1"
 }

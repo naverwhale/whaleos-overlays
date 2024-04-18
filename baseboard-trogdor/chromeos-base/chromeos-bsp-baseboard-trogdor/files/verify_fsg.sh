@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -34,7 +34,7 @@ logerr() {
 # Read the FSG fuse hash, and store the result into
 # fsg_fuse_hash.
 read_fuses() {
-  fuse_path="/sys/bus/nvmem/devices/qfprom0/nvmem"
+  fuse_path="$(realpath /sys/bus/nvmem/devices/qfprom*/nvmem)"
   fsg_fuse_hash=
   if [ ! -r "${fuse_path}" ]; then
     logerr "Fuse driver does not appear to be loaded."

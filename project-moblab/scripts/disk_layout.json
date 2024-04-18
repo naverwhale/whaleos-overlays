@@ -8,12 +8,21 @@
     "usb": [
       {
         "num": 3,
-        "size":"2048 MiB",
         "fs_size":"2000 MiB"
       },
       {
         "num": 1,
-        "size":"3072 MiB"
+        "size":"3 GiB"
+      }
+    ],
+    "usb-updatable": [
+      {
+        "num": 3,
+        "fs_size":"2000 MiB"
+      },
+      {
+        "num": 1,
+        "size":"3 GiB"
       }
     ]
   }

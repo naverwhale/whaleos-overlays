@@ -1,4 +1,4 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -15,14 +15,13 @@ or portage actions."
 
 LICENSE="BSD-Google"
 KEYWORDS="-* ~amd64 ~x86"
-IUSE="iioservice puff-borealis"
+IUSE="iioservice puff-borealis puff-kernelnext kernel-4_19"
 
 # Add dependencies on other ebuilds from within this board overlay
 RDEPEND="
-	chromeos-base/sof-binary:=
-	chromeos-base/sof-topology:=
+	kernel-4_19? ( chromeos-base/sof-binary:= chromeos-base/sof-topology:= )
+	!kernel-4_19? ( sys-firmware/sof-firmware:= )
 	chromeos-base/touch_updater:=
-	!iioservice? ( chromeos-base/chromeos-accelerometer-init )
 "
 DEPEND="
 	${RDEPEND}
@@ -32,6 +31,8 @@ DEPEND="
 src_install() {
 	if use puff-borealis; then
 		doappid "{95056F9C-22C7-11EB-91D7-FFB4065ABAAB}" "CHROMEBOX"
+	elif use puff-kernelnext; then
+		doappid "{D9966676-6FA6-4608-B2C5-DBAC1559B7EC}" "CHROMEBOX"
 	else
 		doappid "{2514829E-8550-4E24-91F2-331AB7A12B03}" "CHROMEBOX"
 	fi

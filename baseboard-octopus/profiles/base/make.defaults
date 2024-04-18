@@ -1,12 +1,9 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
 LINUX_FIRMWARE=""
 USE=""
-
-# Use ext4 crypto
-USE="${USE} direncryption"
 
 # WiFi driver firmware (JfP)
 LINUX_FIRMWARE="${LINUX_FIRMWARE} iwlwifi-9000"
@@ -32,8 +29,15 @@ USE="${USE} kvm_host crosvm-gpu virtio_gpu"
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
 # Enable eMMC tools
 USE="${USE} mmc"
+
+# Enable cr50_onboard flag to install gsctool and firmware in OS image
+# (required to update H1 firmware).
+USE="${USE} -tpm tpm2 cr50_onboard"
+
+# Enable crosvm vmm-swap.
+USE="${USE} crosvm-swap"
+#
+# Enable ARCVM direct VAAPI decoding
+USE="${USE} crosvm-video-vaapi"

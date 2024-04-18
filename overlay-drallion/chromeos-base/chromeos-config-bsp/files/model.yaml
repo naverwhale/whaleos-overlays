@@ -2,7 +2,7 @@ common_config: &common_config
   name: "{{$device-name}}"
   identity:
     platform-name: "Sarien"
-    smbios-name-match: "Drallion"
+    frid: "Google_Drallion"
     sku-id: "{{$sku-id}}"
   firmware:
     build-targets:
@@ -17,6 +17,7 @@ common_config: &common_config
     min-visible-backlight-level: "1200"
     internal-backlight-no-als-battery-brightness: "52"
     set-wifi-transmit-power-for-tablet-mode: "1"
+    has-barreljack: "1"
   thermal:
     dptf-dv: "{{$device-name}}/dptf.dv"
     files:
@@ -79,7 +80,10 @@ chromeos:
         - $sku-id: 2
           config: *common_config
         - $sku-id: 4
-          config: *common_config
+          config:
+            <<: *common_config
+            modem:
+              firmware-variant: "{{$device-name}}"
     - $device-name: "drallion360"
       skus:
         - $sku-id: 1

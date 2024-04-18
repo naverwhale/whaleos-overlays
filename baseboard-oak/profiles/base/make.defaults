@@ -1,6 +1,9 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+
+# hana boards inherits the DT from elm.
+CHROMEOS_DTBS="mt8173-elm*.dtb"
 
 # Initial value just for style purposes.
 USE=""
@@ -25,5 +28,5 @@ USE="${USE} -wpa3_sae"
 # Enable eMMC tools
 USE="${USE} mmc"
 
-# Disable document scanning due to insufficient rootfs.
-USE="${USE} -ondevice_document_scanner"
+# Set mosys_platform
+USE="${USE} -mosys_platform_generic mosys_platform_oak"

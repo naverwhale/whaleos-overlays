@@ -1,0 +1,10 @@
+DEFINED_PHASES=install unpack
+DESCRIPTION=Mali drivers, binary only install
+EAPI=7
+KEYWORDS=-* arm64 arm
+LICENSE=Google-TOS
+RDEPEND=>=x11-libs/libdrm-2.4.34 !media-libs/mali-drivers-valhall !x11-drivers/opengles !media-libs/mesa
+SLOT=0
+SRC_URI=http://commondatastorage.googleapis.com/chromeos-localmirror/distfiles/mali-drivers-valhall-asurada-40.0_p76.run
+_eclasses_=flag-o-matic	ad475baa777c9978fa035216c8264a10	multilib	2477ebe553d3e4d2c606191fe6c33602	multiprocessing	c3cf317581e5bd068a4b851f03dd8cba	toolchain-funcs	528ab0a9e1ee02c57524ad3bede3c57e	unpacker	aa6a4e924009232d8b78b31e932c30b5
+_md5_=2923b78e3c814f621fb48126cacc6b92

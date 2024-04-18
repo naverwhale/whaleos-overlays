@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -13,23 +13,6 @@ USE="${USE} touchview"
 # system is converted to tablet mode while it's suspended.
 USE="${USE} -touchpad_wakeup"
 
-#EC_FIRMWARE="hana"
-
-# Use ext4 crypto
-USE="${USE} direncryption"
-
-# Uncomment these lines to activate the serial port.
-# Enable kernel serial drivers
-#USE="${USE} pcserial"
-
-# Disable unibuild on this legacy board. This is only for existing (as of Jan 2019)
-# boards as all new boards must be unibuild enabled moving forward. Do not copy this
-# to new boards as it will be rejected. See
-# https://chromium.googlesource.com/chromiumos/platform2/+/HEAD/chromeos-config/README.md
-# for further details about chromeos-config, which is the required entry point for
-# unified builds.
-USE="${USE} -unibuild"
-
 # Declare set of enabled consoles
 #TTY_CONSOLE="ttyS0"
 INPUT_DEVICES="synaptics pixart"
@@ -43,11 +26,8 @@ USE="${USE} has-kernelnext"
 # Disable instant tethering due to a lack of hardware vendor support.
 USE="${USE} disable_instant_tethering"
 
-# Bring in Runtime AVL Compliance Check (RACC) packages
-USE="${USE} racc"
+# Use default LE connection intervals
+USE="${USE} bluez_default_conn_int"
 
-# Disable on-device grammar check for boards with 2GB rootfs.
-USE="${USE} -ondevice_grammar"
-
-# Disable Floss Bluetooth for boards with 2GB rootfs.
-USE="${USE} -floss"
+# Enable chromeos-config.
+USE="${USE} unibuild has_chromeos_config_bsp"

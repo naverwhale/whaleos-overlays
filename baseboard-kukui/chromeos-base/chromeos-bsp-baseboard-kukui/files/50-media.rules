@@ -9,6 +9,6 @@ ATTR{name}=="mtk-jpeg-enc", SYMLINK+="jpeg-enc"
 LABEL="v4l_end"
 SUBSYSTEM!="media", GOTO="media_end"
 
-ATTR{model}=="mtk-vcodec-dec", SYMLINK+="media-dec0"
+ATTR{model}=="mtk-vcodec-dec", SYMLINK+="media-dec0", ENV{MEDIA_DEVICE_TYPE}="decoder"
 
 LABEL="media_end"

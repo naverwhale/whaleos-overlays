@@ -1,7 +1,7 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI="7"
 
 CROS_WORKON_PROJECT=("chromiumos/platform2" "chromiumos/platform/camera")
 CROS_WORKON_LOCALNAME=("../platform2" "../platform/camera")
@@ -32,8 +32,3 @@ DEPEND="${RDEPEND}
 	sys-kernel/linux-headers
 	virtual/jpeg:0
 	virtual/pkgconfig"
-
-src_install() {
-	dolib.so "${OUT}/lib/libcam_algo.so"
-	cros-camera_dohal "${OUT}/lib/libcamera_hal.so" intel-ipu3.so
-}

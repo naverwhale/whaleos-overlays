@@ -4,3 +4,6 @@
 - no vivid_camera
 - builtin_camera
 - builtin_or_vivid_camera
+
+# HW encoding
+- hw_enc_jpeg

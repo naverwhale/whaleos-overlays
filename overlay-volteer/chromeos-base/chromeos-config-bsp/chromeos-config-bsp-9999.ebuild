@@ -1,7 +1,7 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="7"
 
 inherit cros-constants
 CROS_WORKON_REPO="${CROS_GIT_HOST_URL}"
@@ -14,18 +14,12 @@ PROJECTS=(
 	"drobit"
 	"eldrid"
 	"elemi"
-	"halvor"
 	"lindar"
-	"lingcod"
-	"malefor"
-	"mudada"
 	"terrador"
-	"trondo"
 	"voema"
 	"volet"
 	"volteer"
 	"voxel"
-	"zantor"
 )
 
 CONFIG_PATH="sw_build_config/platform/chromeos-config"
@@ -43,7 +37,6 @@ HOMEPAGE="https://www.chromium.org/chromium-os"
 SRC_URI=""
 
 LICENSE="BSD-Google"
-SLOT="0/${PF}"
 KEYWORDS="~* ~amd64 ~x86"
 RDEPEND="!chromeos-base/chromeos-config-bsp-volteer"
 

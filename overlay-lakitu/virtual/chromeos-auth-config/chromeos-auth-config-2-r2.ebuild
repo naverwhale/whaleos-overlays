@@ -1,1 +1,0 @@
-chromeos-auth-config-2.ebuild

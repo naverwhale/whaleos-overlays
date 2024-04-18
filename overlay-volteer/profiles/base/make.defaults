@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -41,3 +41,6 @@ USE="${USE} enable_dsp_hotword"
 
 # This board has a -borealis overlay
 USE="${USE} has-borealis"
+
+# Enable libglvnd for big GL support
+USE="${USE} libglvnd"

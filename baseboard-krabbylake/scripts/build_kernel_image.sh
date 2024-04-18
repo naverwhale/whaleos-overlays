@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Copyright 2016 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -16,7 +16,7 @@ modify_kernel_command_line() {
   echo "intel_idle.slp_s0_check=1" >> "$1"
 
   # Setup S0ix validation initial timeout for slp_s0_check
-  echo "intel_idle.slp_s0_seed=5" >> "$1"
+  echo "intel_idle.slp_s0_seed=15" >> "$1"
 
   # Don't disable the ability to run VMs.
   echo "disablevmx=off" >> "$1"

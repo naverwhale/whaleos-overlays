@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Copyright 2016 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -18,9 +18,15 @@ modify_kernel_command_line() {
   # Enable S0ix logging using GSMI
   echo "gsmi.s0ix_logging_enable=1" >> "$1"
 
+  # Setup S0ix validation initial timeout for slp_s0_check
+  echo "intel_idle.slp_s0_seed=15" >> "$1"
+
   # Don't disable the ability to run VMs.
   echo "disablevmx=off" >> "$1"
 
   # Enable l1d_flush for untrusted VM security
   echo "kvm-intel.vmentry_l1d_flush=always" >> "$1"
+
+  # Disable framebuffer compression
+  echo "i915.enable_fbc=0" >> "$1"
 }

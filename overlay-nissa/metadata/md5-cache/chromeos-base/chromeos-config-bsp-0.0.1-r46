@@ -1,0 +1,13 @@
+BDEPEND=chromeos-base/chromeos-config-host:= dev-vcs/git app-misc/jq
+DEFINED_PHASES=compile info install setup unpack
+DESCRIPTION=Chrome OS Model configuration package for nissa
+EAPI=7
+HOMEPAGE=https://www.chromium.org/chromium-os
+IUSE=cros_host cros_workon_tree_3a5bde4366f90d56997f013eef6eca9ba103af2d_3d69344728b1cb3bd544b209e866f55387208654_2d4a432de6b3e49462e7158799f69cd5a0ccb704_a181f01b7f7eb9eee2647497a6bdda8e4eb8905b_f9ec7a87cce2272b44956c3ed00ca114e6b2fb2c
+KEYWORDS=* amd64 x86
+LICENSE=BSD-Google
+PROPERTIES=live
+RDEPEND=!chromeos-base/chromeos-config-bsp-nissa
+SLOT=0/0.0.1-r46
+_eclasses_=cros-constants	676fcfd1679a06bba553adf90e231454	cros-credentials	dd20060574e24cba5fa46d205f9aba0c	cros-unibuild	94ba1b876f001e1859d822211bb80291	cros-workon	247d4700539e27bc12026f785ec53757	flag-o-matic	ad475baa777c9978fa035216c8264a10	git-2	d6a1d7d3b4c4fff2fba86e3f53beeb0f	multilib	2477ebe553d3e4d2c606191fe6c33602	toolchain-funcs	528ab0a9e1ee02c57524ad3bede3c57e
+_md5_=6064009a70eff52b152c1a69cd99bfd7

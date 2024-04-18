@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -45,6 +45,9 @@ main() {
     ;;
     "ae0d-1382") # ae0d(INO)
       echo "2d1f_4946"  # wacom hardware_id = VID_PID
+    ;;
+    "e509-08dd") # e509(BOE)
+      echo "2d1f_4a01"  # wacom hardware_id = VID_PID
     ;;
     *)
       ## Unknown hardware_id, don't ouput anything.

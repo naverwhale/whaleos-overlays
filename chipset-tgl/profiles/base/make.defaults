@@ -1,4 +1,4 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -20,6 +20,9 @@ USE="${USE} march_skylake"
 # Specify default kernel
 USE="${USE} kernel-5_4"
 
+# Identify the vendor
+USE="${USE} intel_cpu"
+
 # Enable VMs
 USE="${USE} kvm_host crosvm-gpu virtio_gpu"
 
@@ -35,7 +38,7 @@ USE="${USE} vulkan"
 USE="${USE} android_aep"
 
 # Enable iHD media driver
-USE="${USE} -video_cards_i965 video_cards_iHD"
+USE="${USE} -video_cards_i965 video_cards_iHD video_cards_iHD_g12"
 
 # Embed GuC and HuC firmware for TGL into the kernel
 USE="${USE} builtin_fw_guc_tgl builtin_fw_huc_tgl"
@@ -51,3 +54,9 @@ USE="${USE} dlc_test"
 
 # Enable fscrypt v2 usage on 5.4+
 USE="${USE} direncription_allow_v2"
+
+# Allows Chrome to start in the presence of multiple threads.
+USE="${USE} gpu_sandbox_start_early"
+
+# Enable HEVC/H.265 codec
+USE="${USE} hevc_codec"

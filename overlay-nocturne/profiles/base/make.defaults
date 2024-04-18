@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -40,10 +40,6 @@ USE="${USE} touch_centric_device"
 # Building EC
 USE="${USE} cros_ec"
 
-# All firmware to build from the EC code base.
-EC_FIRMWARE="nocturne"
-EC_FIRMWARE_EXTRA="nocturne_fp"
-
 # Enable hammerd for updating base firmware.
 USE="${USE} hammerd"
 
@@ -60,9 +56,6 @@ USE="${USE} iwlwifi_rescan"
 # Enable heuristic palm rejection
 USE="${USE} enable_heuristic_palm_detection_filter"
 
-# Enable on-device handwriting recognition
-USE="${USE} ondevice_handwriting"
-
 # Enable chromeos-config.
 USE="${USE} unibuild has_chromeos_config_bsp"
 
@@ -72,8 +65,10 @@ USE="${USE} camera_feature_portrait_mode"
 # Enable on-device grammar check
 USE="${USE} ondevice_grammar"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
 # Enable on-device text suggestions
 USE="${USE} ondevice_text_suggestions"
+
+# Switch Nocturne to kernel 5.10
+# Following should be moved to chipset level chipset-kbl after all followers uprev
+USE="${USE} uprev-4-to-5"
+USE="${USE} -kernel-4_4 kernel-5_10"

@@ -7,6 +7,9 @@
 # HW encoding
 - hw_enc_h264_1080_30
 - hw_enc_h264_2160_30
+# b/261328971: Disable VBR encoding because the bitrate controller on stnyridge
+# is too weak to achieve VBR encoding correctly.
+- disable hw_enc_h264_vbr
 
 # camera
 - builtin_usb_camera

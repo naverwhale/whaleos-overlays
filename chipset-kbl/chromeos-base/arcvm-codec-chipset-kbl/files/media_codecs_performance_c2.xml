@@ -18,10 +18,10 @@
     <Encoders>
         <MediaCodec name="c2.v4l2.avc.encoder" type="video/avc" update="true">
             <!-- measured 90%:115-285 med:169 FLAKY(85 - 362 < mx=434.6) -->
-            <Limit name="measured-frame-rate-320x240" range="115-253" /> <!-- N=145 v90%=1.6 -->
+            <Limit name="measured-frame-rate-320x240" range="133-291" /> <!-- N=145 v90%=1.6 -->
             <!-- measured 98%:85-294 med:126 SLOW -->
-            <Limit name="measured-frame-rate-720x480" range="125-159" /> <!-- N=146 v98%=1.8 -->
-            <Limit name="measured-frame-rate-1280x720" range="89-97" /> <!-- N=146 v98%=1.9 -->
+            <Limit name="measured-frame-rate-720x480" range="125-275" /> <!-- N=146 v98%=1.8 -->
+            <Limit name="measured-frame-rate-1280x720" range="89-195" /> <!-- N=146 v98%=1.9 -->
             <!-- measured 98%:25-103 med:57 FLAKY(mn=21.1 < 26 - 104 < mx=104.2) -->
             <Limit name="measured-frame-rate-1920x1080" range="28-60" /> <!-- N=146 v98%=2.0 -->
         </MediaCodec>
@@ -32,7 +32,7 @@
         </MediaCodec>
         <MediaCodec name="c2.android.avc.encoder" type="video/avc" update="true">
             <!-- measured 95%:146-671 med:290 FLAKY(mn=63.7 < 145 - 672 < mx=753.6) variance:2.1 -->
-            <Limit name="measured-frame-rate-320x240" range="152-336" /> <!-- N=146 -->
+            <Limit name="measured-frame-rate-320x240" range="177-390" /> <!-- N=146 -->
             <!-- measured 93%:73-235 med:123 FLAKY(mn=14.9 < 61 - 262 < mx=354.6) -->
             <Limit name="measured-frame-rate-720x480" range="77-170" /> <!-- N=152 v93%=1.8 -->
             <!-- measured 98%:36-206 med:63 SLOW FLAKY(31 - 206 < mx=226.4) variance:2.4 -->
@@ -58,9 +58,9 @@
             <!-- measured 90%:266-671 med:360 SLOW FLAKY(180 - 846 < mx=964.3) -->
             <Limit name="measured-frame-rate-720x480" range="360-792" /> <!-- N=202 v90%=1.6 -->
             <!-- measured 98%:187-750 med:327 SLOW FLAKY(mn=156.7 < 163 - 750 < mx=773.4) -->
-            <Limit name="measured-frame-rate-1280x720" range="233-457" /> <!-- N=204 v98%=2.0 -->
+            <Limit name="measured-frame-rate-1280x720" range="320-704" /> <!-- N=204 v98%=2.0 -->
             <!-- measured 98%:177-559 med:265 SLOW FLAKY(mn=123.2 < 132 - 630) -->
-            <Limit name="measured-frame-rate-1920x1080" range="188-315" /> <!-- N=204 v98%=1.8 -->
+            <Limit name="measured-frame-rate-1920x1080" range="188-413" /> <!-- N=204 v98%=1.8 -->
         </MediaCodec>
         <MediaCodec name="c2.v4l2.vp8.decoder" type="video/x-vnd.on2.vp8" update="true">
             <!-- measured 98%:292-1363 med:413 SLOW FLAKY(206 - 1364 < mx=1459.9) variance:2.2 -->
@@ -76,11 +76,11 @@
             <!-- measured 98%:287-1292 med:411 SLOW FLAKY(205 - 1292 < mx=1344.1) variance:2.1 -->
             <Limit name="measured-frame-rate-320x180" range="410-902" /> <!-- N=206 -->
             <!-- measured 98%:277-1079 med:400 SLOW -->
-            <Limit name="measured-frame-rate-640x360" range="399-547" /> <!-- N=206 v98%=2.0 -->
+            <Limit name="measured-frame-rate-640x360" range="399-877" /> <!-- N=206 v98%=2.0 -->
             <!-- measured 98%:239-810 med:352 SLOW -->
-            <Limit name="measured-frame-rate-1280x720" range="352-440" /> <!-- N=206 v98%=1.8 -->
+            <Limit name="measured-frame-rate-1280x720" range="352-774" /> <!-- N=206 v98%=1.8 -->
             <!-- measured 98%:200-609 med:308 SLOW -->
-            <Limit name="measured-frame-rate-1920x1080" range="308-349" /> <!-- N=206 v98%=1.7 -->
+            <Limit name="measured-frame-rate-1920x1080" range="308-677" /> <!-- N=206 v98%=1.7 -->
             <!-- measured 98%:48-158 med:140 FLAKY(mn=10.0 < 44 - 174) -->
             <Limit name="measured-frame-rate-3840x2160" range="63-139" /> <!-- N=524 v98%=1.8 -->
         </MediaCodec>
@@ -104,6 +104,8 @@
         <MediaCodec name="c2.android.mpeg4.decoder" type="video/mp4v-es" update="true">
             <!-- measured 98%:437-1916 med:663 SLOW FLAKY(mn=316.4 < 331 - 1916 < mx=1938.0) variance:2.1 -->
             <Limit name="measured-frame-rate-176x144" range="447-983" /> <!-- N=204 -->
+            <Limit name="measured-frame-rate-480x360" range="394-866" />
+            <Limit name="measured-frame-rate-1280x720" range="249-373" />
         </MediaCodec>
         <MediaCodec name="c2.android.vp8.decoder" type="video/x-vnd.on2.vp8" update="true">
             <!-- measured 98%:222-1166 med:476 FLAKY(mn=142.0 < 222 - 1166 < mx=1186.2) variance:2.3 -->

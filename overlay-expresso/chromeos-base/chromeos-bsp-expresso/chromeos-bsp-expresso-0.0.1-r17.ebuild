@@ -1,1 +1,0 @@
-chromeos-bsp-expresso-0.0.1.ebuild

@@ -1,7 +1,7 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI="7"
 
 inherit appid
 inherit cros-unibuild
@@ -17,6 +17,7 @@ S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
 RDEPEND="
+	!<chromeos-base/gestures-conf-0.0.2
 	chromeos-base/chromeos-bsp-baseboard-grunt
 	chromeos-base/chromeos-config
 	chromeos-base/touch_updater
@@ -24,6 +25,9 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 src_install() {
+	insinto "/etc/gesture"
+	doins "${FILESDIR}"/gesture/*
+
 	if use grunt-arc-r; then
 		doappid "{602B22F1-BA1A-443E-9C4B-389E513DF9C0}" "CHROMEBOOK"
 	elif use grunt-kernelnext; then
@@ -34,4 +38,10 @@ src_install() {
 
 	unibuild_install_files audio-files
 	unibuild_install_touch_files
+
+	# Install platform-specific bluetooth sysprops.
+	insinto "/etc/bluetooth/sysprops.conf.d"
+	insopts -m0640
+	doins "${FILESDIR}/grunt-bluetooth-sysprops.conf"
+	insopts -m0644
 }

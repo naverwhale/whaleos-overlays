@@ -1,1 +1,0 @@
-chromeos-bsp-mighty-0.0.1.ebuild

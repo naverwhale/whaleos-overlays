@@ -1,1 +1,0 @@
-chromeos-bsp-winky-0.0.1.ebuild

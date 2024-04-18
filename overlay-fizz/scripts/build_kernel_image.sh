@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -31,5 +31,8 @@ modify_kernel_command_line() {
   quirks+="046d:0876:k"
   # Aggregate and export
   echo "usbcore.quirks=${quirks}"
+
+  # Enable l1d_flush for untrusted VM security
+  echo "kvm-intel.vmentry_l1d_flush=always" >> "$1"
  } >> "$1"
 }

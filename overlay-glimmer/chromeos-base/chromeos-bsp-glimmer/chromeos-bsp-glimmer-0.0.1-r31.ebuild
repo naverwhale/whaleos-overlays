@@ -1,1 +1,0 @@
-chromeos-bsp-glimmer-0.0.1.ebuild

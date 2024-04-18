@@ -1,5 +1,5 @@
 #
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -40,6 +40,11 @@ power-common: &power_common
   $has-keyboard-backlight: "0"
   has-keyboard-backlight: "{{$has-keyboard-backlight}}"
 
+rmad-common: &rmad_common
+  enabled: True
+  has-cbi: False
+  use-legacy-custom-label: True
+
 base-config: &base_config
   $firmware-target: "{{$device-name}}"
   $audio-config: "{{$device-name}}"
@@ -58,7 +63,7 @@ base-config: &base_config
   name: "{{$device-name}}"
   identity: &base_identity
     platform-name: "Grunt"
-    smbios-name-match: "Grunt"
+    frid: "Google_Grunt"
     sku-id: "{{$sku-id}}"
   test-label: "{{$device-name}}"
   power:
@@ -72,8 +77,11 @@ base-config: &base_config
     $key-id: "DEFAULT"
     key-id: "{{$key-id}}"
     signature-id: "{{name}}"
-  hardware-properties:
-    form-factor: CHROMEBOOK
+  hardware-properties: &hardware_properties
+    $form-factor: CHROMEBOOK
+    form-factor: "{{$form-factor}}"
+    psu-type: battery
+  rmad: *rmad_common
 
 firmware: &firmware_common
   build-targets:
@@ -86,8 +94,9 @@ firmware: &firmware_common
   image-name: "{{$device-name}}"
 
 convertible-base-config: &convertible_base_config
-  hardware-properties:
-    form-factor: CHROMEBOOK
+  hardware-properties: &convertible_hardware_properties_common
+    <<: *hardware_properties
+    form-factor: CONVERTIBLE
     is-lid-convertible: True
     has-lid-accelerometer: True
     has-base-accelerometer: True
@@ -236,6 +245,9 @@ kasumi360-config: &kasumi360_config
       - source: "touch/elan/1d8e_5612.bin"
         destination: "{{$fw_dest}}/1d8e_5612.bin"
         symlink: "{{$fw_root}}/elants_i2c_1d8e.bin"
+  hardware-properties:
+    <<: *convertible_hardware_properties_common
+    has-side-volume-button: true
   ui:
     side-volume-button:
       region: keyboard
@@ -269,7 +281,7 @@ treeya-config: &treeya_config
   $key-id: "LIARA"
   identity:
     <<: *base_identity
-    whitelabel-tag: "{{$whitelabel-tag}}"
+    custom-label-tag: "{{$custom-label-tag}}"
   firmware:
     <<: *firmware_common
   touch:
@@ -293,7 +305,9 @@ treeya360-config: &treeya360_config
   $key-id: "LIARA"
   identity:
     <<: *base_identity
-    whitelabel-tag: "{{$whitelabel-tag}}"
+    custom-label-tag: "{{$custom-label-tag}}"
+  hardware-properties:
+    <<: *convertible_hardware_properties_common
   touch:
     <<: *touch_common
     files:
@@ -338,7 +352,9 @@ treeya360-alc5682-config: &treeya360_alc5682_config
   $key-id: "LIARA"
   identity:
     <<: *base_identity
-    whitelabel-tag: "{{$whitelabel-tag}}"
+    custom-label-tag: "{{$custom-label-tag}}"
+  hardware-properties:
+    <<: *convertible_hardware_properties_common
   touch:
     <<: *touch_common
     files:
@@ -385,6 +401,8 @@ nuwani360-config: &nuwani360_config
   <<: [ *nuwani_config, *convertible_base_config ]
   $audio-config: "nuwani"
   $firmware-target: "nuwani"
+  hardware-properties:
+    <<: *convertible_hardware_properties_common
   touch:
     <<: *touch_common
     files:
@@ -628,10 +646,10 @@ chromeos:
       products:
         - $brand-code: "BAUA"
           $marketing-name: "TBD"
-          $whitelabel-tag: ""
+          $custom-label-tag: ""
         - $brand-code: "QCDF"
           $marketing-name: "TBD"
-          $whitelabel-tag: "treeyac"
+          $custom-label-tag: "treeyac"
       skus:
         - $sku-id: 160
           config: *treeya_config
@@ -642,10 +660,10 @@ chromeos:
       products:
         - $brand-code: "XFUX"
           $marketing-name: "TBD"
-          $whitelabel-tag: ""
+          $custom-label-tag: ""
         - $brand-code: "TZIV"
           $marketing-name: "TBD"
-          $whitelabel-tag: "miranda"
+          $custom-label-tag: "miranda"
       skus:
         - $sku-id: 168
           $num-mic-locations: 1

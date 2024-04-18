@@ -1,4 +1,4 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -22,15 +22,15 @@ USE="${USE} dptf"
 # Enable i915 firmware for JSL platform
 LINUX_FIRMWARE="${LINUX_FIRMWARE} i915_jsl"
 
-# Disable ACPI AC device and use USB PD power supply driver
-USE="${USE} -acpi_ac"
+# Identify the vendor
+USE="${USE} intel_cpu"
 
 # Enable GuC and HuC FW for JSL platform
 USE="${USE} builtin_fw_guc_jsl"
 USE="${USE} builtin_fw_huc_jsl"
 
 # Enable iHD media driver for JSL
-USE="${USE} -video_cards_i965 video_cards_iHD"
+USE="${USE} -video_cards_i965 video_cards_iHD video_cards_iHD_g11"
 
 USE="${USE} drm_atomic"
 
@@ -54,3 +54,6 @@ USE="${USE} direncription_allow_v2"
 
 # Workaround for b/188008861
 USE="${USE} kvm_invept_global"
+
+# Allows Chrome to start in the presence of multiple threads.
+USE="${USE} gpu_sandbox_start_early"

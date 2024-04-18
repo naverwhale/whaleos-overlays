@@ -1,0 +1,15 @@
+# python depends on util-linux. If we set the python use flag we end
+# up with a circular dependency. This use flag only controls the
+# pylibmount which we don't need.
+sys-apps/util-linux -python
+
+# We want to use systemd-tmpfiles instead of systemd-utils[tmpfiles].
+# Removing the -tmpfiles USE flag will cause the virtual/tmpfiles
+# to pick systemd-tmpfiles.
+sys-apps/systemd-utils -tmpfiles
+
+# Causes a circular dependency
+sys-apps/acl -nls
+
+# Use the python version to avoid pulling in cython.
+dev-python/pyyaml -libyaml

@@ -1,4 +1,4 @@
-# This file is Copyright 2020 The Chromium OS Authors. All rights reserved.
+# This file is Copyright 2020 The ChromiumOS Authors
 # This file is distributed under the terms of the BSD license.
 
 EAPI="7"

@@ -1,9 +1,0 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
-# Distributed under the terms of the GNU General Public License v2
-
-#
-# Special keyboard mapping for Halvor project. The keyboard has extra
-# "Assistant" keys.
-#
-evdev:atkbd:dmi:bvn*:bvr*:bd*:svnGoogle:pnHalvor:pvr*
- KEYBOARD_KEY_4e=assistant

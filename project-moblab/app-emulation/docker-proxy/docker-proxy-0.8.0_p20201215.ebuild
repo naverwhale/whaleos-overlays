@@ -26,7 +26,7 @@ S=${WORKDIR}/${P}/src/${EGO_PN}
 RESTRICT="strip test"
 
 src_compile() {
-	GOPATH="${WORKDIR}/${P}" go build -o "bin/docker-proxy" ./cmd/proxy || die
+	GO111MODULE=off GOPATH="${WORKDIR}/${P}" go build -o "bin/docker-proxy" ./cmd/proxy || die
 }
 
 src_install() {

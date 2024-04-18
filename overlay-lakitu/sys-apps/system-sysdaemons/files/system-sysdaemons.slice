@@ -1,3 +1,0 @@
-[Unit]
-Description=Slice for System Daemons
-Before=slices.target

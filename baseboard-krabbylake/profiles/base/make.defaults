@@ -1,12 +1,9 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
 LINUX_FIRMWARE=""
 USE=""
-
-# Use ext4 crypto
-USE="${USE} direncryption"
 
 # Include prebuilt (&signed) CR50 FW
 USE="${USE} cr50_onboard"
@@ -37,3 +34,6 @@ USE="${USE} dlc_test"
 
 # Enable eMMC tools
 USE="${USE} mmc"
+
+# KBL chipset defaults to 5.4 but these boards use 5.10
+USE="${USE} kernel-5_10"

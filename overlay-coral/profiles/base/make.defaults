@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -17,9 +17,6 @@ USE="${USE} keyboard_includes_side_buttons"
 # Enable unibuild
 USE="${USE} unibuild has_chromeos_config_bsp"
 
-# All firmwares to build from the EC code base
-EC_FIRMWARE="coral"
-
 # Include the wacom firmware updating tool
 INPUT_DEVICES="wacom pixart"
 
@@ -36,8 +33,8 @@ USE="${USE} has-kernelnext"
 # To prevent cryptohome incompatibility problem while transitioning to 5.4
 USE="${USE} uprev-4-to-5"
 
-# Disable on-device grammar check for boards with 2GB rootfs.
-USE="${USE} -ondevice_grammar"
+# Use zstd to minify ARC images. (go/arc-zstd)
+USE="${USE} arc_squashfs_zstd"
 
-# Disable Floss Bluetooth for boards with 2GB rootfs.
-USE="${USE} -floss"
+# Enable Shimless RMA
+USE="${USE} rmad"

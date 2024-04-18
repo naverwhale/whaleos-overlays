@@ -1,21 +1,16 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-# tael doesn't use splitconfig.
-CHROMEOS_KERNEL_CONFIG="arch/arm64/configs/chromiumos-container-vm-arm64_defconfig"
+CHROMEOS_KERNEL_SPLITCONFIG="container-vm-arm64"
 CHROMEOS_KERNEL_ARCH="arm64"
-
-BOARD_COMPILER_FLAGS="-march=armv7-a -mtune=cortex-a15 -mfpu=neon -mfloat-abi=hard"
-# TODO(gbiv): Porting -mtune may be interesting, but clang seems to currently
-# entirely ignore this flag for ARM (notably: not aarch64) builds.
-BOARD_RUSTFLAGS="-Ctarget-feature=+armv7-a,+neon"
 
 # Initial value just for style purposes.
 USE=""
 
+BOARD_COMPILER_FLAGS="-march=armv8-a+crc"
+BOARD_RUSTFLAGS="-Ctarget-feature=+armv8-a,+crc"
+USE="${USE} march_armv8-a"
+
 # Enable VM Containers
 USE="${USE} vm-containers"
-
-USE="${USE} hardfp"
-USE="${USE} neon"

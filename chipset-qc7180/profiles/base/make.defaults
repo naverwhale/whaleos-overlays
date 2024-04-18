@@ -1,15 +1,16 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
 CHROMEOS_KERNEL_SPLITCONFIG="chromiumos-qualcomm"
 CHROMEOS_KERNEL_ARCH="arm64"
 
-BOARD_COMPILER_FLAGS="-march=armv8-a+crc -ftree-vectorize"
-BOARD_RUSTFLAGS="-Ctarget-feature=+armv8-a,+crc"
-
 # Initial value just for style purposes.
 USE=""
+
+BOARD_COMPILER_FLAGS="-march=armv8-a+crc+crypto -ftree-vectorize"
+BOARD_RUSTFLAGS="-Ctarget-feature=+armv8-a,+crc"
+USE="${USE} march_armv8-a"
 
 USE="${USE} big_little"
 USE="${USE} device_tree"
@@ -19,6 +20,7 @@ USE="${USE} kernel-5_4"
 USE="${USE} native_gpu_memory_buffers"
 USE="${USE} neon"
 USE="${USE} qc7180"
+USE="${USE} qualcomm_cpu"
 
 # GPU sandboxing needs to be started early as GPU process spawns
 # multiple threads.
@@ -26,9 +28,6 @@ USE="${USE} gpu_sandbox_start_early"
 
 # Enable HW codecs using V4L2 API.
 USE="${USE} v4l2_codec"
-
-# ARC should use VideoDecoder interface
-USE="${USE} arc_uses_cros_video_decoder"
 
 # Enable vulkan, but only for cros (see package.use)
 USE="${USE} vulkan"

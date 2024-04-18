@@ -1,0 +1,12 @@
+BDEPEND=virtual/pkgconfig dev-vcs/git app-misc/jq
+DEFINED_PHASES=info install setup unpack
+DESCRIPTION=Ebuild which pulls in any necessary ebuilds as dependencies or portage actions.
+EAPI=7
+IUSE=elm-arc64 elm-cheets elm-kernelnext elm-connectivitynext kernel-5_15 cros_host cros_workon_tree_776139a53bc86333de8672a51ed7879e75909ac9
+KEYWORDS=-* arm64 arm
+LICENSE=BSD-Google
+PROPERTIES=live
+RDEPEND=!<chromeos-base/gestures-conf-0.0.2 chromeos-base/chromeos-bsp-baseboard-oak:= sys-apps/ethtool
+SLOT=0/0.0.2-r15
+_eclasses_=appid	7246d2a9f30b76802a858973725910c7	cros-audio-configs	3019de51dffbb1b14f1f5d01141fb95e	cros-constants	676fcfd1679a06bba553adf90e231454	cros-credentials	dd20060574e24cba5fa46d205f9aba0c	cros-workon	247d4700539e27bc12026f785ec53757	flag-o-matic	ad475baa777c9978fa035216c8264a10	git-2	d6a1d7d3b4c4fff2fba86e3f53beeb0f	multilib	2477ebe553d3e4d2c606191fe6c33602	toolchain-funcs	528ab0a9e1ee02c57524ad3bede3c57e	udev	eec0bbab06977f1cfc5597269c1fa152
+_md5_=e38d6515efceba314c4ed314e4c072f7

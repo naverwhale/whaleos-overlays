@@ -1,4 +1,4 @@
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -6,11 +6,11 @@ base-config: &base_config
   name: "{{$device-name}}"
   identity:
     platform-name: "Trogdor"
-    device-tree-compatible-match: "{{$fw-name}}"
+    frid: "{{$fw-name}}"
     sku-id: "{{$sku-id}}"
   firmware:
     build-targets:
-      bmpblk: "bubs"
+      bmpblk: "trogdor"
       coreboot: "{{$coreboot-build-name}}"
       ec: "{{$ec-build-name}}"
       depthcharge: "bubs"
@@ -20,7 +20,7 @@ base-config: &base_config
 chromeos:
   devices:
     - $device-name: "bubs"
-      $fw-name: "google,bubs"
+      $fw-name: "Google_Bubs"
       $coreboot-build-name: "bubs"
       $ec-build-name: "bubs"
       skus:

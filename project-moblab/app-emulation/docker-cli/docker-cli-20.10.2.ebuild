@@ -31,6 +31,7 @@ src_prepare() {
 src_compile() {
 	export DISABLE_WARN_OUTSIDE_CONTAINER=1
 	export GOPATH="${WORKDIR}/${P}"
+	export GO111MODULE=off
 	# setup CFLAGS and LDFLAGS for separate build target
 	# see https://github.com/tianon/docker-overlay/pull/10
 	export CGO_CFLAGS="-I${ROOT}/usr/include"

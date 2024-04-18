@@ -1,4 +1,4 @@
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -16,7 +16,6 @@ HOMEPAGE="http://src.chromium.org"
 SRC_URI=""
 
 LICENSE="BSD-Google"
-SLOT="0/${PF}"
 KEYWORDS="~*"
 
 src_install() {

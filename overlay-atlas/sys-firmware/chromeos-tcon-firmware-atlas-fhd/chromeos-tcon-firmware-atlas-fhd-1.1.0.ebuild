@@ -1,4 +1,4 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # This file distributed under the terms of the BSD license.
 #
 # Package version scheme: <major_ver>.<minor_ver>.<tarball_ver>-r<ebuild_rev>

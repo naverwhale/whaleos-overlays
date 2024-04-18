@@ -1,5 +1,7 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
-# Distributed under the terms of the GNU General Public License v2
+# Copyright 2022 The ChromiumOS Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
 EAPI=7
 
 inherit appid cros-unibuild cros-workon
@@ -15,21 +17,25 @@ or portage actions."
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* ~arm64 ~arm"
-IUSE="trogdor64 trogdor-arc-r trogdor-kernelnext zephyr_ec"
+IUSE="trogdor-kernelnext trogdor-userdebug zephyr_ec trogdor-connectivitynext"
 
 
 RDEPEND="
+	!<chromeos-base/gestures-conf-0.0.2
 	chromeos-base/chromeos-bsp-baseboard-trogdor
 "
 DEPEND="${RDEPEND}"
 
 src_install() {
+	insinto "/etc/gesture"
+	doins "${FILESDIR}"/gesture/*
+
 	if use zephyr_ec; then
 		doappid "{486D6593-708E-4878-8CC9-A7E9AF2F5811}" "CHROMEBOOK"
-	elif use trogdor64; then
-		doappid "{A0568F5E-BA81-4BB8-9BDE-81DFF8E050AE}" "CHROMEBOOK"
-	elif use trogdor-arc-r; then
-		doappid "{E2560CEE-5423-4B7D-A6A0-764BBC237C05}" "CHROMEBOOK"
+	elif use trogdor-userdebug; then
+		doappid "{5FA67FD4-FEA5-971E-8DB9-D40672EF4F0D}" "CHROMEBOOK"
+	elif use trogdor-connectivitynext; then
+		doappid "{7DCFEAA2-E592-49FE-81C3-C27C828CE218}" "CHROMEBOOK"
 	elif use trogdor-kernelnext; then
 		doappid "{9F765BCD-AC24-C22B-B39A-467B190B7FEF}" "CHROMEBOOK"
 	else
@@ -38,4 +44,7 @@ src_install() {
 
 	# Install audio config
 	unibuild_install_files audio-files
+
+	# Install semtech configuration files
+	unibuild_install_files proximity-sensor-files
 }

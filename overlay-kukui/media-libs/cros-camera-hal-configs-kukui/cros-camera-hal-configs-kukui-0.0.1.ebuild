@@ -1,7 +1,7 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="7"
 
 DESCRIPTION="MediaTek config files required by the MediaTek camera HAL"
 
@@ -21,10 +21,8 @@ src_install() {
 	insinto "${CONFIG_DIR}"
 	doins "${FILESDIR}"/*.json
 
-	if [[ ${kernel} == "4_19" ]]; then
-		newins "${FILESDIR}/post-start-hooks-${kernel}.sh" post-start-hooks.sh
-		newins "${FILESDIR}/post-start-hooks-algo-${kernel}.sh" post-start-hooks-algo.sh
-	fi
+	newins "${FILESDIR}/post-start-hooks-${kernel}.sh" post-start-hooks.sh
+	newins "${FILESDIR}/post-start-hooks-algo-${kernel}.sh" post-start-hooks-algo.sh
 
 	doins "${FILESDIR}/setup-hooks-algo.sh"
 	doins "${FILESDIR}/setup-hooks.sh"

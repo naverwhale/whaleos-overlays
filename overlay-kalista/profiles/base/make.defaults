@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -21,3 +21,12 @@ INPUT_DEVICES="melfas"
 
 # Use recovery button to confirm physical presence
 USE="${USE} physical_presence_recovery"
+
+# This indicates that this board has a -kernelnext overlay
+USE="${USE} has-kernelnext"
+
+# This is a 4.x -> 5.x uprev
+USE="${USE} uprev-4-to-5"
+
+# Report device requisition to the ChromeOS update server
+USE="${USE} report_requisition"

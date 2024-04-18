@@ -1,1 +1,0 @@
-chromeos-bsp-terra-0.0.1.ebuild

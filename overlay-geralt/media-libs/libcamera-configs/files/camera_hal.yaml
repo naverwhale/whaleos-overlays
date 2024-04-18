@@ -1,0 +1,9 @@
+cameras:
+  "/base/soc/i2c@11ec0000/sensor1@1":
+    location: front
+    rotation: 0
+
+  "/base/soc/i2c@11ec1000/sensor0@1":
+    location: back
+    rotation: 0
+

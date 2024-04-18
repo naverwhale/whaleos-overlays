@@ -1,1 +1,0 @@
-target-lakitu-os-test-2.ebuild

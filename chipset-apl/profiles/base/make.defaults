@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -7,19 +7,19 @@ USE=""
 CHROMEOS_KERNEL_SPLITCONFIG="chromeos-intel-pineview"
 CHROMEOS_KERNEL_ARCH="x86_64"
 
-# -march=goldmont is not supported by GCC 4.9.
-BOARD_COMPILER_FLAGS="-march=silvermont -maes"
-# FIXME(gbiv): goldmont might be more appropriate here, since we don't need GCC
-# 4.9 support?
-BOARD_RUSTFLAGS="-Ctarget-cpu=silvermont -Ctarget-feature=+aes"
-USE="${USE} march_silvermont"
+BOARD_COMPILER_FLAGS="-march=goldmont"
+BOARD_RUSTFLAGS="-Ctarget-cpu=goldmont"
+USE="${USE} march_goldmont"
 
 LINUX_FIRMWARE="adsp_apl i915_bxt"
 
-USE="${USE} kernel-4_4"
+USE="${USE} kernel-5_10"
 
 # Disable ACPI AC device and use USB PD power supply driver
 USE="${USE} -acpi_ac"
+
+# Identify the vendor
+USE="${USE} intel_cpu"
 
 USE="${USE} apl_lpe intel_lpe"
 
@@ -34,7 +34,9 @@ USE="${USE} android_aep"
 USE="${USE} legacy_firmware_ui"
 
 # Enable Intel driver
-USE="${USE} -video_cards_iHD video_cards_i965"
+USE="${USE} -video_cards_i965 video_cards_iHD video_cards_iHD_g9"
 
-# Enable ARCVM image minification for 2GB rootfs devices. (go/arcvm-minify-image)
-USE="${USE} arcvm_minify_image"
+# Allows Chrome to start in the presence of multiple threads.
+USE="${USE} gpu_sandbox_start_early"
+
+# TODO(b/201007427): Enable arc_squashfs_zstd after kernel uprev (crbug/1228976).

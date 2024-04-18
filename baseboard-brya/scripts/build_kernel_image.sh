@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -32,4 +32,21 @@ modify_kernel_command_line() {
 
   # Disable xDomain protocol on the thunderbolt driver
   echo "xdomain=0" >> "$1"
+
+  # The 5G driver requires a lot of swiotlb buffers (b/201020414)
+  # So increase the swiotlb slots from default 32768 (64MB) to 65536 (128MB)
+  echo "swiotlb=65536" >> "$1"
+
+  # Ensure internal devices are also in their own DMA domain,
+  echo "intel_iommu=on" >> "$1"
+
+  # Disable PSR2 by default.
+  # (0=disabled, 1=enable up to PSR1, 2=enable up to PSR2)
+  # Temporary WA until b:216826833 is root caused and fixed
+  #                and b:243060986 is root caused and fixed:
+  #                   Disable PSR2 to make panel work.
+  #                   Manufacturer: BOE (on some Redrix SKUs)
+  #                   Model: 2678
+  #                   Made in week 25 of 2021
+  echo "i915.enable_psr=1" >> "$1"
 }

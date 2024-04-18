@@ -1,1 +1,0 @@
-chromeos-bsp-oak-0.0.1.ebuild

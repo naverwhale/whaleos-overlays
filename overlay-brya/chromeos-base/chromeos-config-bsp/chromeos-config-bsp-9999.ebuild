@@ -1,4 +1,4 @@
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -9,14 +9,23 @@ CROS_WORKON_REPO="${CROS_GIT_HOST_URL}"
 PROJECTS=(
 	"adlrvp"
 	"anahera"
+	"banshee"
 	"brya"
+	"crota"
 	"felwinter"
 	"gimble"
 	"kano"
+	"marasov"
+	"mithrax"
+	"omnigul"
+	"osiris"
 	"primus"
 	"redrix"
+	"skolas"
 	"taeko"
+	"taniks"
 	"vell"
+	"volmar"
 	"vyhar"
 )
 
@@ -35,7 +44,6 @@ HOMEPAGE="https://www.chromium.org/chromium-os"
 SRC_URI=""
 
 LICENSE="BSD-Google"
-SLOT="0/${PF}"
 KEYWORDS="~* ~amd64 ~x86"
 
 RDEPEND="!chromeos-base/chromeos-config-bsp-brya"

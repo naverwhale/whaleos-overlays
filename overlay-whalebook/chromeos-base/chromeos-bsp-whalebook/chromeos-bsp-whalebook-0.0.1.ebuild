@@ -16,8 +16,14 @@ IUSE=""
 S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
-DEPEND="${RDEPEND}"
+DEPEND="${RDEPEND}
+	!<chromeos-base/gestures-conf-0.0.2
+	chromeos-base/whaleos-angl-init
+"
 
 src_install() {
+	insinto "/etc/gesture"
+	doins "${FILESDIR}"/gesture/*
+
 	doappid "{D6090F06-70BA-4D31-9350-3B1DBCD140EC}" "CHROMEBOOK"
 }

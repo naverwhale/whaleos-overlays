@@ -1,23 +1,27 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
 CHROMEOS_KERNEL_SPLITCONFIG="chromiumos-mediatek"
 CHROMEOS_KERNEL_ARCH="arm64"
 
-# TODO(b/150746591): upstream compiler should be able to support
-# cortex-a76.cortex-a55, we may need to switch to it if we upgrade
-# the compiler later.
-# TODO(b/139386950): We can only use flags here that are supported by both arm
-# # and aarch64 ARC++ toolchain, i.e. we need to "downgrade" cortex-a57.cortex-a53
-# # to cortex-a57. Also, we may want different optimizations for arm vs aarch64
-BOARD_COMPILER_FLAGS="-march=armv8-a+crc -mtune=cortex-a57 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard"
+# Initial value just for style purposes.
+USE=""
+
+# MT8192 has 4 Cortex-A55 and 4 Cortex-A76.
+# Note that the compiler may or may not support tuning for our big.LITTLE
+# combination, so for simplicity we tune the code against the little cores,
+# which is not perfect but should give us good enough tuning granularity.
+# TODO(b/244126739): Use cortex-a76.cortex-a55 when the compiler is upgraded
+# and supports that.
+BOARD_COMPILER_FLAGS="-march=armv8-a+crc+crypto -mtune=cortex-a55 -ftree-vectorize"
 # TODO(gbiv): Porting -mtune may be interesting, but clang seems to currently
 # entirely ignore this flag for ARM (notably: not aarch64) builds.
 BOARD_RUSTFLAGS="-Ctarget-feature=+armv8-a,+crc"
+USE="${USE} march_armv8-a"
 
-# Initial value just for style purposes.
-USE=""
+USE="${USE} mt8192"
+USE="${USE} mediatek_cpu"
 
 # Use hardware FPU instead of software
 USE="${USE} hardfp"
@@ -29,10 +33,6 @@ USE="${USE} device_tree"
 
 # use kernel 5.4
 USE="${USE} kernel-5_4"
-
-# TODO(b/150746591): build error, need to be fixed
-# needed by drm-tests
-#USE="${USE} vulkan"
 
 # Enable VMs
 USE="${USE} kvm_host crosvm-gpu virtio_gpu"
@@ -54,9 +54,6 @@ USE="${USE} minigbm_platform_mt8192"
 
 # Use V4L2 codec
 USE="${USE} v4l2_codec"
-
-# ARC should use VideoDecoder interface
-USE="${USE} arc_uses_cros_video_decoder"
 
 # Enable GpuMemoryBuffers backed by dma-bufs.
 USE="${USE} native_gpu_memory_buffers"

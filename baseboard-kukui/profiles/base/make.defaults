@@ -1,6 +1,8 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+
+CHROMEOS_DTBS="mt8183-kukui*.dtb"
 
 # Initial value just for style purposes.
 LINUX_FIRMWARE=""
@@ -12,8 +14,8 @@ USE="${USE} eclog"
 # Always have bootblock inside EC.
 USE="${USE} bootblock_in_ec"
 
-# Tell powerd to use the "mosys eventlog" command to log system events.
-USE="${USE} mosys_eventlog"
+# Tell powerd to use elogtool to log system events.
+USE="${USE} powerd_manual_eventlog_add"
 
 # Use opengles
 USE="${USE} -opengl opengles"
@@ -23,9 +25,6 @@ USE="${USE} watchdog"
 
 # Enable Chrome's tablet mode
 USE="${USE} touchview"
-
-# Use ext4 crypto
-USE="${USE} direncryption"
 
 # Declare TPM model.
 USE="${USE} -tpm tpm2"
@@ -37,8 +36,14 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} ath10k_qca6174a-3 qca6174a-3-bt"
 # Google USBPD peripheral firmwares
 LINUX_FIRMWARE="${LINUX_FIRMWARE} cros-pd"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
 # Enable eMMC tools
 USE="${USE} mmc"
+
+# Set mosys_platform
+USE="${USE} -mosys_platform_generic mosys_platform_kukui"
+
+# Enable cross-domain context in crosvm rutabaga_gfx for cross domain
+# allocation/resource sharing. For ARCVM, it switches the guest gralloc to use
+# virtgpu_cross_domain backend in minigbm, so that allocations no longer have
+# to go through host virglrenderer (avoid creating vrend context).
+USE="${USE} cross_domain_context"

@@ -1,0 +1,12 @@
+BDEPEND=chromeos-base/chromeos-config-host:= virtual/pkgconfig
+DEFINED_PHASES=install
+DEPEND=chromeos-base/sof-binary chromeos-base/sof-topology chromeos-base/chromeos-config has_chromeos_config_bsp? ( chromeos-base/chromeos-config-bsp:= ) has_chromeos_config_bsp_private? ( chromeos-base/chromeos-config-bsp-private:= ) has_chromeos_config_bsp_baseboard? ( chromeos-base/chromeos-config-bsp-baseboard:= ) has_chromeos_config_bsp_baseboard_private? ( chromeos-base/chromeos-config-bsp-baseboard-private:= ) unibuild? ( chromeos-base/chromeos-config:= )
+DESCRIPTION=Ebuild which pulls in any necessary ebuilds as dependencies or portage actions.
+EAPI=7
+IUSE=guybrush-arc-t guybrush-cbx guybrush-kernelnext has_chromeos_config_bsp has_chromeos_config_bsp_private has_chromeos_config_bsp_baseboard has_chromeos_config_bsp_baseboard_private unibuild
+KEYWORDS=-* amd64 x86
+LICENSE=BSD-Google
+RDEPEND=chromeos-base/sof-binary chromeos-base/sof-topology has_chromeos_config_bsp? ( chromeos-base/chromeos-config-bsp:= ) has_chromeos_config_bsp_private? ( chromeos-base/chromeos-config-bsp-private:= ) has_chromeos_config_bsp_baseboard? ( chromeos-base/chromeos-config-bsp-baseboard:= ) has_chromeos_config_bsp_baseboard_private? ( chromeos-base/chromeos-config-bsp-baseboard-private:= ) unibuild? ( chromeos-base/chromeos-config:= )
+SLOT=0
+_eclasses_=appid	7246d2a9f30b76802a858973725910c7	cros-unibuild	94ba1b876f001e1859d822211bb80291	flag-o-matic	ad475baa777c9978fa035216c8264a10	multilib	2477ebe553d3e4d2c606191fe6c33602	toolchain-funcs	528ab0a9e1ee02c57524ad3bede3c57e	udev	eec0bbab06977f1cfc5597269c1fa152
+_md5_=3713ea858b5c8c02aea3981c8be1c330

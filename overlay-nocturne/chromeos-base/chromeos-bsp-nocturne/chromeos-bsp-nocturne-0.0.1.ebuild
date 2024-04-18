@@ -1,8 +1,8 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-EAPI=5
+EAPI="7"
 
 inherit appid udev cros-audio-configs
 
@@ -12,7 +12,7 @@ dependencies or portage actions."
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* amd64 x86"
-IUSE="nocturne-kernelnext"
+IUSE="nocturne-kernelnext kernel-4_4"
 S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
@@ -38,7 +38,11 @@ src_install() {
 	doins "${FILESDIR}/hammerd.override"
 
 	# Install audio config files
-	local audio_config_dir="${FILESDIR}/audio-config"
+	if ! use kernel-4_4; then
+		local audio_config_dir="${FILESDIR}/kernelnext-audio-config"
+	else
+		local audio_config_dir="${FILESDIR}/audio-config"
+	fi
 	install_audio_configs nocturne "${audio_config_dir}"
 
 	# Install modprobe.d conf for dmic modeswitch delay

@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -18,9 +18,6 @@ USE="${USE} eve_wifi_etsi"
 
 # Disable ACPI AC device and use USB PD power supply driver
 USE="${USE} -acpi_ac"
-
-# Use ext4 crypto
-USE="${USE} direncryption"
 
 # Avoid inhibiting the keyboard (which reports events from side buttons).
 USE="${USE} keyboard_includes_side_buttons"
@@ -53,12 +50,6 @@ USE="${USE} nvme"
 # Ability to run guest VMs.
 USE="${USE} kvm_host crosvm-gpu virtio_gpu"
 
-# Enable Intel media-driver
-# When you disable this, you have to remove special autotest-capability settings
-# for eve, which is merged in https://crrev.com/c/1469567.
-USE="${USE} -video_cards_i965 video_cards_iHD"
-
-
 # Add IME addons for some optional IME features.
 USE="${USE} ime_addons"
 
@@ -75,15 +66,8 @@ USE="${USE} -march_goldmont march_skylake"
 # cryptohome_userdataauth_interface.conf
 USE="${USE} cryptohome_userdataauth_interface"
 
-# Specify device should use core scheduing. This should move to chipset-kbl
-# when all kbl move to kernel >=4.19.
-USE="${USE} coresched"
-
 # this indicates that this board has a -kernelnext overlay
 USE="${USE} has-kernelnext"
-
-# Enable on-device handwriting recognition
-USE="${USE} ondevice_handwriting"
 
 # Enable on-device text suggestions
 USE="${USE} ondevice_text_suggestions"
@@ -97,12 +81,6 @@ AFDO_PROFILE_SOURCE="bigcore"
 # Enable heuristic palm rejection
 USE="${USE} enable_heuristic_palm_detection_filter"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
-USE="${USE} -kernel-4_4"
-USE="${USE} kernel-5_4"
-
 USE="${USE} uprev-4-to-5"
 
 # Even though eve uprev is now stuck at 5.4, do not enable fscrypt_v2 for
@@ -111,10 +89,6 @@ USE="${USE} uprev-4-to-5"
 # Enable PCI rescan for Intel wifi NIC disappearing from the bus
 # See b/117960007 and crbug.com/922232 for details.
 USE="${USE} iwlwifi_rescan"
-
-# TODO(b/180725525): Move the flag to chromeos-kernel-5_4 package
-# use flags when performance improvement is verified..
-USE="${USE} kernel_afdo"
 
 # Enable on-device grammar check
 USE="${USE} ondevice_grammar"

@@ -1,4 +1,4 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -38,3 +38,12 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} mt7921e"
 
 # MT7921E USB BT firmware
 LINUX_FIRMWARE="${LINUX_FIRMWARE} mt7921e-bt"
+
+# Enable Type-C system daemon.
+USE="${USE} typecd"
+
+# Enable Chrome OS RMA daemon
+USE="${USE} rmad"
+
+# Enable cross-domain context
+USE="${USE} cross_domain_context"

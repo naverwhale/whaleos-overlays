@@ -1,4 +1,4 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -17,9 +17,6 @@ USE="${USE} majolica"
 # Allow Chrome to use Tablet mode
 USE="${USE} touchview"
 
-# Use ext4 crypto
-# USE="${USE} direncryption"
-
 USE="${USE} unibuild has_chromeos_config_bsp"
 
 USE="${USE} arc"
@@ -35,9 +32,9 @@ USE="${USE} include_vmlinuz"
 
 # TODO: Default enable for debug purpose, need to disable later
 # Uncomment these lines to activate the serial port.
-TTY_CONSOLE="ttyS2"
+TTY_CONSOLE="ttyS0 ttyS2"
 USE="${USE} pcserial"
-USE="${USE} tty_console_ttyS0 tty_console_ttyS2 earlyprintk"
+USE="${USE} earlyprintk"
 
 # Majolica does not have a cr50 - Use TPM2 simulator
 USE="${USE} -tpm tpm2 tpm2_simulator tpm2_simulator_manufacturer vtpm_proxy"

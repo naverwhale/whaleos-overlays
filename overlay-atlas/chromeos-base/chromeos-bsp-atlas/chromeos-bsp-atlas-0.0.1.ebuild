@@ -1,8 +1,8 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-EAPI=5
+EAPI="7"
 
 inherit appid
 inherit cros-audio-configs
@@ -14,7 +14,7 @@ dependencies or portage actions."
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* amd64 x86"
-IUSE="atlas-kvm atlas-connectivitynext atlas-kernelnext has_private_audio_topology kernel-5_4"
+IUSE="atlas-kvm atlas-connectivitynext atlas-kernelnext atlas-signingnext has_private_audio_topology kernel-4_4"
 S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
@@ -23,16 +23,22 @@ DEPEND="
 "
 
 RDEPEND="${DEPEND}
+	!<chromeos-base/gestures-conf-0.0.2
 	chromeos-base/chromeos-tcon-updater-atlas
 "
 
 src_install() {
+	insinto "/etc/gesture"
+	doins "${FILESDIR}"/gesture/*
+
 	if use atlas-kvm; then
 		doappid "{ED3D806C-3D7A-46E2-9604-13382FC1D55B}" "CHROMEBOOK"
 	elif use atlas-connectivitynext; then
 		doappid "{31A53FCC-241C-4439-8735-0A89AD9FB7A5}" "CHROMEBOOK"
 	elif use atlas-kernelnext; then
 		doappid "{DA55FC40-8B29-11EB-A477-BB6BC4E5094A}" "CHROMEBOOK"
+	elif use atlas-signingnext; then
+		doappid "{AA7037F3-BAEA-46BD-9F49-ADE7F801E601}" "CHROMEBOOK"
 	else
 		doappid "{DB5199C7-358B-4E1F-B4F6-AF6D2DD01A38}" "CHROMEBOOK"
 	fi
@@ -42,7 +48,7 @@ src_install() {
 	doins "${FILESDIR}"/powerd_prefs/*
 
 	# Install audio config files
-	if use kernel-5_4; then
+	if ! use kernel-4_4; then
 		local audio_config_dir="${FILESDIR}/kernelnext-audio-config"
 	else
 		local audio_config_dir="${FILESDIR}/audio-config"

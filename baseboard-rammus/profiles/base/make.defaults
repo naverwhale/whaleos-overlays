@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -20,9 +20,6 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} ipu3_fw"
 
 # Add EC logging
 USE="${USE} eclog"
-
-# Use ext4 crypto
-USE="${USE} direncryption"
 
 # Declare TPM model.
 USE="${USE} -tpm tpm2"
@@ -48,12 +45,12 @@ USE="${USE} has_keyboard_backlight"
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
 # Enable PCI rescan for Intel wifi NIC disappearing from the bus
 # See b/117960007 and crbug.com/922232 for details.
 USE="${USE} iwlwifi_rescan"
 
 # Enable eMMC tools
 USE="${USE} mmc"
+
+# KBL chipset defaults to 5.4 but these boards use 5.10
+USE="${USE} kernel-5_10"

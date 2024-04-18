@@ -1,4 +1,4 @@
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -17,8 +17,6 @@ USE="${USE} background_blur"
 # Enable NVMe utility
 USE="${USE} nvme"
 
-USE="${USE} ac_only -internal_mic -internal_speaker"
-
 # Use recovery button to confirm physical presence
 USE="${USE} physical_presence_recovery"
 
@@ -34,8 +32,12 @@ INPUT_DEVICES="${INPUT_DEVICES} weida"
 # this indicates that this board has a -borealis overlay
 USE="${USE} has-borealis"
 
-# Enable detachable UI in recovery mode.
-USE="${USE} detachable"
+# Disable subpixel rendering because it causes visual artifacts
+# for vertical displays. crbug.com/1194230
+USE="${USE} -subpixel_rendering"
 
-# Let the touchscreen wake the system when it's suspended.
-USE="${USE} touchscreen_wakeup"
+# this indicates that this board has a -kernelnext overlay
+USE="${USE} has-kernelnext"
+
+# This indicates that the board transitions from kernel v4.x to kernel v5.x
+USE="${USE} uprev-4-to-5"

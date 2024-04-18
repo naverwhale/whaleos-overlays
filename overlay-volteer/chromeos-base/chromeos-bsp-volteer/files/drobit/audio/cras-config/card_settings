@@ -1,9 +1,9 @@
 [Speaker]
   volume_curve = explicit
-  db_at_100 = -100
-  db_at_99 = -100
-  db_at_98 = -100
-  db_at_97 = -200
+  db_at_100 = -150
+  db_at_99 = -150
+  db_at_9fi8 = -150
+  db_at_97 = -150
   db_at_96 = -200
   db_at_95 = -200
   db_at_94 = -200

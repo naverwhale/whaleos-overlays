@@ -1,8 +1,8 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-EAPI=5
+EAPI="7"
 
 inherit appid cros-unibuild udev
 
@@ -12,7 +12,7 @@ or portage actions."
 LICENSE="BSD-Google"
 SLOT="0"
 KEYWORDS="-* arm64 arm"
-IUSE="kukui-arc-r kukui-tablet kukui-kernelnext"
+IUSE="kukui64 kukui-tablet kukui-kernelnext"
 S="${WORKDIR}"
 
 # Add dependencies on other ebuilds from within this board overlay
@@ -23,8 +23,8 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 src_install() {
-	if use kukui-arc-r; then
-		doappid "{D67CDE4D-0AA7-4550-BCBC-B43F61F2966E}" "CHROMEBOOK"
+	if use kukui64; then
+		doappid "{637A496A-9ABF-437C-A8DE-1895F6EE1A8F}" "CHROMEBOOK"
 	elif use kukui-tablet; then
 		doappid "{8748A652-A3D9-4EA6-9E3D-4B97795DBF5B}" "CHROMEBOOK"
 	elif use kukui-kernelnext; then
@@ -48,4 +48,10 @@ src_install() {
 	# active_product_id to force the touch updater use the new PID.
 	exeinto "/opt/google/touch/scripts"
 	doexe "${FILESDIR}"/get_board_goodix_pid.sh
+
+	# Install platform-specific bluetooth sysprops.
+	insinto "/etc/bluetooth/sysprops.conf.d"
+	insopts -m0640
+	doins "${FILESDIR}/kukui-bluetooth-sysprops.conf"
+	insopts -m0644
 }

@@ -1,8 +1,13 @@
 #
-# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Copyright 2019 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+
+rmad-common: &rmad_common
+  enabled: True
+  has-cbi: False
+  use-legacy-custom-label: True
 
 bluetooth-flags: &bluetooth_flags
   enable-suspend-management: true
@@ -17,6 +22,8 @@ ts3a227e_audio_config: &ts3a227e_audio_config
     files:
       - source: "{{$cras-source}}/{{$card}}"
         destination: "{{$cras-dest}}/{{$card}}"
+      - source: "{{$cras-source}}/board.ini"
+        destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
       - source: "{{$ucm-source}}/HiFi.conf"
@@ -33,6 +40,8 @@ da7219_audio_config: &da7219_audio_config
     files:
       - source: "{{$cras-source}}/{{$card}}"
         destination: "{{$cras-dest}}/{{$card}}"
+      - source: "{{$cras-source}}/board.ini"
+        destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
       - source: "{{$ucm-source}}/HiFi.conf"
@@ -49,6 +58,8 @@ rt1015_audio_config: &rt1015_audio_config
     files:
       - source: "{{$cras-source}}/{{$card}}"
         destination: "{{$cras-dest}}/{{$card}}"
+      - source: "{{$cras-source}}/board.ini"
+        destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
       - source: "{{$ucm-source}}/HiFi.conf"
@@ -65,6 +76,8 @@ rt1015p_audio_config: &rt1015p_audio_config
     files:
       - source: "{{$cras-source}}/{{$card}}"
         destination: "{{$cras-dest}}/{{$card}}"
+      - source: "{{$cras-source}}/board.ini"
+        destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
       - source: "{{$ucm-source}}/HiFi.conf"
@@ -83,6 +96,8 @@ cerise_audio_config: &cerise_audio_config
     files:
       - source: "{{$cras-source}}/{{$card1}}"
         destination: "{{$cras-dest}}/{{$card1}}"
+      - source: "{{$cras-source}}/board.ini"
+        destination: "{{$cras-dest}}/board.ini"
       - source: "{{$cras-source}}/dsp.ini"
         destination: "{{$cras-dest}}/dsp.ini"
       - source: "{{$ucm-source}}/HiFi.conf"
@@ -106,13 +121,13 @@ common_config: &common_config
   name: "{{$device-name}}"
   identity: &identity
     platform-name: "Kukui"
-    device-tree-compatible-match: "{{$fw-name}}"
+    frid: "{{$fw-name}}"
   firmware:
     build-targets:
       bmpblk: "jacuzzi"
       coreboot: "{{$fw-build-name}}"
       ec: "{{$fw-build-name}}"
-      ec_extras: [ "kukui_scp" ]
+      ec-extras: [ "kukui_scp" ]
       depthcharge: "jacuzzi"
       libpayload: "jacuzzi"
     no-firmware: true
@@ -120,7 +135,7 @@ common_config: &common_config
     key-id: "{{$key-id}}"
     signature-id: "{{$device-name}}"
   test-label: "{{$device-name}}"
-  power:
+  power: &power_common
     low-battery-shutdown-percent: "4.0"
     $has-keyboard-backlight: "0"
     has-keyboard-backlight: "{{$has-keyboard-backlight}}"
@@ -129,8 +144,11 @@ common_config: &common_config
     flags: *bluetooth_flags
   hardware-properties:
     form-factor: CHROMEBOOK
+    psu-type: battery
   scheduler-tune:
     boost-urgent: 40
+    boost-arcvm: 0.4
+  rmad: *rmad_common
 
 identity-sku-config: &identity_sku_config
   <<: *identity
@@ -138,7 +156,7 @@ identity-sku-config: &identity_sku_config
 
 jacuzzi-config: &jacuzzi_config
   <<: *common_config
-  $fw-name: "google,jacuzzi"
+  $fw-name: "Google_Jacuzzi"
   $fw-build-name: "jacuzzi"
   $key-id: "DEFAULT"
   identity:
@@ -147,7 +165,7 @@ jacuzzi-config: &jacuzzi_config
 
 juniper-config: &juniper_config
   <<: *common_config
-  $fw-name: "google,juniper"
+  $fw-name: "Google_Juniper"
   $fw-build-name: "juniper"
   $key-id: "JACUZZIA"
   identity:
@@ -156,17 +174,17 @@ juniper-config: &juniper_config
 
 kappa-config: &kappa_config
   <<: *common_config
-  $fw-name: "google,kappa"
+  $fw-name: "Google_Kappa"
   $fw-build-name: "kappa"
   $key-id: "JACUZZIB"
   identity:
     <<: *identity
-    whitelabel-tag: "{{$whitelabel-tag}}"
+    custom-label-tag: "{{$custom-label-tag}}"
   audio: *ts3a227e_audio_config
 
 damu-config: &damu_config
   <<: *common_config
-  $fw-name: "google,damu"
+  $fw-name: "Google_Damu"
   $fw-build-name: "damu"
   $key-id: "JACUZZIC"
   identity:
@@ -175,7 +193,7 @@ damu-config: &damu_config
 
 cerise-config: &cerise_config
   <<: *common_config
-  $fw-name: "google,cerise"
+  $fw-name: "Google_Cerise"
   $fw-build-name: "cerise"
   $key-id: "JACUZZIC"
   identity:
@@ -184,7 +202,7 @@ cerise-config: &cerise_config
 
 fennel-config: &fennel_config
   <<: *common_config
-  $fw-name: "google,fennel"
+  $fw-name: "Google_Fennel"
   $fw-build-name: "fennel"
   $key-id: "JACUZZIF"
   identity:
@@ -193,7 +211,7 @@ fennel-config: &fennel_config
 
 burnet-config: &burnet_config
   <<: *common_config
-  $fw-name: "google,burnet"
+  $fw-name: "Google_Burnet"
   $fw-build-name: "burnet"
   identity:
     <<: *identity_sku_config
@@ -201,7 +219,7 @@ burnet-config: &burnet_config
 
 willow-config: &willow_config
   <<: *common_config
-  $fw-name: "google,willow"
+  $fw-name: "Google_Willow"
   $fw-build-name: "willow"
   $key-id: "JACUZZIA"
   identity:
@@ -209,7 +227,7 @@ willow-config: &willow_config
 
 cozmo-config: &cozmo_config
   <<: *common_config
-  $fw-name: "google,cozmo"
+  $fw-name: "Google_Cozmo"
   $fw-build-name: "cozmo"
   $key-id: "JACUZZIA"
   identity:
@@ -218,7 +236,7 @@ cozmo-config: &cozmo_config
 
 makomo-config: &makomo_config
   <<: *common_config
-  $fw-name: "google,makomo"
+  $fw-name: "Google_Makomo"
   $fw-build-name: "makomo"
   $key-id: "JACUZZIF"
   identity:
@@ -227,7 +245,7 @@ makomo-config: &makomo_config
 
 munna-config: &munna_config
   <<: *common_config
-  $fw-name: "google,munna"
+  $fw-name: "Google_Munna"
   $fw-build-name: "munna"
   $key-id: "DEFAULT"
   identity:
@@ -236,7 +254,7 @@ munna-config: &munna_config
 
 pico-config: &pico_config
   <<: *common_config
-  $fw-name: "google,pico"
+  $fw-name: "Google_Pico"
   $fw-build-name: "pico"
   identity:
     <<: *identity_sku_config
@@ -246,6 +264,28 @@ cros-healthd-sku-number-enabled: &cros_healthd_sku_number_enabled
   cros-healthd:
     cached-vpd:
       has-sku-number: True
+
+pico6-config: &pico6_config
+  <<: *pico_config
+  wifi:
+    non-tablet-mode-power-table-mtk:
+      limit-2g: 44
+      limit-5g-1: 44
+      limit-5g-2: 44
+      limit-5g-3: 42
+      limit-5g-4: 58
+    tablet-mode-power-table-mtk:
+      limit-2g: 46
+      limit-5g-1: 48
+      limit-5g-2: 50
+      limit-5g-3: 42
+      limit-5g-4: 58
+  bluetooth:
+    flags:
+      enable-bluetooth-offload: True
+  power:
+    <<: *power_common
+    set-wifi-transmit-power-for-tablet-mode: "1"
 
 chromeos:
   devices:
@@ -258,8 +298,8 @@ chromeos:
           config: *juniper_config
     - $device-name: "kappa"
       products:
-        - $whitelabel-tag: ""
-        - $whitelabel-tag: "giygas"
+        - $custom-label-tag: ""
+        - $custom-label-tag: "giygas"
       skus:
         - config:
             <<: *kappa_config
@@ -368,3 +408,8 @@ chromeos:
         - $sku-id: 1
           $key-id: "JACUZZIA"
           config: *pico_config
+    - $device-name: "pico6"
+      skus:
+        - $sku-id: 2
+          $key-id: "JACUZZIA"
+          config: *pico6_config

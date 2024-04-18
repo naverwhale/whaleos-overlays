@@ -4,3 +4,10 @@ amp_calibrations:
   dsm_param_write_ctrl: "SMART_AMP1.0 Smart_amp Model"
   temp_ctrl: ["Left ADC TEMP", "Right ADC TEMP"]
   dsm_param: "/opt/google/dsm/dsmparam.collis.bin"
+  rdc_ranges:
+    -
+      lower: 6.22
+      upper: 8.42
+    -
+      lower: 6.22
+      upper: 8.42

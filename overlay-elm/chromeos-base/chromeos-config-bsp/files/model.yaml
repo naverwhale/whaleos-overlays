@@ -1,4 +1,4 @@
-# Copyright 2020 The Chromium OS Authors. All rights reserved.
+# Copyright 2020 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -12,28 +12,23 @@ device-config: &device_config
       depthcharge: elm
       libpayload: elm
       ec: elm
-      ec_extras:
+      ec-extras:
       - anx7688
     image-name: elm
   hardware-properties:
     form-factor: CHROMEBOOK
     has-backlight: true
     psu-type: battery
+    has-side-volume-button: true
   identity:
-    device-tree-compatible-match: google,elm
+    frid: Google_Elm
     platform-name: Oak
   name: elm
   power:
-    dark-resume-devices: |-
-      /sys/bus/usb/devices/usb1
-      /sys/bus/usb/devices/usb2
-      /sys/class/backlight/backlight_lcd
-    dark-resume-sources: |-
-      /sys/class/rtc/rtc0/device
-      /sys/bus/sdio/drivers/mwifiex_sdio/mmc2:0001:1
     disable-dark-resume: '1'
-    internal-backlight-no-als-battery-brightness: '36.36'
+    internal-backlight-no-als-battery-brightness: '67.27'
     low-battery-shutdown-percent: '4.0'
+    min-visible-backlight-level: '300'
     power-supply-full-factor: '0.95'
   ui:
     side-volume-button:

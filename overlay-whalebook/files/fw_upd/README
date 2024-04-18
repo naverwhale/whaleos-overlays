@@ -1,0 +1,7 @@
+### Guide for bios update
+* add bios firmware file(*.cap) in fw_upd/fw folder
+ex) fw_upd/fw/fwupd-fffe86cc-2b70-4f70-8f73-5b1fcddee68a.cap
+* write model name to fw_upd/target
+ex) 14TW30S
+* write version of fw_upd/fw/*.cap to fw_upd/version
+ex) 14T30SF02

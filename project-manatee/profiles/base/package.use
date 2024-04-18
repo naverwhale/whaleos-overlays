@@ -1,5 +1,0 @@
-chromeos-base/chromeos-initramfs hypervisor_ramfs
-sys-kernel/chromeos-kernel-5_4-manatee apply_patches
-sys-kernel/chromeos-kernel-5_10-manatee apply_patches
-# Qemu[ncurses] requires ncurses[unicode], but CrOS ships with ncurses[-unicode]
-app-emulation/qemu -ncurses

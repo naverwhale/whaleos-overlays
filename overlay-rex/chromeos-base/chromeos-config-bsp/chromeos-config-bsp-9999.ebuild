@@ -1,4 +1,4 @@
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -7,8 +7,10 @@ inherit cros-constants
 CROS_WORKON_REPO="${CROS_GIT_HOST_URL}"
 
 PROJECTS=(
-	"rex"
+	"karis"
 	"mtlrvp"
+	"rex"
+	"screebo"
 )
 
 CONFIG_PATH="sw_build_config/platform/chromeos-config"
@@ -26,7 +28,6 @@ HOMEPAGE="https://www.chromium.org/chromium-os"
 SRC_URI=""
 
 LICENSE="BSD-Google"
-SLOT="0/${PF}"
 KEYWORDS="~* ~amd64 ~x86"
 
 RDEPEND=""

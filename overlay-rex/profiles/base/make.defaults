@@ -1,4 +1,4 @@
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -7,7 +7,9 @@ USE=""
 INPUT_DEVICE=""
 
 USE="${USE} rex"
-#USE="${USE} cros_ec"
+
+# Enable Zephyr-based EC.
+USE="${USE} zephyr_ec"
 
 # Enable unibuild
 USE="${USE} unibuild"
@@ -15,3 +17,21 @@ USE="${USE} has_chromeos_config_bsp"
 
 # Disable AC ACPI driver
 USE="${USE} -acpi_ac"
+
+# Enable biometrics support
+USE="${USE} biod"
+
+# modemfwd is used for updating modem firmware.
+USE="${USE} modemfwd"
+
+# intel_psr tells if Intel PSR(platform service record) is supported or not.
+USE="${USE} intel_psr"
+
+# Enable HDRnet.
+USE="${USE} ipu6epmtl camera_feature_hdrnet"
+
+# Include the ilitek_its firmware updating tool
+INPUT_DEVICES="${INPUT_DEVICES} ilitek_its"
+
+# Compress the rw payload with LZ4 instead of LZMA
+USE="${USE} rw-payload-compress-lz4 -rw-payload-compress-lzma"

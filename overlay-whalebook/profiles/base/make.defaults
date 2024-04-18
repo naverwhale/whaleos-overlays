@@ -2,6 +2,12 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-CHROMEOS_KERNEL_SPLITCONFIG="whalebook"
+CHROMEOS_KERNEL_SPLITCONFIG="chromiumos-x86_64"
 
-USE="kernel-5_10"
+USE="kernel-5_15 whalebook_kernel builtin_fw_guc_adln builtin_fw_huc_adln"
+
+# Flags from chipset-jsl
+USE="${USE} -video_cards_i965 video_cards_iHD"
+USE="${USE} drm_atomic"
+USE="${USE} native_gpu_memory_buffers"
+USE="${USE} video_cards_iHD_g11"

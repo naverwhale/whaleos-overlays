@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
+# Copyright 2017 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Initial value just for style purposes.
@@ -22,19 +22,12 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} cros-pd"
 
 # Build kernel with serial driver
 USE="${USE} pcserial"
-USE="${USE} tty_console_ttyS0"
-
-# Add EC logging
-USE="${USE} eclog"
-
-# Disable AC ACPI driver
-USE="${USE} -acpi_ac"
 
 # Enable serial console
 TTY_CONSOLE="ttyS0"
 
-# Allow Chrome to use Tablet mode
-USE="${USE} touchview"
+# Add EC logging
+USE="${USE} eclog"
 
 # Enable VMs
 USE="${USE} kvm_host crosvm-gpu virtio_gpu"
@@ -45,11 +38,11 @@ USE="${USE} clang"
 # Enable Downloadable Content (DLC) Test
 USE="${USE} dlc_test"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
 # Enable USB Type C daemon.
 USE="${USE} typecd"
 
 # Enable eMMC tools
 USE="${USE} mmc"
+
+# Enable crosvm vmm-swap
+USE="${USE} crosvm-swap"

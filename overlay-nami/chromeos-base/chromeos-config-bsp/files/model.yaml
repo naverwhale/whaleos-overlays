@@ -1,5 +1,5 @@
 #
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -60,9 +60,11 @@ common-config: &common_config
   name: "{{$device-name}}"
   identity:
     platform-name: "Poppy"
-    smbios-name-match: "Nami"
+    frid: "Google_Nami"
     sku-id: "{{$sku-id}}"
   firmware:
+    build-targets:
+      ec: "nami"
     no-firmware: True
   power: &power_common
     charging-ports: |
@@ -92,8 +94,10 @@ common-config: &common_config
       - source: "{{dptf-dv}}"
         destination: "/etc/dptf/{{dptf-dv}}"
   test-label: "{{$device-name}}"
-  hardware-properties:
-    form-factor: CHROMEBOOK
+  hardware-properties: &common_hardware_properties
+    $form-factor: CHROMEBOOK
+    form-factor: "{{$form-factor}}"
+    psu-type: "battery"
 
 device-specific-audio-device-config: &device_specific_audio_device_config
   <<: *common_config
@@ -104,7 +108,6 @@ device-specific-audio-device-config: &device_specific_audio_device_config
     $ucm-source-suffix: ""
 
 device-specific-audio-config-boardini: &device_specific_audio_config_boardini
-  <<: *common_config
   audio:
     <<: *audio_boardini_setting
     $cras: "{{$device-name}}"
@@ -113,8 +116,9 @@ device-specific-audio-config-boardini: &device_specific_audio_config_boardini
 
 convertible-device-config: &convertible_device_config
   <<: *device_specific_audio_device_config
-  hardware-properties:
-    form-factor: CHROMEBOOK
+  hardware-properties: &convertible_hardware_properties
+    <<: *common_hardware_properties
+    form-factor: CONVERTIBLE
     is-lid-convertible: True
     has-lid-accelerometer: True
     has-base-accelerometer: True
@@ -203,6 +207,8 @@ chromeos:
           config:
             <<: *device_specific_audio_device_config
             <<: *cros_healthd_sku_number_enabled
+            keyboard:
+              backlight: True
         - $sku-id: 0x2bc62
           config:
             <<: *device_specific_audio_device_config
@@ -258,12 +264,16 @@ chromeos:
       skus:
         - $sku-id: 0x10118e3
           config: *device_specific_audio_device_config
+          keyboard:
+            backlight: True
         - $sku-id: 0x10018e3
           config: *device_specific_audio_device_config
         - $sku-id: 0x10118e1
           config: *device_specific_audio_device_config
         - $sku-id: 0x10018e1
           config: *device_specific_audio_device_config
+          keyboard:
+            backlight: True
         - $sku-id: 0x10118e2
           config:
             <<: *device_specific_audio_device_config
@@ -297,6 +307,8 @@ chromeos:
           config: *device_specific_audio_device_config
         - $sku-id: 0x1019ce1
           config: *device_specific_audio_device_config
+          keyboard:
+            backlight: True
         - $sku-id: 0x1009ce1
           config: *device_specific_audio_device_config
         - $sku-id: 0x1009ce0

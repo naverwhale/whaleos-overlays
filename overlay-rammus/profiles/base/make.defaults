@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -23,8 +23,8 @@ USE="${USE} background_blur"
 # Add IME addons for some optional IME features.
 USE="${USE} ime_addons"
 
-# Enable on-device handwriting recognition
-USE="${USE} ondevice_handwriting"
-
 # Enable on-device text suggestions
 USE="${USE} ondevice_text_suggestions"
+
+# This board has upgraded from 4.x
+USE="${USE} uprev-4-to-5"

@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -17,7 +17,9 @@ LINUX_FIRMWARE="${LINUX_FIRMWARE} cros-pd"
 
 # Build kernel with serial driver
 # USE="${USE} pcserial"
-# USE="${USE} tty_console_ttyS0"
+
+# Enable serial console
+# TTY_CONSOLE="ttyS0"
 
 # Add EC logging
 USE="${USE} eclog"
@@ -25,17 +27,17 @@ USE="${USE} eclog"
 # Disable AC ACPI driver
 USE="${USE} -acpi_ac"
 
-# Enable serial console
-# TTY_CONSOLE="ttyS0"
-
 # Allow Chrome to use Tablet mode
 USE="${USE} touchview"
 
 # Enable NVMe utility
 USE="${USE} nvme"
 
-# Enable ML benchmarking for testing.
-USE="${USE} ml_benchmark_drivers"
-
 # Enable eMMC tools
 USE="${USE} mmc"
+
+# Enable crosvm vmm-swap
+USE="${USE} crosvm-swap"
+
+# Enable ARCVM direct VAAPI decoding
+USE="${USE} crosvm-video-vaapi"

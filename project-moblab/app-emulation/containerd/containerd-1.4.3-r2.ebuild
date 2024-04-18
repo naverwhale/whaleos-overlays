@@ -67,6 +67,7 @@ src_compile() {
 
 	export GOPATH="${WORKDIR}/${P}" # ${PWD}/vendor
 	export GOFLAGS="-v -x -mod=vendor"
+	export GO111MODULE=off
 	emake "${myemakeargs[@]}" all
 }
 

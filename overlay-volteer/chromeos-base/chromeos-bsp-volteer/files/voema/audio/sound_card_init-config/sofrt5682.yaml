@@ -4,3 +4,10 @@ amp_calibrations:
   dsm_param_write_ctrl: "SMART_AMP1.0 Smart_amp Model"
   temp_ctrl: ["Left ADC TEMP", "Right ADC TEMP"]
   dsm_param: "/opt/google/dsm/dsmparam.voema.bin"
+  rdc_ranges:
+    -
+      lower: 2.95
+      upper: 3.99
+    -
+      lower: 2.95
+      upper: 3.99

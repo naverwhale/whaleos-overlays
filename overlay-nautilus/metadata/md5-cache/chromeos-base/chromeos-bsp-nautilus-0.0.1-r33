@@ -1,0 +1,12 @@
+BDEPEND=virtual/pkgconfig
+DEFINED_PHASES=install
+DEPEND=modemfwd? ( chromeos-base/modemfwd-helpers )
+DESCRIPTION=Ebuild which pulls in any necessary ebuilds as dependencies or portage actions.
+EAPI=7
+IUSE=kernel-5_4 modemfwd
+KEYWORDS=-* amd64 x86
+LICENSE=BSD-Google
+RDEPEND=modemfwd? ( chromeos-base/modemfwd-helpers )
+SLOT=0
+_eclasses_=appid	7246d2a9f30b76802a858973725910c7	cros-audio-configs	3019de51dffbb1b14f1f5d01141fb95e	flag-o-matic	ad475baa777c9978fa035216c8264a10	multilib	2477ebe553d3e4d2c606191fe6c33602	toolchain-funcs	528ab0a9e1ee02c57524ad3bede3c57e	udev	eec0bbab06977f1cfc5597269c1fa152
+_md5_=c89473ceb1b55cd7bcf24fc975c7e182

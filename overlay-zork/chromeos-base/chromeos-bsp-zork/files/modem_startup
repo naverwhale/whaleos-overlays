@@ -1,11 +1,13 @@
 #!/bin/bash
 
-# Copyright 2021 The Chromium OS Authors. All rights reserved.
+# Copyright 2021 The ChromiumOS Authors
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-readonly GPIO=345
-readonly GPIO_PATH="/sys/class/gpio/gpio${GPIO}/"
+GPIO_ID=89
+GPIO_OFFSET=$(cat /sys/devices/platform/AMD0030:00/gpio/gpiochip[0-9]*/base)
+GPIO=$((GPIO_OFFSET + GPIO_ID))
+GPIO_PATH="/sys/class/gpio/gpio${GPIO}/"
 
 log() {
   logger "[modem]" "$@"
@@ -19,30 +21,9 @@ is_modem_ready() {
   ls /dev/serial/by-id/usb-Fibocom_Wireless_Inc.* > /dev/null 2>&1
 }
 
-start_modemmanager_when_ready() {
-  log "modemmanager starting..."
-  local LOCK_FILE=/run/lock/power_override/modem_start.lock
-  echo $$ > "${LOCK_FILE}"
-  # Now wait up to 60 seconds for modem-related TTY interfaces.
-  for i in {1..60}; do
-    if is_modem_ready; then
-      break
-    fi
-    log "[attempt ${i}] modem is not ready yet, wait for another second..."
-    sleep 1
-  done
-  # Wait for 5s extra to ensure the modem is ready to take commands
-  sleep 5
-  start modemmanager
-  rm -f "${LOCK_FILE}"
-  log "modemmanager started."
-}
-
 has_modem || exit 0
 
 if [[ -d ${GPIO_PATH} ]]; then
   log "de-assert GPIO ${GPIO}"
   echo 1 > "${GPIO_PATH}/value"
 fi
-
-start_modemmanager_when_ready &

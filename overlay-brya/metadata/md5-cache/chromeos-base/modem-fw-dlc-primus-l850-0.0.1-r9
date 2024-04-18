@@ -1,0 +1,10 @@
+DEFINED_PHASES=install
+DESCRIPTION=DLC containing the modem firmware for primus_l850.
+EAPI=7
+HOMEPAGE=http://src.chromium.org
+KEYWORDS=*
+LICENSE=BSD-Google
+SLOT=0
+SRC_URI=gs://chromeos-localmirror/distfiles/cellular-firmware-fibocom-l850-18500.5001.00.05.27.12_Secureboot.tar.xz
+_eclasses_=cros-binary	fd1672f424e9ce110e07cb4da844e20f	cros-constants	676fcfd1679a06bba553adf90e231454	dlc	0e249e19536561abe6eb72bd84e06026	estack	686eaab303305a908fd57b2fd7617800	modem-fw-dlc	3917cadba3a82dd0a532197c0524d6b1
+_md5_=199da0dadafcd3d55d1e6b865dbe34c3

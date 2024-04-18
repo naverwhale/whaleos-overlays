@@ -1,4 +1,4 @@
-# Copyright 2018 The Chromium OS Authors. All rights reserved.
+# Copyright 2018 The ChromiumOS Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -15,16 +15,22 @@ or portage actions."
 
 LICENSE="BSD-Google"
 KEYWORDS="-* ~amd64 ~x86"
-IUSE="sarien-kvm sarien-kernelnext"
+IUSE="sarien-kvm sarien-kernelnext modemfwd"
 
 # Add dependencies on other ebuilds from within this board overlay
-RDEPEND=""
+RDEPEND="
+	!<chromeos-base/gestures-conf-0.0.2
+	modemfwd? ( chromeos-base/modemfwd-helpers )
+"
 DEPEND="
 	${RDEPEND}
 	chromeos-base/chromeos-config:=
 "
 
 src_install() {
+	insinto "/etc/gesture"
+	doins "${FILESDIR}"/gesture/*
+
 
 	if use sarien-kvm; then
 		doappid "{3774C742-22BD-4BC5-A052-554CB624433C}" "CHROMEBOOK"

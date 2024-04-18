@@ -41,7 +41,8 @@
     </Encoders>
     <Decoders>
         <MediaCodec name="OMX.google.h263.decoder" type="video/3gpp" update="true">
-            <Limit name="measured-frame-rate-176x144" range="431-441" />
+            <!-- FPS at small resolution is too sensitive. Relax to the most loose limit. -->
+            <Limit name="measured-frame-rate-176x144" range="431-948" />
         </MediaCodec>
         <MediaCodec name="OMX.google.h264.decoder" type="video/avc" update="true">
             <Limit name="measured-frame-rate-320x240" range="623-623" />
